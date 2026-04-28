@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _hacerLogin() async {
+  Future<void> _hacerLogin() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -33,22 +34,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final success = await context.read<AuthProvider>().login(email, password);
-
       if (success && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('¡Inicio de sesión exitoso!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
         );
       }
     }
@@ -59,56 +51,111 @@ class _LoginScreenState extends State<LoginScreen> {
     final authProvider = context.watch<AuthProvider>();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Iniciar Sesión'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 60),
-            const Text(
+            const SizedBox(height: 40),
+            Text(
               '¡Bienvenido de nuevo!',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Correo electrónico',
-                border: OutlineInputBorder(),
+              style: GoogleFonts.manrope(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF031632),
               ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Inicia sesión para gestionar tus oportunidades.',
+              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+            ),
+            const SizedBox(height: 48),
+            
+            _buildTextField(
+              controller: _emailController,
+              label: 'Correo electrónico',
+              hint: 'Ej. juan@empresa.com',
+              icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 16),
-            TextField(
+            const SizedBox(height: 24),
+            _buildTextField(
               controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
+              label: 'Contraseña',
+              hint: 'Tu contraseña secreta',
+              icon: Icons.lock_outline,
+              isPassword: true,
             ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: authProvider.isLoading ? null : _hacerLogin,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
+            const SizedBox(height: 40),
+            
+            authProvider.isLoading
+                ? const Center(child: CircularProgressIndicator(color: Color(0xFF031632)))
+                : ElevatedButton(
+                    onPressed: _hacerLogin,
+                    child: const Text('Entrar'),
+                  ),
+            const SizedBox(height: 24),
+            Center(
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  '¿Has olvidado tu contraseña?',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
               ),
-              child: authProvider.isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Entrar', style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    bool isPassword = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF031632),
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          obscureText: isPassword,
+          keyboardType: keyboardType,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: Icon(icon, color: const Color(0xFF031632).withOpacity(0.5)),
+            filled: true,
+            fillColor: const Color(0xFF031632).withOpacity(0.03),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF031632), width: 1.5),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

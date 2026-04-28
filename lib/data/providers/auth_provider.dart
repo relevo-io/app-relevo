@@ -58,8 +58,8 @@ class AuthProvider extends ChangeNotifier {
         password: password,
         role: role,
       );
-      _setLoading(false);
-      return true;
+      // Hacemos login automático con los mismos datos
+      return await login(email, password);
     } catch (e) {
       _setLoading(false);
       rethrow;

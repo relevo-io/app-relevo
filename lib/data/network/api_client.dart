@@ -6,7 +6,7 @@ class ApiClient {
 
   // emulador Android: 10.0.2.2
   // emulador iOS: 127.0.0.1
-  static const String baseUrl = 'http://10.0.2.2:4000/api';
+  static const String baseUrl = 'http://localhost:4000/api';
 
   factory ApiClient() {
     return _instance;
