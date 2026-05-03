@@ -1,0 +1,183 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Spanish Castilian (`es`).
+class AppLocalizationsEs extends AppLocalizations {
+  AppLocalizationsEs([String locale = 'es']) : super(locale);
+
+  @override
+  String get helloWorld => '¡Hola Mundo!';
+
+  @override
+  String welcomeMessage(String name) {
+    return 'Bienvenido/a a Relevo, $name';
+  }
+
+  @override
+  String get fillAllFieldsError => 'Por favor, rellena todos los campos';
+
+  @override
+  String get loginTitle => 'Iniciar Sesión';
+
+  @override
+  String get loginWelcome => '¡Bienvenido de nuevo!';
+
+  @override
+  String get loginSubtitle => 'Inicia sesión para gestionar tus oportunidades.';
+
+  @override
+  String get emailLabel => 'Correo electrónico';
+
+  @override
+  String get emailHint => 'Ej. juan@empresa.com';
+
+  @override
+  String get passwordLabel => 'Contraseña';
+
+  @override
+  String get passwordHintLogin => 'Tu contraseña secreta';
+
+  @override
+  String get loginButton => 'Entrar';
+
+  @override
+  String get forgotPasswordButton => '¿Has olvidado tu contraseña?';
+
+  @override
+  String get registerTitle => 'Únete a Relevo';
+
+  @override
+  String get registerWelcome => 'Crea tu cuenta';
+
+  @override
+  String get registerSubtitle =>
+      'Forma parte de la nueva generación de líderes.';
+
+  @override
+  String get fullNameLabel => 'Nombre completo';
+
+  @override
+  String get fullNameHint => 'Ej. Juan Pérez';
+
+  @override
+  String get passwordHintRegister => 'Mínimo 6 caracteres';
+
+  @override
+  String get roleQuestion => '¿Qué buscas en Relevo?';
+
+  @override
+  String get roleInterested => 'Busco oportunidades';
+
+  @override
+  String get roleOwner => 'Quiero traspasar mi negocio';
+
+  @override
+  String get registerButton => 'Crear Cuenta';
+
+  @override
+  String get homeMarketplaceBadge => 'Marketplace Líder';
+
+  @override
+  String get homeSlogan => 'Asegura el futuro de tu legado.';
+
+  @override
+  String get homeSlogan2 => 'Impulsa tu nuevo negocio.';
+
+  @override
+  String get profileTitle => 'Mi Perfil';
+
+  @override
+  String get profileDefaultUser => 'Usuario';
+
+  @override
+  String get profileSettings => 'Configuración';
+
+  @override
+  String get profileHelp => 'Ayuda y Soporte';
+
+  @override
+  String get profileLogout => 'Cerrar Sesión';
+
+  @override
+  String get profileNotRegisteredQuestion => '¿Aún no te has registrado?';
+
+  @override
+  String get profileNotRegisteredSubtitle =>
+      'Únete a la plataforma y asegura el futuro de tu legado.';
+
+  @override
+  String get profileLoginButton => 'Iniciar Sesión';
+
+  @override
+  String get profileRegisterButton => 'Regístrate';
+
+  @override
+  String get bottomNavHome => 'Inicio';
+
+  @override
+  String get bottomNavProfile => 'Perfil';
+
+  @override
+  String get languageSelectorES => 'Español (ES)';
+
+  @override
+  String get languageSelectorCA => 'Català (CA)';
+
+  @override
+  String get languageSelectorEN => 'English (EN)';
+
+  @override
+  String get homeIntro =>
+      'Conectamos a fundadores experimentados con la próxima generación de líderes empresariales.';
+
+  @override
+  String get homeStatValue1 => '€12M+';
+
+  @override
+  String get homeStatLabel1 => 'Valor transaccionado';
+
+  @override
+  String get homeStatValue2 => '+500';
+
+  @override
+  String get homeStatLabel2 => 'Propietarios activos';
+
+  @override
+  String get homeOwnersTitle => 'PARA PROPIETARIOS';
+
+  @override
+  String get homeOwnersSubtitle => 'Tu retiro merece un sucesor a la altura.';
+
+  @override
+  String get homeOwnersDesc =>
+      'Has construido algo valioso. No dejes que se pierda. Te ayudamos a encontrar al comprador ideal.';
+
+  @override
+  String get homeOwnersFeature1 => 'Valoración profesional del negocio.';
+
+  @override
+  String get homeOwnersFeature2 => 'Filtrado de compradores potenciales.';
+
+  @override
+  String get homeOwnersFeature3 => 'Máxima confidencialidad.';
+
+  @override
+  String get homeEntrepreneursTitle => 'PARA EMPRENDEDORES';
+
+  @override
+  String get homeEntrepreneursSubtitle => 'Emprende sobre una base sólida.';
+
+  @override
+  String get homeEntrepreneursDesc =>
+      'No empieces de cero. Adquiere una empresa establecida con flujo de caja y clientes.';
+
+  @override
+  String get homeEntrepreneursFeatureTitle => 'Rentabilidad Probada';
+
+  @override
+  String get homeEntrepreneursFeatureDesc =>
+      'Accede a históricos financieros auditados.';
+}

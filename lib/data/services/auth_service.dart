@@ -25,6 +25,7 @@ class UserService {
     required String email,
     required String password,
     required String role,
+    String? language,
   }) async {
     try {
       await _dio.post(
@@ -34,11 +35,26 @@ class UserService {
           'email': email,
           'password': password,
           'roles': [role],
+          'language': language,
         },
       );
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         throw Exception(e.response?.data['message'] ?? 'Error en el registro');
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<void> updateLanguage(String userId, String languageCode) async {
+    try {
+      await _dio.patch(
+        '/usuarios/$userId',
+        data: {'language': languageCode},
+      );
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data['message'] ?? 'Error actualizando idioma');
       }
       throw Exception('Error de conexión: ${e.message}');
     }

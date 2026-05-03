@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
-
+import '../data/providers/language_provider.dart';
+import '../l10n/app_localizations.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -27,14 +28,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, rellena todos los campos')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsError)),
       );
       return;
     }
 
     try {
-      final success = await context.read<AuthProvider>().login(email, password);
+      final authProvider = context.read<AuthProvider>();
+      final success = await authProvider.login(email, password);
       if (success && mounted) {
+        final userLanguage = authProvider.currentUser?.language;
+        if (userLanguage != null) {
+          context.read<LanguageProvider>().setLanguageWithoutSync(userLanguage);
+        }
         Navigator.pop(context);
       }
     } catch (e) {
@@ -53,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Iniciar Sesión'),
+        title: Text(AppLocalizations.of(context)!.loginTitle),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -63,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const SizedBox(height: 40),
             Text(
-              '¡Bienvenido de nuevo!',
+              AppLocalizations.of(context)!.loginWelcome,
               style: GoogleFonts.manrope(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
@@ -72,23 +78,23 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Inicia sesión para gestionar tus oportunidades.',
+              AppLocalizations.of(context)!.loginSubtitle,
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
             ),
             const SizedBox(height: 48),
             
             _buildTextField(
               controller: _emailController,
-              label: 'Correo electrónico',
-              hint: 'Ej. juan@empresa.com',
+              label: AppLocalizations.of(context)!.emailLabel,
+              hint: AppLocalizations.of(context)!.emailHint,
               icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 24),
             _buildTextField(
               controller: _passwordController,
-              label: 'Contraseña',
-              hint: 'Tu contraseña secreta',
+              label: AppLocalizations.of(context)!.passwordLabel,
+              hint: AppLocalizations.of(context)!.passwordHintLogin,
               icon: Icons.lock_outline,
               isPassword: true,
             ),
@@ -98,14 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? const Center(child: CircularProgressIndicator(color: Color(0xFF031632)))
                 : ElevatedButton(
                     onPressed: _hacerLogin,
-                    child: const Text('Entrar'),
+                    child: Text(AppLocalizations.of(context)!.loginButton),
                   ),
             const SizedBox(height: 24),
             Center(
               child: TextButton(
                 onPressed: () {},
                 child: Text(
-                  '¿Has olvidado tu contraseña?',
+                  AppLocalizations.of(context)!.forgotPasswordButton,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ),

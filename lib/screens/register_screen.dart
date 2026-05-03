@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
+import '../data/providers/language_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (fullName.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, rellena todos los campos')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsError)),
       );
       return;
     }
@@ -43,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: email,
         password: password,
         role: _selectedRole,
+        language: context.read<LanguageProvider>().currentLocale?.languageCode,
       );
 
       if (success && mounted) {
@@ -64,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Únete a Relevo'),
+        title: Text(AppLocalizations.of(context)!.registerTitle),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -74,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             const SizedBox(height: 20),
             Text(
-              'Crea tu cuenta',
+              AppLocalizations.of(context)!.registerWelcome,
               style: GoogleFonts.manrope(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
@@ -83,49 +86,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Forma parte de la nueva generación de líderes.',
+              AppLocalizations.of(context)!.registerSubtitle,
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
             ),
             const SizedBox(height: 40),
 
             _buildTextField(
               controller: _nameController,
-              label: 'Nombre completo',
-              hint: 'Ej. Juan Pérez',
+              label: AppLocalizations.of(context)!.fullNameLabel,
+              hint: AppLocalizations.of(context)!.fullNameHint,
               icon: Icons.person_outline,
             ),
             const SizedBox(height: 20),
             _buildTextField(
               controller: _emailController,
-              label: 'Correo electrónico',
-              hint: 'Ej. juan@empresa.com',
+              label: AppLocalizations.of(context)!.emailLabel,
+              hint: AppLocalizations.of(context)!.emailHint,
               icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             _buildTextField(
               controller: _passwordController,
-              label: 'Contraseña',
-              hint: 'Mínimo 6 caracteres',
+              label: AppLocalizations.of(context)!.passwordLabel,
+              hint: AppLocalizations.of(context)!.passwordHintRegister,
               icon: Icons.lock_outline,
               isPassword: true,
             ),
             const SizedBox(height: 24),
 
-            const Text(
-              '¿Qué buscas en Relevo?',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.roleQuestion,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF031632),
                 fontSize: 14,
               ),
             ),
             const SizedBox(height: 12),
-            _buildRoleOption('INTERESTED', 'Busco oportunidades', Icons.search),
+            _buildRoleOption('INTERESTED', AppLocalizations.of(context)!.roleInterested, Icons.search),
             const SizedBox(height: 12),
             _buildRoleOption(
               'OWNER',
-              'Quiero traspasar mi negocio',
+              AppLocalizations.of(context)!.roleOwner,
               Icons.business,
             ),
 
@@ -137,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   )
                 : ElevatedButton(
                     onPressed: _hacerRegistro,
-                    child: const Text('Crear Cuenta'),
+                    child: Text(AppLocalizations.of(context)!.registerButton),
                   ),
             const SizedBox(height: 24),
           ],

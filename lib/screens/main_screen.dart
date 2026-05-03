@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
@@ -28,14 +29,14 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
+            icon: const Icon(Icons.home),
+            label: AppLocalizations.of(context)!.bottomNavHome,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
+            icon: const Icon(Icons.person),
+            label: AppLocalizations.of(context)!.bottomNavProfile,
           ),
         ],
       ),

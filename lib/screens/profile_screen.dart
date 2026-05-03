@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
+import '../l10n/app_localizations.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
@@ -17,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
-          title: const Text('Mi Perfil'),
+          title: Text(AppLocalizations.of(context)!.profileTitle),
           backgroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
@@ -45,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                user?.fullName ?? 'Usuario',
+                user?.fullName ?? AppLocalizations.of(context)!.profileDefaultUser,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF031632),
@@ -60,8 +61,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               
-              _buildProfileOption(context, Icons.settings, 'Configuración'),
-              _buildProfileOption(context, Icons.help_outline, 'Ayuda y Soporte'),
+              _buildProfileOption(context, Icons.settings, AppLocalizations.of(context)!.profileSettings),
+              _buildProfileOption(context, Icons.help_outline, AppLocalizations.of(context)!.profileHelp),
               const Divider(height: 40),
               
               SizedBox(
@@ -69,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => authProvider.logout(),
                   icon: const Icon(Icons.logout),
-                  label: const Text('Cerrar Sesión'),
+                  label: Text(AppLocalizations.of(context)!.profileLogout),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red[700],
                     side: BorderSide(color: Colors.red[700]!, width: 1.5),
@@ -119,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '¿Aún no te has registrado?',
+                AppLocalizations.of(context)!.profileNotRegisteredQuestion,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -128,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Únete a la plataforma y asegura el futuro de tu legado.',
+                AppLocalizations.of(context)!.profileNotRegisteredSubtitle,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[600],
@@ -143,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 },
-                child: const Text('Iniciar Sesión'),
+                child: Text(AppLocalizations.of(context)!.profileLoginButton),
               ),
               const SizedBox(height: 16),
               OutlinedButton(
@@ -153,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const RegisterScreen()),
                   );
                 },
-                child: const Text('Regístrate'),
+                child: Text(AppLocalizations.of(context)!.profileRegisterButton),
               ),
               const SizedBox(height: 40),
             ],

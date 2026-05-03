@@ -9,6 +9,7 @@ class User {
   final String? cv;
   final List<String>? preferredRegions;
   final bool? visible;
+  final String? language;
 
   User({
     required this.id,
@@ -21,6 +22,7 @@ class User {
     this.cv,
     this.preferredRegions,
     this.visible,
+    this.language,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class User {
           ? List<String>.from(json['preferredRegions']) 
           : null,
       visible: json['visible'],
+      language: json['language'],
     );
   }
 
@@ -52,6 +55,7 @@ class User {
       'cv': cv,
       'preferredRegions': preferredRegions,
       'visible': visible,
+      'language': language,
     };
   }
 }

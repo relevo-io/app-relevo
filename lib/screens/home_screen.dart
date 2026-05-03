@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../data/providers/language_provider.dart';
+import '../data/providers/auth_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+    final defaultUserName = AppLocalizations.of(context)!.profileDefaultUser;
+    final String userName = authProvider.currentUser?.fullName.split(' ').first ?? defaultUserName;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -12,6 +20,29 @@ class HomeScreen extends StatelessWidget {
             expandedHeight: 400.0,
             floating: false,
             pinned: true,
+            actions: [
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.language, color: Colors.white),
+                onSelected: (String languageCode) {
+                  final userId = context.read<AuthProvider>().currentUser?.id;
+                  context.read<LanguageProvider>().changeLanguage(languageCode, userId: userId);
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'es',
+                    child: Text(AppLocalizations.of(context)!.languageSelectorES),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'ca',
+                    child: Text(AppLocalizations.of(context)!.languageSelectorCA),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'en',
+                    child: Text(AppLocalizations.of(context)!.languageSelectorEN),
+                  ),
+                ],
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
@@ -44,21 +75,21 @@ class HomeScreen extends StatelessWidget {
                             color: const Color(0xFF006d3d).withOpacity(0.9),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.verified, color: Colors.white, size: 16),
-                              SizedBox(width: 6),
+                              const Icon(Icons.verified, color: Colors.white, size: 16),
+                              const SizedBox(width: 6),
                               Text(
-                                'Marketplace Líder',
-                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                AppLocalizations.of(context)!.homeMarketplaceBadge,
+                                style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Asegura el futuro de tu legado.',
+                          AppLocalizations.of(context)!.welcomeMessage(userName),
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: Colors.white,
                             fontSize: 32,
@@ -67,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Impulsa tu nuevo negocio.',
+                          AppLocalizations.of(context)!.homeSlogan2,
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: const Color(0xFF97f3b5),
                             fontSize: 32,
@@ -88,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Conectamos a fundadores experimentados con la próxima generación de líderes empresariales.',
+                    AppLocalizations.of(context)!.homeIntro,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[700],
                       fontSize: 16,
@@ -99,32 +130,32 @@ class HomeScreen extends StatelessWidget {
                   // Stats Section
                   Row(
                     children: [
-                      _buildStatCard(context, '€12M+', 'Valor transaccionado', Colors.white, const Color(0xFF031632)),
+                      _buildStatCard(context, AppLocalizations.of(context)!.homeStatValue1, AppLocalizations.of(context)!.homeStatLabel1, Colors.white, const Color(0xFF031632)),
                       const SizedBox(width: 12),
-                      _buildStatCard(context, '+500', 'Propietarios activos', const Color(0xFF031632), Colors.white),
+                      _buildStatCard(context, AppLocalizations.of(context)!.homeStatValue2, AppLocalizations.of(context)!.homeStatLabel2, const Color(0xFF031632), Colors.white),
                     ],
                   ),
                   const SizedBox(height: 40),
                   
                   // For Owners Section
-                  _buildSectionHeader(context, 'PARA PROPIETARIOS', 'Tu retiro merece un sucesor a la altura.'),
+                  _buildSectionHeader(context, AppLocalizations.of(context)!.homeOwnersTitle, AppLocalizations.of(context)!.homeOwnersSubtitle),
                   const SizedBox(height: 16),
                   Text(
-                    'Has construido algo valioso. No dejes que se pierda. Te ayudamos a encontrar al comprador ideal.',
+                    AppLocalizations.of(context)!.homeOwnersDesc,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
-                  _buildFeatureItem(Icons.check_circle, 'Valoración profesional del negocio.'),
-                  _buildFeatureItem(Icons.check_circle, 'Filtrado de compradores potenciales.'),
-                  _buildFeatureItem(Icons.check_circle, 'Máxima confidencialidad.'),
+                  _buildFeatureItem(Icons.check_circle, AppLocalizations.of(context)!.homeOwnersFeature1),
+                  _buildFeatureItem(Icons.check_circle, AppLocalizations.of(context)!.homeOwnersFeature2),
+                  _buildFeatureItem(Icons.check_circle, AppLocalizations.of(context)!.homeOwnersFeature3),
                   
                   const SizedBox(height: 40),
                   
                   // For Entrepreneurs Section
-                  _buildSectionHeader(context, 'PARA EMPRENDEDORES', 'Emprende sobre una base sólida.'),
+                  _buildSectionHeader(context, AppLocalizations.of(context)!.homeEntrepreneursTitle, AppLocalizations.of(context)!.homeEntrepreneursSubtitle),
                   const SizedBox(height: 16),
                   Text(
-                    'No empieces de cero. Adquiere una empresa establecida con flujo de caja y clientes.',
+                    AppLocalizations.of(context)!.homeEntrepreneursDesc,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
@@ -143,10 +174,10 @@ class HomeScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Rentabilidad Probada',
+                                AppLocalizations.of(context)!.homeEntrepreneursFeatureTitle,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              const Text('Accede a históricos financieros auditados.'),
+                              Text(AppLocalizations.of(context)!.homeEntrepreneursFeatureDesc),
                             ],
                           ),
                         ),

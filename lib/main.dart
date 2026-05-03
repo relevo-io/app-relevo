@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 
 import 'data/providers/auth_provider.dart';
+import 'data/providers/language_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
@@ -10,6 +13,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
       ],
       child: const MainApp(),
     ),
@@ -24,6 +28,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Relevo',
       debugShowCheckedModeBanner: false,
+      locale: context.watch<LanguageProvider>().currentLocale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

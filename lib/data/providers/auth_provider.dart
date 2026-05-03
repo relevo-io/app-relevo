@@ -49,6 +49,7 @@ class AuthProvider extends ChangeNotifier {
     required String email,
     required String password,
     required String role,
+    String? language,
   }) async {
     _setLoading(true);
     try {
@@ -57,6 +58,7 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         password: password,
         role: role,
+        language: language,
       );
       // Hacemos login automático con los mismos datos
       return await login(email, password);
