@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/auth_provider.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   return DioClient(const FlutterSecureStorage(), ref: ref).dio;
@@ -77,7 +78,8 @@ class AuthInterceptor extends Interceptor {
       } else {
         // Refresh failed, clean session
         await storage.deleteAll();
-        // TODO: En el próximo paso de auth_provider enlazaremos esto para forzar el logout visualmente
+        // Notificamos al authProvider para que limpie el estado y la UI redirija al login
+        ref?.read(authProvider.notifier).logout();
       }
     }
     return handler.next(err);
