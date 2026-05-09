@@ -1,10 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../network/dio_client.dart';
 import '../models/auth_response_model.dart';
+import '../models/user_model.dart';
+
+final authServiceProvider = Provider<UserService>((ref) {
+  return UserService(ref.read(dioProvider));
+});
 
 class UserService {
-  final Dio _dio = DioClient(const FlutterSecureStorage()).dio;
+  final Dio _dio;
+
+  UserService(this._dio);
 
   Future<AuthResponse> login(String email, String password) async {
     try {
@@ -61,6 +69,17 @@ class UserService {
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         throw Exception(e.response?.data['message'] ?? 'Error actualizando idioma');
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+  Future<User> getMe() async {
+    try {
+      final response = await _dio.get('/auth/me');
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data['message'] ?? 'Error obteniendo perfil');
       }
       throw Exception('Error de conexión: ${e.message}');
     }

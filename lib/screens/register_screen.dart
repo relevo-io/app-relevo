@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 import '../data/providers/language_provider.dart';
 import '../l10n/app_localizations.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -40,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     try {
-      final success = await context.read<AuthProvider>().register(
+      await ref.read(authProvider.notifier).register(
         fullName: fullName,
         email: email,
         password: password,
@@ -48,8 +49,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         language: context.read<LanguageProvider>().currentLocale?.languageCode,
       );
 
-      if (success && mounted) {
+      if (mounted) {
         Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registro completado. Inicia sesión.')),
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -62,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+    final authState = ref.watch(authProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -134,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             const SizedBox(height: 40),
 
-            authProvider.isLoading
+            authState.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(color: Color(0xFF031632)),
                   )

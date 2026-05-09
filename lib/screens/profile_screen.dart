@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
@@ -6,15 +7,15 @@ import '../l10n/app_localizations.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
 
-    if (authProvider.isAuthenticated) {
-      final user = authProvider.currentUser;
+    if (authState.hasValue && authState.value != null) {
+      final user = authState.value;
       return Scaffold(
         backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
@@ -68,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: () => authProvider.logout(),
+                  onPressed: () => ref.read(authProvider.notifier).logout(),
                   icon: const Icon(Icons.logout),
                   label: Text(AppLocalizations.of(context)!.profileLogout),
                   style: OutlinedButton.styleFrom(

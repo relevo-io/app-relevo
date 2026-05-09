@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 import '../data/providers/language_provider.dart';
 import '../l10n/app_localizations.dart';
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -34,14 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      final authProvider = context.read<AuthProvider>();
-      final success = await authProvider.login(email, password);
-      if (success && mounted) {
-        final userLanguage = authProvider.currentUser?.language;
-        if (userLanguage != null) {
-          context.read<LanguageProvider>().setLanguageWithoutSync(userLanguage);
+      await ref.read(authProvider.notifier).login(email, password);
+      if (mounted) {
+        final authState = ref.read(authProvider);
+        if (authState.hasValue && authState.value != null) {
+          final userLanguage = authState.value!.language;
+          if (userLanguage != null) {
+            context.read<LanguageProvider>().setLanguageWithoutSync(userLanguage);
+          }
+          Navigator.pop(context);
         }
-        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
@@ -54,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+    final authState = ref.watch(authProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -100,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 40),
             
-            authProvider.isLoading
+            authState.isLoading
                 ? const Center(child: CircularProgressIndicator(color: Color(0xFF031632)))
                 : ElevatedButton(
                     onPressed: _hacerLogin,

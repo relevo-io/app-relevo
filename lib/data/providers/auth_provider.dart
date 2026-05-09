@@ -1,84 +1,77 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 
-class AuthProvider extends ChangeNotifier {
-  final UserService _userService = UserService();
+part 'auth_provider.g.dart';
 
-  User? _currentUser;
-  bool _isLoading = false;
-  String? _token;
+@Riverpod(keepAlive: true)
+class Auth extends _$Auth {
+  final _storage = const FlutterSecureStorage();
 
-  User? get currentUser => _currentUser;
-  bool get isLoading => _isLoading;
-  bool get isAuthenticated => _token != null;
-
-  AuthProvider() {
-    _loadToken();
+  @override
+  FutureOr<User?> build() async {
+    return _checkAuth();
   }
 
-  Future<void> _loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('access_token');
-    notifyListeners();
-  }
-
-  Future<bool> login(String email, String password) async {
-    _setLoading(true);
-    try {
-      final response = await _userService.login(email, password);
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('access_token', response.accessToken);
-
-      _token = response.accessToken;
-      _currentUser = response.usuario;
-
-      _setLoading(false);
-      return true;
-    } catch (e) {
-      _setLoading(false);
-      rethrow;
+  Future<User?> _checkAuth() async {
+    final token = await _storage.read(key: 'access_token');
+    if (token != null && token.isNotEmpty) {
+      try {
+        final userService = ref.read(authServiceProvider);
+        final user = await userService.getMe();
+        return user;
+      } catch (e) {
+        // Token might be invalid or expired and refresh failed
+        await _storage.deleteAll();
+        return null;
+      }
     }
+    return null;
   }
 
-  Future<bool> register({
+  Future<void> login(String email, String password) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final userService = ref.read(authServiceProvider);
+      final response = await userService.login(email, password);
+      
+      await _storage.write(key: 'access_token', value: response.accessToken);
+      if (response.refreshToken != null) {
+        await _storage.write(key: 'refresh_token', value: response.refreshToken!);
+      }
+      return response.usuario;
+    });
+  }
+
+  Future<void> register({
     required String fullName,
     required String email,
     required String password,
     required String role,
     String? language,
   }) async {
-    _setLoading(true);
+    state = const AsyncValue.loading();
     try {
-      await _userService.register(
+      final userService = ref.read(authServiceProvider);
+      await userService.register(
         fullName: fullName,
         email: email,
         password: password,
         role: role,
         language: language,
       );
-      // Se requiere hacer login manualmente.
-      _setLoading(false);
-      return true;
-    } catch (e) {
-      _setLoading(false);
-      rethrow;
+      // Tras el registro volvemos al estado no autenticado (null)
+      // para obligar a hacer login manual.
+      state = const AsyncValue.data(null);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
   }
 
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token');
-
-    _token = null;
-    _currentUser = null;
-    notifyListeners();
-  }
-
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+    state = const AsyncValue.loading();
+    await _storage.deleteAll();
+    state = const AsyncValue.data(null);
   }
 }

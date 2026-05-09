@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../network/dio_client.dart';
 import '../services/auth_service.dart';
 
 class LanguageProvider extends ChangeNotifier {
   Locale? _currentLocale;
-  final UserService _userService = UserService();
+  final UserService _userService = UserService(DioClient(const FlutterSecureStorage()).dio);
 
   Locale? get currentLocale => _currentLocale;
 

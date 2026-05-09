@@ -4,18 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
-import 'data/providers/auth_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'data/providers/language_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => LanguageProvider()),
-      ],
-      child: const MainApp(),
+    ProviderScope(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ],
+        child: const MainApp(),
+      ),
     ),
   );
 }

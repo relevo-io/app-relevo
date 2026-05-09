@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import '../data/providers/language_provider.dart';
 import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    final currentUser = authState.value;
     final defaultUserName = AppLocalizations.of(context)!.profileDefaultUser;
-    final String userName = authProvider.currentUser?.fullName.split(' ').first ?? defaultUserName;
+    final String userName = currentUser?.fullName.split(' ').first ?? defaultUserName;
 
     return Scaffold(
       body: CustomScrollView(
@@ -24,7 +26,7 @@ class HomeScreen extends StatelessWidget {
               PopupMenuButton<String>(
                 icon: const Icon(Icons.language, color: Colors.white),
                 onSelected: (String languageCode) {
-                  final userId = context.read<AuthProvider>().currentUser?.id;
+                  final userId = ref.read(authProvider).value?.id;
                   context.read<LanguageProvider>().changeLanguage(languageCode, userId: userId);
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
