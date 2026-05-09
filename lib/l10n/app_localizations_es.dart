@@ -180,4 +180,28 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get homeEntrepreneursFeatureDesc =>
       'Accede a históricos financieros auditados.';
+
+  @override
+  String get homeSearchHint => 'Busca en Relevo';
+
+  @override
+  String get homeFilters => 'Filtros';
+
+  @override
+  String get homeCompanyOffers => 'Ofertas de empresas';
+
+  @override
+  String get homeNearbyNews => 'Novedades cerca de ti';
+
+  @override
+  String get homeViewAll => 'Ver todo';
+
+  @override
+  String get bottomNavSell => 'Vender';
+
+  @override
+  String get bottomNavInbox => 'Mensajes';
+
+  @override
+  String get bottomNavYou => 'Tú';
 }

@@ -176,9 +176,33 @@ class AppLocalizationsCa extends AppLocalizations {
       'No comencis de zero. Adquireix una empresa establerta amb flux de caixa i clients.';
 
   @override
-  String get homeEntrepreneursFeatureTitle => 'Rendibilitat Provada';
+  String get homeEntrepreneursFeatureTitle => 'Rentabilitat Provada';
 
   @override
   String get homeEntrepreneursFeatureDesc =>
       'Accedeix a històrics financers auditats.';
+
+  @override
+  String get homeSearchHint => 'Busca a Relevo';
+
+  @override
+  String get homeFilters => 'Filtres';
+
+  @override
+  String get homeCompanyOffers => 'Ofertes d\'empreses';
+
+  @override
+  String get homeNearbyNews => 'Novetats prop de tu';
+
+  @override
+  String get homeViewAll => 'Veure-ho tot';
+
+  @override
+  String get bottomNavSell => 'Vendre';
+
+  @override
+  String get bottomNavInbox => 'Missatges';
+
+  @override
+  String get bottomNavYou => 'Tu';
 }

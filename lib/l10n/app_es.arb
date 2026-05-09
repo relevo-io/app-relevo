@@ -66,5 +66,13 @@
     "homeEntrepreneursSubtitle": "Emprende sobre una base sólida.",
     "homeEntrepreneursDesc": "No empieces de cero. Adquiere una empresa establecida con flujo de caja y clientes.",
     "homeEntrepreneursFeatureTitle": "Rentabilidad Probada",
-    "homeEntrepreneursFeatureDesc": "Accede a históricos financieros auditados."
+    "homeEntrepreneursFeatureDesc": "Accede a históricos financieros auditados.",
+    "homeSearchHint": "Busca en Relevo",
+    "homeFilters": "Filtros",
+    "homeCompanyOffers": "Ofertas de empresas",
+    "homeNearbyNews": "Novedades cerca de ti",
+    "homeViewAll": "Ver todo",
+    "bottomNavSell": "Vender",
+    "bottomNavInbox": "Mensajes",
+    "bottomNavYou": "Tú"
 }

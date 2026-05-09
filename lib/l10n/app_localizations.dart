@@ -429,6 +429,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Accede a históricos financieros auditados.'**
   String get homeEntrepreneursFeatureDesc;
+
+  /// No description provided for @homeSearchHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Busca en Relevo'**
+  String get homeSearchHint;
+
+  /// No description provided for @homeFilters.
+  ///
+  /// In es, this message translates to:
+  /// **'Filtros'**
+  String get homeFilters;
+
+  /// No description provided for @homeCompanyOffers.
+  ///
+  /// In es, this message translates to:
+  /// **'Ofertas de empresas'**
+  String get homeCompanyOffers;
+
+  /// No description provided for @homeNearbyNews.
+  ///
+  /// In es, this message translates to:
+  /// **'Novedades cerca de ti'**
+  String get homeNearbyNews;
+
+  /// No description provided for @homeViewAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo'**
+  String get homeViewAll;
+
+  /// No description provided for @bottomNavSell.
+  ///
+  /// In es, this message translates to:
+  /// **'Vender'**
+  String get bottomNavSell;
+
+  /// No description provided for @bottomNavInbox.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensajes'**
+  String get bottomNavInbox;
+
+  /// No description provided for @bottomNavYou.
+  ///
+  /// In es, this message translates to:
+  /// **'Tú'**
+  String get bottomNavYou;
 }
 
 class _AppLocalizationsDelegate

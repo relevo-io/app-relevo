@@ -180,4 +180,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeEntrepreneursFeatureDesc =>
       'Access audited financial histories.';
+
+  @override
+  String get homeSearchHint => 'Search Relevo';
+
+  @override
+  String get homeFilters => 'Filters';
+
+  @override
+  String get homeCompanyOffers => 'Company Offers';
+
+  @override
+  String get homeNearbyNews => 'News near you';
+
+  @override
+  String get homeViewAll => 'View all';
+
+  @override
+  String get bottomNavSell => 'Sell';
+
+  @override
+  String get bottomNavInbox => 'Inbox';
+
+  @override
+  String get bottomNavYou => 'You';
 }

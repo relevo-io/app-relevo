@@ -53,6 +53,14 @@
     "homeEntrepreneursTitle": "PER A EMPRENEDORS",
     "homeEntrepreneursSubtitle": "Emprèn sobre una base sòlida.",
     "homeEntrepreneursDesc": "No comencis de zero. Adquireix una empresa establerta amb flux de caixa i clients.",
-    "homeEntrepreneursFeatureTitle": "Rendibilitat Provada",
-    "homeEntrepreneursFeatureDesc": "Accedeix a històrics financers auditats."
+    "homeEntrepreneursFeatureTitle": "Rentabilitat Provada",
+    "homeEntrepreneursFeatureDesc": "Accedeix a històrics financers auditats.",
+    "homeSearchHint": "Busca a Relevo",
+    "homeFilters": "Filtres",
+    "homeCompanyOffers": "Ofertes d'empreses",
+    "homeNearbyNews": "Novetats prop de tu",
+    "homeViewAll": "Veure-ho tot",
+    "bottomNavSell": "Vendre",
+    "bottomNavInbox": "Missatges",
+    "bottomNavYou": "Tu"
 }

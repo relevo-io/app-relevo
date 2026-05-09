@@ -54,5 +54,13 @@
     "homeEntrepreneursSubtitle": "Start on a solid foundation.",
     "homeEntrepreneursDesc": "Don't start from scratch. Acquire an established company with cash flow and clients.",
     "homeEntrepreneursFeatureTitle": "Proven Profitability",
-    "homeEntrepreneursFeatureDesc": "Access audited financial histories."
+    "homeEntrepreneursFeatureDesc": "Access audited financial histories.",
+    "homeSearchHint": "Search Relevo",
+    "homeFilters": "Filters",
+    "homeCompanyOffers": "Company Offers",
+    "homeNearbyNews": "News near you",
+    "homeViewAll": "View all",
+    "bottomNavSell": "Sell",
+    "bottomNavInbox": "Inbox",
+    "bottomNavYou": "You"
 }
