@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
-import '../network/api_client.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../network/dio_client.dart';
 import '../models/auth_response_model.dart';
 
 class UserService {
-  final Dio _dio = ApiClient().dio;
+  final Dio _dio = DioClient(const FlutterSecureStorage()).dio;
 
   Future<AuthResponse> login(String email, String password) async {
     try {
@@ -28,15 +29,20 @@ class UserService {
     String? language,
   }) async {
     try {
+      final Map<String, dynamic> requestData = {
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'roles': [role],
+      };
+      
+      if (language != null) {
+        requestData['language'] = language;
+      }
+
       await _dio.post(
         '/usuarios',
-        data: {
-          'fullName': fullName,
-          'email': email,
-          'password': password,
-          'roles': [role],
-          'language': language,
-        },
+        data: requestData,
       );
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
