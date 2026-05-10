@@ -13,9 +13,9 @@ class OfferCardHorizontal extends StatelessWidget {
       width: 220,
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,11 +24,11 @@ class OfferCardHorizontal extends StatelessWidget {
           Container(
             height: 120,
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Center(
-              child: Icon(Icons.business, size: 50, color: Colors.grey[300]),
+              child: Icon(Icons.business, size: 50, color: Theme.of(context).colorScheme.primary.withOpacity(0.3)),
             ),
           ),
           Padding(
@@ -38,7 +38,7 @@ class OfferCardHorizontal extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.verified, size: 14, color: Colors.black),
+                    Icon(Icons.verified, size: 14, color: Theme.of(context).colorScheme.secondary),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
@@ -46,7 +46,7 @@ class OfferCardHorizontal extends StatelessWidget {
                         style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -61,7 +61,7 @@ class OfferCardHorizontal extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -70,7 +70,7 @@ class OfferCardHorizontal extends StatelessWidget {
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],

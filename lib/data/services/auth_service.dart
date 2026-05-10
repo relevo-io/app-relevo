@@ -73,6 +73,20 @@ class UserService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<void> updateTheme(String userId, String theme) async {
+    try {
+      await _dio.patch(
+        '/usuarios/$userId',
+        data: {'theme': theme},
+      );
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data['message'] ?? 'Error actualitzant tema');
+      }
+      throw Exception('Error de connexió: ${e.message}');
+    }
+  }
   Future<User> getMe() async {
     try {
       final response = await _dio.get('/auth/me');

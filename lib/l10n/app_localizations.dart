@@ -477,6 +477,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tú'**
   String get bottomNavYou;
+
+  /// No description provided for @themeDarkMode.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo oscuro'**
+  String get themeDarkMode;
+
+  /// No description provided for @themeLightMode.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo claro'**
+  String get themeLightMode;
 }
 
 class _AppLocalizationsDelegate

@@ -60,10 +60,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.loginTitle),
-        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
@@ -76,7 +74,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               style: GoogleFonts.manrope(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF031632),
               ),
             ),
             const SizedBox(height: 8),
@@ -104,7 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(height: 40),
             
             authState.isLoading
-                ? const Center(child: CircularProgressIndicator(color: Color(0xFF031632)))
+                ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary))
                 : ElevatedButton(
                     onPressed: _hacerLogin,
                     child: Text(AppLocalizations.of(context)!.loginButton),
@@ -138,9 +135,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF031632),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
             fontSize: 14,
           ),
         ),
@@ -151,16 +148,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: Icon(icon, color: const Color(0xFF031632).withOpacity(0.5)),
+            prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
             filled: true,
-            fillColor: const Color(0xFF031632).withOpacity(0.03),
+            fillColor: Theme.of(context).colorScheme.surfaceContainer,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF031632), width: 1.5),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1.5),
             ),
           ),
         ),

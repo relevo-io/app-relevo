@@ -12,9 +12,9 @@ class OfferCardGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,11 +25,11 @@ class OfferCardGrid extends StatelessWidget {
               Container(
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: Center(
-                  child: Icon(Icons.storefront_outlined, size: 50, color: Colors.grey[300]),
+                  child: Icon(Icons.storefront_outlined, size: 50, color: Theme.of(context).colorScheme.primary.withOpacity(0.3)),
                 ),
               ),
               Positioned(
@@ -38,10 +38,10 @@ class OfferCardGrid extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.favorite_border, size: 20, color: Colors.black),
+                  child: Icon(Icons.favorite_border, size: 20, color: Theme.of(context).colorScheme.onSurface),
                 ),
               ),
             ],
@@ -56,7 +56,7 @@ class OfferCardGrid extends StatelessWidget {
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -66,7 +66,7 @@ class OfferCardGrid extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -74,7 +74,7 @@ class OfferCardGrid extends StatelessWidget {
                   offer.publishedAt != null 
                       ? timeago.format(offer.publishedAt!, locale: 'es') 
                       : 'Ahora',
-                  style: const TextStyle(fontSize: 11, color: Colors.green),
+                  style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.secondary),
                 ),
               ],
             ),

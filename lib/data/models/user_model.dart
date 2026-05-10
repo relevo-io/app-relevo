@@ -10,6 +10,7 @@ class User {
   final List<String>? preferredRegions;
   final bool? visible;
   final String? language;
+  final String? theme;
 
   User({
     required this.id,
@@ -23,6 +24,7 @@ class User {
     this.preferredRegions,
     this.visible,
     this.language,
+    this.theme,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class User {
           : null,
       visible: json['visible'],
       language: json['language'],
+      theme: json['theme'],
     );
   }
 
@@ -56,6 +59,7 @@ class User {
       'preferredRegions': preferredRegions,
       'visible': visible,
       'language': language,
+      'theme': theme,
     };
   }
 }

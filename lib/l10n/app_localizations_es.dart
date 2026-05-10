@@ -204,4 +204,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bottomNavYou => 'Tú';
+
+  @override
+  String get themeDarkMode => 'Modo oscuro';
+
+  @override
+  String get themeLightMode => 'Modo claro';
 }

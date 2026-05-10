@@ -69,10 +69,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.registerTitle),
-        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
@@ -85,7 +83,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               style: GoogleFonts.manrope(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF031632),
               ),
             ),
             const SizedBox(height: 8),
@@ -121,9 +118,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
             Text(
               AppLocalizations.of(context)!.roleQuestion,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF031632),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 fontSize: 14,
               ),
             ),
@@ -139,8 +136,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             const SizedBox(height: 40),
 
             authState.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(color: Color(0xFF031632)),
+                ? Center(
+                    child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
                   )
                 : ElevatedButton(
                     onPressed: _hacerRegistro,
@@ -161,11 +158,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF031632).withOpacity(0.05)
-              : Colors.white,
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+              : Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? const Color(0xFF031632) : Colors.grey[300]!,
+            color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.outline.withOpacity(0.2),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -173,21 +170,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           children: [
             Icon(
               icon,
-              color: isSelected ? const Color(0xFF031632) : Colors.grey[600],
+              color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
             const SizedBox(width: 16),
             Text(
               title,
               style: TextStyle(
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? const Color(0xFF031632) : Colors.grey[800],
+                color: isSelected ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
               ),
             ),
             const Spacer(),
             if (isSelected)
-              const Icon(
+              Icon(
                 Icons.check_circle,
-                color: Color(0xFF031632),
+                color: Theme.of(context).colorScheme.secondary,
                 size: 20,
               ),
           ],
@@ -209,9 +206,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF031632),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
             fontSize: 14,
           ),
         ),
@@ -224,18 +221,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             hintText: hint,
             prefixIcon: Icon(
               icon,
-              color: const Color(0xFF031632).withOpacity(0.5),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
             filled: true,
-            fillColor: const Color(0xFF031632).withOpacity(0.03),
+            fillColor: Theme.of(context).colorScheme.surfaceContainer,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color(0xFF031632),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
                 width: 1.5,
               ),
             ),

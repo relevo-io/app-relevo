@@ -62,5 +62,7 @@
     "homeViewAll": "Veure-ho tot",
     "bottomNavSell": "Vendre",
     "bottomNavInbox": "Missatges",
-    "bottomNavYou": "Tu"
+    "bottomNavYou": "Tu",
+    "themeDarkMode": "Mode fosc",
+    "themeLightMode": "Mode clar"
 }

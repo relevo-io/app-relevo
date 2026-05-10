@@ -62,5 +62,7 @@
     "homeViewAll": "View all",
     "bottomNavSell": "Sell",
     "bottomNavInbox": "Inbox",
-    "bottomNavYou": "You"
+    "bottomNavYou": "You",
+    "themeDarkMode": "Dark mode",
+    "themeLightMode": "Light mode"
 }

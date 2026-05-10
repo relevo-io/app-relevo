@@ -17,10 +17,8 @@ class ProfileScreen extends ConsumerWidget {
     if (authState.hasValue && authState.value != null) {
       final user = authState.value;
       return Scaffold(
-        backgroundColor: const Color(0xFFF9F9F9),
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.profileTitle),
-          backgroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
@@ -32,11 +30,11 @@ class ProfileScreen extends ConsumerWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF031632),
+                    color: Theme.of(context).colorScheme.primary,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF031632).withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -50,7 +48,6 @@ class ProfileScreen extends ConsumerWidget {
                 user?.fullName ?? AppLocalizations.of(context)!.profileDefaultUser,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF031632),
                 ),
               ),
               const SizedBox(height: 4),
@@ -85,7 +82,6 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -98,13 +94,13 @@ class ProfileScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF031632).withOpacity(0.05),
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.account_circle_outlined,
                     size: 80,
-                    color: Color(0xFF031632),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
@@ -115,7 +111,7 @@ class ProfileScreen extends ConsumerWidget {
                 style: GoogleFonts.manrope(
                   fontSize: 40,
                   fontWeight: FontWeight.w900,
-                  color: const Color(0xFF031632),
+                  color: Theme.of(context).colorScheme.primary,
                   letterSpacing: -1,
                 ),
               ),
@@ -125,7 +121,6 @@ class ProfileScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF031632),
                 ),
               ),
               const SizedBox(height: 12),
@@ -169,12 +164,12 @@ class ProfileScreen extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
       ),
       child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF031632)),
+        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         trailing: const Icon(Icons.chevron_right, size: 18),
         onTap: () {},

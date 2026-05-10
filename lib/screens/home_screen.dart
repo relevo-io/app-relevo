@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/language_provider.dart';
 import '../data/providers/auth_provider.dart';
 import '../data/providers/offers_provider.dart';
+import '../data/providers/theme_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/offer_card_horizontal.dart';
 import '../widgets/offer_card_grid.dart';
@@ -18,28 +19,49 @@ class HomeScreen extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final offersState = ref.watch(offersProvider);
     
+    final themeMode = ref.watch(themeStateProvider);
+    
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
           'Relevo',
           style: GoogleFonts.manrope(
             fontSize: 24,
             fontWeight: FontWeight.w900,
-            color: Colors.black,
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.black)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           PopupMenuButton<String>(
-            icon: const Icon(Icons.language, color: Colors.black),
-            onSelected: (String languageCode) {
-              final userId = ref.read(authProvider).value?.id;
-              context.read<LanguageProvider>().changeLanguage(languageCode, userId: userId);
+            icon: const Icon(Icons.tune_outlined),
+            onSelected: (String value) {
+              if (value == 'theme') {
+                ref.read(themeStateProvider.notifier).toggleTheme();
+              } else {
+                final userId = ref.read(authProvider).value?.id;
+                context.read<LanguageProvider>().changeLanguage(value, userId: userId);
+              }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'theme',
+                child: Row(
+                  children: [
+                    Icon(
+                      themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      themeMode == ThemeMode.dark 
+                        ? AppLocalizations.of(context)!.themeLightMode 
+                        : AppLocalizations.of(context)!.themeDarkMode
+                    ),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
               PopupMenuItem<String>(
                 value: 'es',
                 child: Text(AppLocalizations.of(context)!.languageSelectorES),
@@ -54,58 +76,69 @@ class HomeScreen extends ConsumerWidget {
               ),
             ],
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.tune_outlined, color: Colors.black)),
           const SizedBox(width: 8),
         ],
       ),
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(offersProvider.future),
-        color: const Color(0xFF031632),
+        color: Theme.of(context).colorScheme.secondary,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Search Bar
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.homeSearchHint,
-                    hintStyle: TextStyle(color: Colors.grey[600]),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
+              // Top Area (Search + Filters)
+              Container(
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? const Color(0xFF020617) 
+                    : Theme.of(context).colorScheme.surface,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  children: [
+                    // Search Bar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.homeSearchHint,
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+                          prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.surfaceContainer,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Theme.of(context).colorScheme.outline.withOpacity(0.2)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1),
+                          ),
+                        ),
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.black, width: 1),
+                    // Filters Button
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.tune_outlined, size: 20),
+                            const SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!.homeFilters, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              // Filters Button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.tune_outlined, size: 20),
-                      const SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)!.homeFilters, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
+                  ],
                 ),
               ),
 
@@ -122,7 +155,6 @@ class HomeScreen extends ConsumerWidget {
                       style: GoogleFonts.manrope(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: Colors.black,
                       ),
                     ),
                     TextButton(
@@ -157,7 +189,6 @@ class HomeScreen extends ConsumerWidget {
                   style: GoogleFonts.manrope(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
-                    color: Colors.black,
                   ),
                 ),
               ),

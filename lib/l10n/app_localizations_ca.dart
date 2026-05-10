@@ -205,4 +205,10 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get bottomNavYou => 'Tu';
+
+  @override
+  String get themeDarkMode => 'Mode fosc';
+
+  @override
+  String get themeLightMode => 'Mode clar';
 }

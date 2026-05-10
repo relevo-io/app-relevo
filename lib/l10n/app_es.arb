@@ -74,5 +74,7 @@
     "homeViewAll": "Ver todo",
     "bottomNavSell": "Vender",
     "bottomNavInbox": "Mensajes",
-    "bottomNavYou": "Tú"
+    "bottomNavYou": "Tú",
+    "themeDarkMode": "Modo oscuro",
+    "themeLightMode": "Modo claro"
 }
