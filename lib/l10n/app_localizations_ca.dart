@@ -211,4 +211,23 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get themeLightMode => 'Mode clar';
+
+  @override
+  String get errorInvalidCredentials => 'Email o contrasenya incorrectes';
+
+  @override
+  String get errorUserExists => 'L\'usuari ja existeix';
+
+  @override
+  String get errorInternal => 'Error intern del servidor';
+
+  @override
+  String get errorInvalidEmail => 'Email no vàlid';
+
+  @override
+  String get errorPasswordTooShort =>
+      'La contrasenya ha de tenir almenys 6 caràcters';
+
+  @override
+  String get errorRequiredField => 'Aquest camp és obligatori';
 }

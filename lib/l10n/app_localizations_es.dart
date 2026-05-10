@@ -210,4 +210,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get themeLightMode => 'Modo claro';
+
+  @override
+  String get errorInvalidCredentials => 'Email o contraseña incorrectos';
+
+  @override
+  String get errorUserExists => 'El usuario ya existe';
+
+  @override
+  String get errorInternal => 'Error interno del servidor';
+
+  @override
+  String get errorInvalidEmail => 'Email no válido';
+
+  @override
+  String get errorPasswordTooShort =>
+      'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get errorRequiredField => 'Este campo es obligatorio';
 }

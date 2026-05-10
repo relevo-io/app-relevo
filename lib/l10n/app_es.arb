@@ -76,5 +76,11 @@
     "bottomNavInbox": "Mensajes",
     "bottomNavYou": "Tú",
     "themeDarkMode": "Modo oscuro",
-    "themeLightMode": "Modo claro"
+    "themeLightMode": "Modo claro",
+    "errorInvalidCredentials": "Email o contraseña incorrectos",
+    "errorUserExists": "El usuario ya existe",
+    "errorInternal": "Error interno del servidor",
+    "errorInvalidEmail": "Email no válido",
+    "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "errorRequiredField": "Este campo es obligatorio"
 }

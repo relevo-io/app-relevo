@@ -32,7 +32,7 @@ class Auth extends _$Auth {
 
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
+    try {
       final userService = ref.read(authServiceProvider);
       final response = await userService.login(email, password);
       
@@ -40,8 +40,11 @@ class Auth extends _$Auth {
       if (response.refreshToken != null) {
         await _storage.write(key: 'refresh_token', value: response.refreshToken!);
       }
-      return response.usuario;
-    });
+      state = AsyncValue.data(response.usuario);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
   }
 
   Future<void> register({
@@ -61,11 +64,10 @@ class Auth extends _$Auth {
         role: role,
         language: language,
       );
-      // Tras el registro volvemos al estado no autenticado (null)
-      // para obligar a hacer login manual.
       state = const AsyncValue.data(null);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+      rethrow;
     }
   }
 

@@ -17,6 +17,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? _backendError;
 
   String _selectedRole = 'INTERESTED';
 
@@ -29,22 +31,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _hacerRegistro() async {
-    final fullName = _nameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
-
-    if (fullName.isEmpty || email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.fillAllFieldsError)),
-      );
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
+    
+    setState(() => _backendError = null);
 
     try {
       await ref.read(authProvider.notifier).register(
-        fullName: fullName,
-        email: email,
-        password: password,
+        fullName: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
         role: _selectedRole,
         language: context.read<LanguageProvider>().currentLocale?.languageCode,
       );
@@ -57,11 +52,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
-        );
+        setState(() {
+          _backendError = e.toString().replaceAll('Exception: ', '');
+        });
       }
     }
+  }
+
+  String _getErrorMessage(String error) {
+    if (error.contains('DUPLICATE_FIELD') || error.contains('USER_EXISTS')) {
+      return AppLocalizations.of(context)!.errorUserExists;
+    }
+    if (error.contains('INTERNAL_ERROR')) {
+      return AppLocalizations.of(context)!.errorInternal;
+    }
+    return error;
   }
 
   @override
@@ -74,9 +79,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context)!.registerWelcome,
@@ -88,8 +95,31 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.registerSubtitle,
-              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
             ),
+            if (_backendError != null) ...[
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.red.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        _getErrorMessage(_backendError!),
+                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 40),
 
             _buildTextField(
@@ -97,6 +127,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               label: AppLocalizations.of(context)!.fullNameLabel,
               hint: AppLocalizations.of(context)!.fullNameHint,
               icon: Icons.person_outline,
+              validator: (value) {
+                if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             _buildTextField(
@@ -105,6 +139,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               hint: AppLocalizations.of(context)!.emailHint,
               icon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
+              validator: (value) {
+                if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
+                if (!value.contains('@')) return AppLocalizations.of(context)!.errorInvalidEmail;
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             _buildTextField(
@@ -113,6 +152,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               hint: AppLocalizations.of(context)!.passwordHintRegister,
               icon: Icons.lock_outline,
               isPassword: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
+                if (value.length < 6) return AppLocalizations.of(context)!.errorPasswordTooShort;
+                return null;
+              },
             ),
             const SizedBox(height: 24),
 
@@ -147,8 +191,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildRoleOption(String role, String title, IconData icon) {
     bool isSelected = _selectedRole == role;
@@ -200,6 +245,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     required IconData icon,
     bool isPassword = false,
     TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,12 +259,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: controller,
           obscureText: isPassword,
           keyboardType: keyboardType,
+          validator: validator,
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           decoration: InputDecoration(
             hintText: hint,
+            hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4)),
             prefixIcon: Icon(
               icon,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
@@ -228,6 +277,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red, width: 1.5),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

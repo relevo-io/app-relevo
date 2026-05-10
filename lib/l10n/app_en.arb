@@ -64,5 +64,11 @@
     "bottomNavInbox": "Inbox",
     "bottomNavYou": "You",
     "themeDarkMode": "Dark mode",
-    "themeLightMode": "Light mode"
+    "themeLightMode": "Light mode",
+    "errorInvalidCredentials": "Invalid email or password",
+    "errorUserExists": "User already exists",
+    "errorInternal": "Internal server error",
+    "errorInvalidEmail": "Invalid email format",
+    "errorPasswordTooShort": "Password must be at least 6 characters",
+    "errorRequiredField": "This field is required"
 }

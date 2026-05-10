@@ -64,5 +64,11 @@
     "bottomNavInbox": "Missatges",
     "bottomNavYou": "Tu",
     "themeDarkMode": "Mode fosc",
-    "themeLightMode": "Mode clar"
+    "themeLightMode": "Mode clar",
+    "errorInvalidCredentials": "Email o contrasenya incorrectes",
+    "errorUserExists": "L'usuari ja existeix",
+    "errorInternal": "Error intern del servidor",
+    "errorInvalidEmail": "Email no vàlid",
+    "errorPasswordTooShort": "La contrasenya ha de tenir almenys 6 caràcters",
+    "errorRequiredField": "Aquest camp és obligatori"
 }

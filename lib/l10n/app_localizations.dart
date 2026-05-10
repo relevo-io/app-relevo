@@ -489,6 +489,42 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Modo claro'**
   String get themeLightMode;
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In es, this message translates to:
+  /// **'Email o contraseña incorrectos'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorUserExists.
+  ///
+  /// In es, this message translates to:
+  /// **'El usuario ya existe'**
+  String get errorUserExists;
+
+  /// No description provided for @errorInternal.
+  ///
+  /// In es, this message translates to:
+  /// **'Error interno del servidor'**
+  String get errorInternal;
+
+  /// No description provided for @errorInvalidEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Email no válido'**
+  String get errorInvalidEmail;
+
+  /// No description provided for @errorPasswordTooShort.
+  ///
+  /// In es, this message translates to:
+  /// **'La contraseña debe tener al menos 6 caracteres'**
+  String get errorPasswordTooShort;
+
+  /// No description provided for @errorRequiredField.
+  ///
+  /// In es, this message translates to:
+  /// **'Este campo es obligatorio'**
+  String get errorRequiredField;
 }
 
 class _AppLocalizationsDelegate

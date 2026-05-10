@@ -210,4 +210,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeLightMode => 'Light mode';
+
+  @override
+  String get errorInvalidCredentials => 'Invalid email or password';
+
+  @override
+  String get errorUserExists => 'User already exists';
+
+  @override
+  String get errorInternal => 'Internal server error';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email format';
+
+  @override
+  String get errorPasswordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get errorRequiredField => 'This field is required';
 }
