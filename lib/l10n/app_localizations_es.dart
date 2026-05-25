@@ -229,4 +229,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorRequiredField => 'Este campo es obligatorio';
+
+  @override
+  String get registerSuccess => 'Registro completado. Inicia sesión.';
 }

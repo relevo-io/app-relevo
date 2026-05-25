@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../network/dio_client.dart';
 import '../models/auth_response_model.dart';

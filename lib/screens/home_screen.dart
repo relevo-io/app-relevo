@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/language_provider.dart';
 import '../data/providers/auth_provider.dart';
@@ -16,17 +15,16 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
     final offersState = ref.watch(offersProvider);
-    
     final themeMode = ref.watch(themeStateProvider);
-    
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(
           'Relevo',
-          style: GoogleFonts.manrope(
+          style: GoogleFonts.inter(
             fontSize: 24,
             fontWeight: FontWeight.w900,
           ),
@@ -40,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
                 ref.read(themeStateProvider.notifier).toggleTheme();
               } else {
                 final userId = ref.read(authProvider).value?.id;
-                context.read<LanguageProvider>().changeLanguage(value, userId: userId);
+                ref.read(languageStateProvider.notifier).changeLanguage(value, userId: userId);
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -81,52 +79,48 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(offersProvider.future),
-        color: Theme.of(context).colorScheme.secondary,
-        child: SingleChildScrollView(
+        color: theme.colorScheme.secondary,
+        child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Top Area (Search + Filters)
-              Container(
-                color: Theme.of(context).brightness == Brightness.dark 
-                    ? const Color(0xFF020617) 
-                    : Theme.of(context).colorScheme.surface,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                color: theme.brightness == Brightness.dark 
+                    ? (theme.appBarTheme.backgroundColor ?? const Color(0xFF020617)) 
+                    : theme.colorScheme.surface,
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Column(
                   children: [
-                    // Search Bar
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: AppLocalizations.of(context)!.homeSearchHint,
-                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+                          hintStyle: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+                          prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
                           contentPadding: const EdgeInsets.symmetric(vertical: 12),
                           filled: true,
-                          fillColor: Theme.of(context).colorScheme.surfaceContainer,
+                          fillColor: theme.colorScheme.surfaceContainer,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.outline.withOpacity(0.2)),
+                            borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1),
+                            borderSide: BorderSide(color: theme.colorScheme.secondary, width: 1),
                           ),
                         ),
                       ),
                     ),
-                    // Filters Button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: Container(
                         width: double.infinity,
                         height: 45,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          color: theme.colorScheme.surfaceContainer,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
+                          border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.1)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -141,31 +135,33 @@ class HomeScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              // Horizontal Section: Ofertas de empresas
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 12.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       AppLocalizations.of(context)!.homeCompanyOffers,
-                      style: GoogleFonts.manrope(
+                      style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: Text(AppLocalizations.of(context)!.homeViewAll, style: const TextStyle(color: Color(0xFF006d3d))),
+                      child: Text(
+                        AppLocalizations.of(context)!.homeViewAll,
+                        style: TextStyle(color: theme.colorScheme.secondary),
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
-              SizedBox(
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
                 height: 240,
                 child: offersState.when(
                   data: (offers) => ListView.builder(
@@ -178,43 +174,49 @@ class HomeScreen extends ConsumerWidget {
                   error: (err, st) => const Center(child: Text('Error')),
                 ),
               ),
-
-              const SizedBox(height: 32),
-
-              // Grid Section: Novedades cerca de ti
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
                 child: Text(
                   AppLocalizations.of(context)!.homeNearbyNews,
-                  style: GoogleFonts.manrope(
+                  style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              Padding(
+            ),
+            offersState.when(
+              data: (offers) => SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: offersState.when(
-                  data: (offers) => GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 0.7,
-                    ),
-                    itemCount: offers.length,
-                    itemBuilder: (context, index) => OfferCardGrid(offer: offers[index]),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 0.7,
                   ),
-                  loading: () => const OffersShimmer(),
-                  error: (err, st) => const Center(child: Text('Error')),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => OfferCardGrid(offer: offers[index]),
+                    childCount: offers.length,
+                  ),
                 ),
               ),
-              const SizedBox(height: 100),
-            ],
-          ),
+              loading: () => const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: OffersShimmer(),
+                ),
+              ),
+              error: (err, st) => const SliverToBoxAdapter(
+                child: Center(child: Text('Error')),
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 100),
+            ),
+          ],
         ),
       ),
     );

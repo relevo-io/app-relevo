@@ -70,5 +70,6 @@
     "errorInternal": "Internal server error",
     "errorInvalidEmail": "Invalid email format",
     "errorPasswordTooShort": "Password must be at least 6 characters",
-    "errorRequiredField": "This field is required"
+    "errorRequiredField": "This field is required",
+    "registerSuccess": "Registration completed. Please log in."
 }

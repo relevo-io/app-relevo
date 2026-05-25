@@ -70,5 +70,6 @@
     "errorInternal": "Error intern del servidor",
     "errorInvalidEmail": "Email no vàlid",
     "errorPasswordTooShort": "La contrasenya ha de tenir almenys 6 caràcters",
-    "errorRequiredField": "Aquest camp és obligatori"
+    "errorRequiredField": "Aquest camp és obligatori",
+    "registerSuccess": "Registre completat. Inicia sessió."
 }

@@ -228,4 +228,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorRequiredField => 'This field is required';
+
+  @override
+  String get registerSuccess => 'Registration completed. Please log in.';
 }

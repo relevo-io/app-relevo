@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../network/dio_client.dart';
+import 'auth_provider.dart';
 import '../services/auth_service.dart';
 
-class LanguageProvider extends ChangeNotifier {
-  Locale? _currentLocale;
-  final UserService _userService = UserService(DioClient(const FlutterSecureStorage()).dio);
+part 'language_provider.g.dart';
 
-  Locale? get currentLocale => _currentLocale;
+@Riverpod(keepAlive: true)
+class LanguageState extends _$LanguageState {
+  static const _languageKey = 'languageCode';
 
-  LanguageProvider() {
+  @override
+  Locale build() {
     _loadSavedLanguage();
+
+    ref.listen(authProvider, (previous, next) {
+      next.whenData((user) {
+        if (user != null && user.language != null) {
+          final backendLocale = Locale(user.language!);
+          if (state != backendLocale) {
+            state = backendLocale;
+            _saveToPrefs(user.language!);
+          }
+        }
+      });
+    });
+
+    return const Locale('es');
   }
 
   Future<void> _loadSavedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedLanguageCode = prefs.getString('languageCode');
+    final savedLanguageCode = prefs.getString(_languageKey);
 
     if (savedLanguageCode != null) {
-      _currentLocale = Locale(savedLanguageCode);
-      notifyListeners();
+      state = Locale(savedLanguageCode);
     }
   }
 
   void setLanguageWithoutSync(String languageCode) {
-    _currentLocale = Locale(languageCode);
-    notifyListeners();
+    state = Locale(languageCode);
     _saveToPrefs(languageCode);
   }
 
   Future<void> changeLanguage(String languageCode, {String? userId}) async {
-    if (_currentLocale?.languageCode == languageCode) return;
+    if (state.languageCode == languageCode) return;
 
-    _currentLocale = Locale(languageCode);
-    notifyListeners();
-
+    state = Locale(languageCode);
     await _saveToPrefs(languageCode);
 
     if (userId != null) {
       try {
-        await _userService.updateLanguage(userId, languageCode);
+        await ref.read(authServiceProvider).updateLanguage(userId, languageCode);
       } catch (e) {
         debugPrint('Error sincronitzant idioma amb el backend: $e');
       }
@@ -49,6 +60,6 @@ class LanguageProvider extends ChangeNotifier {
 
   Future<void> _saveToPrefs(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('languageCode', languageCode);
+    await prefs.setString(_languageKey, languageCode);
   }
 }

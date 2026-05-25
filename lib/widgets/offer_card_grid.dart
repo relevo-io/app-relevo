@@ -14,7 +14,7 @@ class OfferCardGrid extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,11 +25,11 @@ class OfferCardGrid extends StatelessWidget {
               Container(
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: Center(
-                  child: Icon(Icons.storefront_outlined, size: 50, color: Theme.of(context).colorScheme.primary.withOpacity(0.3)),
+                  child: Icon(Icons.storefront_outlined, size: 50, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
                 ),
               ),
               Positioned(
@@ -38,7 +38,7 @@ class OfferCardGrid extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.favorite_border, size: 20, color: Theme.of(context).colorScheme.onSurface),
@@ -66,7 +66,7 @@ class OfferCardGrid extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
                   ),
                 ),
                 const SizedBox(height: 8),

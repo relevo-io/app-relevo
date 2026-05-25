@@ -82,5 +82,6 @@
     "errorInternal": "Error interno del servidor",
     "errorInvalidEmail": "Email no válido",
     "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
-    "errorRequiredField": "Este campo es obligatorio"
+    "errorRequiredField": "Este campo es obligatorio",
+    "registerSuccess": "Registro completado. Inicia sesión."
 }

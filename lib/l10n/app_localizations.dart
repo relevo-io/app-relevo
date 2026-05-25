@@ -525,6 +525,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Este campo es obligatorio'**
   String get errorRequiredField;
+
+  /// No description provided for @registerSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Registro completado. Inicia sesión.'**
+  String get registerSuccess;
 }
 
 class _AppLocalizationsDelegate

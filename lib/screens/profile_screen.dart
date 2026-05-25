@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
@@ -13,6 +12,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
+    final theme = Theme.of(context);
 
     if (authState.hasValue && authState.value != null) {
       final user = authState.value;
@@ -30,11 +30,11 @@ class ProfileScreen extends ConsumerWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                        color: theme.colorScheme.primary.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -46,23 +46,21 @@ class ProfileScreen extends ConsumerWidget {
               const SizedBox(height: 24),
               Text(
                 user?.fullName ?? AppLocalizations.of(context)!.profileDefaultUser,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 user?.email ?? '',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 40),
-              
               _buildProfileOption(context, Icons.settings, AppLocalizations.of(context)!.profileSettings),
               _buildProfileOption(context, Icons.help_outline, AppLocalizations.of(context)!.profileHelp),
               const Divider(height: 40),
-              
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -70,8 +68,8 @@ class ProfileScreen extends ConsumerWidget {
                   icon: const Icon(Icons.logout),
                   label: Text(AppLocalizations.of(context)!.profileLogout),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red[700],
-                    side: BorderSide(color: Colors.red[700]!, width: 1.5),
+                    foregroundColor: theme.colorScheme.error,
+                    side: BorderSide(color: theme.colorScheme.error, width: 1.5),
                   ),
                 ),
               ),
@@ -94,13 +92,13 @@ class ProfileScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.account_circle_outlined,
                     size: 80,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),
@@ -108,10 +106,10 @@ class ProfileScreen extends ConsumerWidget {
               Text(
                 'Relevo',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.manrope(
+                style: GoogleFonts.inter(
                   fontSize: 40,
                   fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: theme.colorScheme.primary,
                   letterSpacing: -1,
                 ),
               ),
@@ -119,7 +117,7 @@ class ProfileScreen extends ConsumerWidget {
               Text(
                 AppLocalizations.of(context)!.profileNotRegisteredQuestion,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -127,8 +125,8 @@ class ProfileScreen extends ConsumerWidget {
               Text(
                 AppLocalizations.of(context)!.profileNotRegisteredSubtitle,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   height: 1.5,
                 ),
               ),
@@ -161,15 +159,16 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _buildProfileOption(BuildContext context, IconData icon, String title) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: theme.colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.1)),
+        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.1)),
       ),
       child: ListTile(
-        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        leading: Icon(icon, color: theme.colorScheme.primary),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         trailing: const Icon(Icons.chevron_right, size: 18),
         onTap: () {},

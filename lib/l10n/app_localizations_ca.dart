@@ -230,4 +230,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get errorRequiredField => 'Aquest camp és obligatori';
+
+  @override
+  String get registerSuccess => 'Registre completat. Inicia sessió.';
 }
