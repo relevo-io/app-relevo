@@ -29,20 +29,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _hacerLogin() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _backendError = null);
 
     try {
-      await ref.read(authProvider.notifier).login(
-        _emailController.text.trim(), 
-        _passwordController.text
-      );
+      await ref
+          .read(authProvider.notifier)
+          .login(_emailController.text.trim(), _passwordController.text);
       if (mounted) {
         final authState = ref.read(authProvider);
         if (authState.hasValue && authState.value != null) {
           final userLanguage = authState.value!.language;
           if (userLanguage != null) {
-            ref.read(languageStateProvider.notifier).setLanguageWithoutSync(userLanguage);
+            ref
+                .read(languageStateProvider.notifier)
+                .setLanguageWithoutSync(userLanguage);
           }
           Navigator.pop(context);
         }
@@ -70,94 +71,159 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.loginTitle),
-      ),
+      appBar: AppBar(title: Text(l10n.loginTitle), elevation: 0),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 40),
-                Text(
-                  AppLocalizations.of(context)!.loginWelcome,
-                  style: GoogleFonts.inter(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context)!.loginSubtitle,
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6), 
-                    fontSize: 16,
-                  ),
-                ),
-                if (_backendError != null) ...[
-                  const SizedBox(height: 24),
-                  ErrorBanner(message: _getErrorMessage(_backendError!)),
-                ],
-                const SizedBox(height: 40),
-                CustomTextField(
-                  controller: _emailController,
-                  label: AppLocalizations.of(context)!.emailLabel,
-                  hint: AppLocalizations.of(context)!.emailHint,
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
-                    if (!value.contains('@')) return AppLocalizations.of(context)!.errorInvalidEmail;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                CustomTextField(
-                  controller: _passwordController,
-                  label: AppLocalizations.of(context)!.passwordLabel,
-                  hint: AppLocalizations.of(context)!.passwordHintLogin,
-                  icon: Icons.lock_outline,
-                  isPassword: true,
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _hacerLogin(),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
-                    if (value.length < 6) return AppLocalizations.of(context)!.errorPasswordTooShort;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: authState.isLoading ? null : _hacerLogin,
-                  child: authState.isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(AppLocalizations.of(context)!.loginButton),
-                ),
-                const SizedBox(height: 24),
-                Center(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      AppLocalizations.of(context)!.forgotPasswordButton,
-                      style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.lock_person_outlined,
+                        size: 40,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  Text(
+                    l10n.loginWelcome,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      color: theme.colorScheme.onSurface,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.loginSubtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  if (_backendError != null) ...[
+                    const SizedBox(height: 24),
+                    ErrorBanner(message: _getErrorMessage(_backendError!)),
+                  ],
+                  const SizedBox(height: 32),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainer,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.shadow.withValues(
+                            alpha: 0.02,
+                          ),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        CustomTextField(
+                          controller: _emailController,
+                          label: l10n.emailLabel,
+                          hint: l10n.emailHint,
+                          icon: Icons.email_outlined,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.errorRequiredField;
+                            }
+                            if (!value.contains('@')) {
+                              return l10n.errorInvalidEmail;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          controller: _passwordController,
+                          label: l10n.passwordLabel,
+                          hint: l10n.passwordHintLogin,
+                          icon: Icons.lock_outline,
+                          isPassword: true,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) => _hacerLogin(),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.errorRequiredField;
+                            }
+                            if (value.length < 6) {
+                              return l10n.errorPasswordTooShort;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                        ElevatedButton(
+                          onPressed: authState.isLoading ? null : _hacerLogin,
+                          style: theme.elevatedButtonTheme.style?.copyWith(
+                            elevation: const WidgetStatePropertyAll(0),
+                          ),
+                          child: authState.isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(l10n.loginButton),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        l10n.forgotPasswordButton,
+                        style: TextStyle(
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.6,
+                          ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

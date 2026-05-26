@@ -9,11 +9,7 @@ import 'data/providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: MainApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends ConsumerWidget {
@@ -33,11 +29,14 @@ class MainApp extends ConsumerWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF031632),
           primary: const Color(0xFF031632),
           secondary: const Color(0xFF006d3d),
-          surface: const Color(0xFFF9F9F9),
+          surface: const Color(0xFFFFFFFF),
+          surfaceContainer: const Color(0xFFFFFFFF),
+          outline: const Color(0xFFCBD5E1),
         ),
         textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme)
             .copyWith(
@@ -50,7 +49,7 @@ class MainApp extends ConsumerWidget {
               titleLarge: GoogleFonts.inter(fontWeight: FontWeight.w700),
             ),
         appBarTheme: AppBarTheme(
-          backgroundColor: const Color(0xFFF9F9F9),
+          backgroundColor: const Color(0xFFFFFFFF),
           elevation: 0,
           centerTitle: true,
           titleTextStyle: GoogleFonts.inter(
@@ -59,6 +58,9 @@ class MainApp extends ConsumerWidget {
             fontWeight: FontWeight.w700,
           ),
           iconTheme: const IconThemeData(color: Color(0xFF031632)),
+          shape: const Border(
+            bottom: BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -96,11 +98,11 @@ class MainApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF031632),
           brightness: Brightness.dark,
-          primary: const Color(0xFF334155), // Blau grisós sobri
+          primary: const Color(0xFF334155),
           secondary: const Color(0xFF006D3D),
           surface: const Color(0xFF0F172A),
           onSurface: const Color(0xFFF1F5F9),
-          surfaceContainer: const Color(0xFF1E293B), // Per a targetes
+          surfaceContainer: const Color(0xFF1E293B),
         ),
         textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme)
             .copyWith(
@@ -143,9 +145,7 @@ class MainApp extends ConsumerWidget {
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF020617),
-          selectedItemColor: Color(
-            0xFF4ADE80,
-          ), // Verd clar vibrant per contrastar en fosc
+          selectedItemColor: Color(0xFF4ADE80),
           unselectedItemColor: Color(0xFF94A3B8),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

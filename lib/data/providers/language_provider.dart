@@ -51,7 +51,9 @@ class LanguageState extends _$LanguageState {
 
     if (userId != null) {
       try {
-        await ref.read(authServiceProvider).updateLanguage(userId, languageCode);
+        await ref
+            .read(authServiceProvider)
+            .updateLanguage(userId, languageCode);
       } catch (e) {
         debugPrint('Error sincronitzant idioma amb el backend: $e');
       }

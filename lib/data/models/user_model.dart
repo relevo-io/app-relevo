@@ -37,8 +37,8 @@ class User {
       bio: json['bio'],
       professionalBackground: json['professionalBackground'],
       cv: json['cv'],
-      preferredRegions: json['preferredRegions'] != null 
-          ? List<String>.from(json['preferredRegions']) 
+      preferredRegions: json['preferredRegions'] != null
+          ? List<String>.from(json['preferredRegions'])
           : null,
       visible: json['visible'],
       language: json['language'],

@@ -233,4 +233,42 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get registerSuccess => 'Registre completat. Inicia sessió.';
+
+  @override
+  String get profileFeatureMarketplaceTitle => 'Accés al Marketplace';
+
+  @override
+  String get profileFeatureMarketplaceDesc =>
+      'Explora centenars d\'oportunitats de traspàs de negocis actius.';
+
+  @override
+  String get profileFeatureChatTitle => 'Contacte Directe';
+
+  @override
+  String get profileFeatureChatDesc =>
+      'Parla amb els propietaris de forma segura a través del xat.';
+
+  @override
+  String get profileFeaturePublishTitle => 'Publica el teu Negoci';
+
+  @override
+  String get profileFeaturePublishDesc =>
+      'Ven o traspassa la teva empresa amb total confidencialitat.';
+
+  @override
+  String get restrictedAlertTitle => 'Vols veure tots els detalls?';
+
+  @override
+  String get restrictedAlertDesc =>
+      'Inicia sessió o registra\'t a Relevo per veure els preus, descripcions completes i contactar amb els propietaris.';
+
+  @override
+  String get homeAboutTitle => 'Què és Relevo?';
+
+  @override
+  String get homeAboutDesc =>
+      'Relevo és la plataforma líder per a traspassar i adquirir empreses en funcionament de manera confidencial, directa i transparent. Connectem fundadors amb la propera generació de líders.';
+
+  @override
+  String get homeAboutButton => 'Qui som?';
 }

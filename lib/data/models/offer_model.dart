@@ -36,11 +36,11 @@ class Offer {
       employeeRange: json['employeeRange'],
       companyDescription: json['companyDescription'] ?? '',
       extendedDescription: json['extendedDescription'],
-      publishedAt: json['publishedAt'] != null 
-          ? DateTime.parse(json['publishedAt']) 
+      publishedAt: json['publishedAt'] != null
+          ? DateTime.parse(json['publishedAt'])
           : null,
-      createdAt: json['createdAt'] != null 
-          ? DateTime.parse(json['createdAt']) 
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
           : null,
     );
   }
@@ -59,5 +59,41 @@ class Offer {
       'publishedAt': publishedAt?.toIso8601String(),
       'createdAt': createdAt?.toIso8601String(),
     };
+  }
+
+  String get formattedRevenue {
+    if (revenueRange == null) return 'Consulta';
+    switch (revenueRange) {
+      case 'UNDER_100K':
+        return '100.000 €';
+      case 'BETWEEN_100K_500K':
+        return '500.000 €';
+      case 'BETWEEN_500K_1M':
+        return '1.000.000 €';
+      case 'BETWEEN_1M_5M':
+        return '5.000.000 €';
+      case 'OVER_5M':
+        return '8.500.000 €';
+      default:
+        return 'Detalles';
+    }
+  }
+
+  String get formattedRevenueShort {
+    if (revenueRange == null) return 'Consulta';
+    switch (revenueRange) {
+      case 'UNDER_100K':
+        return '< 100k€';
+      case 'BETWEEN_100K_500K':
+        return '500k€';
+      case 'BETWEEN_500K_1M':
+        return '1M€';
+      case 'BETWEEN_1M_5M':
+        return '5M€';
+      case 'OVER_5M':
+        return '> 5M€';
+      default:
+        return 'Detalles';
+    }
   }
 }

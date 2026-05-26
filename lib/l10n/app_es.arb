@@ -83,5 +83,16 @@
     "errorInvalidEmail": "Email no válido",
     "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
     "errorRequiredField": "Este campo es obligatorio",
-    "registerSuccess": "Registro completado. Inicia sesión."
+    "registerSuccess": "Registro completado. Inicia sesión.",
+    "profileFeatureMarketplaceTitle": "Acceso al Marketplace",
+    "profileFeatureMarketplaceDesc": "Explora cientos de oportunidades de traspaso de negocios activos.",
+    "profileFeatureChatTitle": "Contacto Directo",
+    "profileFeatureChatDesc": "Habla con los propietarios de forma segura a través del chat.",
+    "profileFeaturePublishTitle": "Publica tu Negocio",
+    "profileFeaturePublishDesc": "Vende o traspasa tu empresa con total confidencialidad.",
+    "restrictedAlertTitle": "¿Quieres ver todos los detalles?",
+    "restrictedAlertDesc": "Inicia sesión o regístrate en Relevo para ver los precios, descripciones completas y contactar con los propietarios.",
+    "homeAboutTitle": "¿Qué es Relevo?",
+    "homeAboutDesc": "Relevo es la plataforma líder para traspasar y adquirir empresas en funcionamiento de manera confidencial, directa y transparente. Conectamos a fundadores con la próxima generación de líderes.",
+    "homeAboutButton": "¿Quiénes somos?"
 }

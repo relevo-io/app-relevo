@@ -19,7 +19,9 @@ class OfferService {
       return data.map((json) => Offer.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
-        throw Exception(e.response?.data['message'] ?? 'Error al obtener ofertas');
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener ofertas',
+        );
       }
       throw Exception('Error de conexión: ${e.message}');
     }

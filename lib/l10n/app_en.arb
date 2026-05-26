@@ -71,5 +71,16 @@
     "errorInvalidEmail": "Invalid email format",
     "errorPasswordTooShort": "Password must be at least 6 characters",
     "errorRequiredField": "This field is required",
-    "registerSuccess": "Registration completed. Please log in."
+    "registerSuccess": "Registration completed. Please log in.",
+    "profileFeatureMarketplaceTitle": "Marketplace Access",
+    "profileFeatureMarketplaceDesc": "Explore hundreds of active business transfer opportunities.",
+    "profileFeatureChatTitle": "Direct Contact",
+    "profileFeatureChatDesc": "Talk securely with owners through our integrated chat.",
+    "profileFeaturePublishTitle": "List Your Business",
+    "profileFeaturePublishDesc": "Sell or transfer your company with total confidentiality.",
+    "restrictedAlertTitle": "Want to see all the details?",
+    "restrictedAlertDesc": "Log in or sign up on Relevo to view prices, full descriptions, and contact the owners.",
+    "homeAboutTitle": "What is Relevo?",
+    "homeAboutDesc": "Relevo is the leading platform to transfer and acquire established businesses in a confidential, direct, and transparent manner. We connect founders with the next generation of leaders.",
+    "homeAboutButton": "Who are we?"
 }

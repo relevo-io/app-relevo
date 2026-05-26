@@ -231,4 +231,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerSuccess => 'Registration completed. Please log in.';
+
+  @override
+  String get profileFeatureMarketplaceTitle => 'Marketplace Access';
+
+  @override
+  String get profileFeatureMarketplaceDesc =>
+      'Explore hundreds of active business transfer opportunities.';
+
+  @override
+  String get profileFeatureChatTitle => 'Direct Contact';
+
+  @override
+  String get profileFeatureChatDesc =>
+      'Talk securely with owners through our integrated chat.';
+
+  @override
+  String get profileFeaturePublishTitle => 'List Your Business';
+
+  @override
+  String get profileFeaturePublishDesc =>
+      'Sell or transfer your company with total confidentiality.';
+
+  @override
+  String get restrictedAlertTitle => 'Want to see all the details?';
+
+  @override
+  String get restrictedAlertDesc =>
+      'Log in or sign up on Relevo to view prices, full descriptions, and contact the owners.';
+
+  @override
+  String get homeAboutTitle => 'What is Relevo?';
+
+  @override
+  String get homeAboutDesc =>
+      'Relevo is the leading platform to transfer and acquire established businesses in a confidential, direct, and transparent manner. We connect founders with the next generation of leaders.';
+
+  @override
+  String get homeAboutButton => 'Who are we?';
 }

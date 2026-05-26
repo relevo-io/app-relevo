@@ -33,17 +33,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _hacerRegistro() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _backendError = null);
 
     try {
-      await ref.read(authProvider.notifier).register(
-        fullName: _nameController.text.trim(),
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        role: _selectedRole,
-        language: ref.read(languageStateProvider).languageCode,
-      );
+      await ref
+          .read(authProvider.notifier)
+          .register(
+            fullName: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+            role: _selectedRole,
+            language: ref.read(languageStateProvider).languageCode,
+          );
 
       if (mounted) {
         Navigator.pop(context);
@@ -95,114 +97,183 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.registerTitle),
-      ),
+      appBar: AppBar(title: Text(l10n.registerTitle), elevation: 0),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                Text(
-                  AppLocalizations.of(context)!.registerWelcome,
-                  style: GoogleFonts.inter(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.person_add_outlined,
+                        size: 40,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context)!.registerSubtitle,
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6), 
-                    fontSize: 16,
-                  ),
-                ),
-                if (_backendError != null) ...[
                   const SizedBox(height: 24),
-                  ErrorBanner(message: _getErrorMessage(_backendError!)),
-                ],
-                const SizedBox(height: 40),
-                CustomTextField(
-                  controller: _nameController,
-                  label: AppLocalizations.of(context)!.fullNameLabel,
-                  hint: AppLocalizations.of(context)!.fullNameHint,
-                  icon: Icons.person_outline,
-                  textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  controller: _emailController,
-                  label: AppLocalizations.of(context)!.emailLabel,
-                  hint: AppLocalizations.of(context)!.emailHint,
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
-                    if (!value.contains('@')) return AppLocalizations.of(context)!.errorInvalidEmail;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  controller: _passwordController,
-                  label: AppLocalizations.of(context)!.passwordLabel,
-                  hint: AppLocalizations.of(context)!.passwordHintRegister,
-                  icon: Icons.lock_outline,
-                  isPassword: true,
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _hacerRegistro(),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.errorRequiredField;
-                    if (value.length < 6) return AppLocalizations.of(context)!.errorPasswordTooShort;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  AppLocalizations.of(context)!.roleQuestion,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                    fontSize: 14,
+                  Text(
+                    l10n.registerWelcome,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      color: theme.colorScheme.onSurface,
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                _buildRoleOption('INTERESTED', AppLocalizations.of(context)!.roleInterested, Icons.search),
-                const SizedBox(height: 12),
-                _buildRoleOption(
-                  'OWNER',
-                  AppLocalizations.of(context)!.roleOwner,
-                  Icons.business,
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: authState.isLoading ? null : _hacerRegistro,
-                  child: authState.isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.registerSubtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  if (_backendError != null) ...[
+                    const SizedBox(height: 24),
+                    ErrorBanner(message: _getErrorMessage(_backendError!)),
+                  ],
+                  const SizedBox(height: 32),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainer,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.shadow.withValues(
+                            alpha: 0.02,
                           ),
-                        )
-                      : Text(AppLocalizations.of(context)!.registerButton),
-                ),
-                const SizedBox(height: 24),
-              ],
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        CustomTextField(
+                          controller: _nameController,
+                          label: l10n.fullNameLabel,
+                          hint: l10n.fullNameHint,
+                          icon: Icons.person_outline,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.errorRequiredField;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          controller: _emailController,
+                          label: l10n.emailLabel,
+                          hint: l10n.emailHint,
+                          icon: Icons.email_outlined,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.errorRequiredField;
+                            }
+                            if (!value.contains('@')) {
+                              return l10n.errorInvalidEmail;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          controller: _passwordController,
+                          label: l10n.passwordLabel,
+                          hint: l10n.passwordHintRegister,
+                          icon: Icons.lock_outline,
+                          isPassword: true,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) => _hacerRegistro(),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return l10n.errorRequiredField;
+                            }
+                            if (value.length < 6) {
+                              return l10n.errorPasswordTooShort;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          l10n.roleQuestion,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.8,
+                            ),
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        _buildRoleOption(
+                          'INTERESTED',
+                          l10n.roleInterested,
+                          Icons.search,
+                        ),
+                        const SizedBox(height: 12),
+                        _buildRoleOption(
+                          'OWNER',
+                          l10n.roleOwner,
+                          Icons.business,
+                        ),
+                        const SizedBox(height: 32),
+                        ElevatedButton(
+                          onPressed: authState.isLoading
+                              ? null
+                              : _hacerRegistro,
+                          style: theme.elevatedButtonTheme.style?.copyWith(
+                            elevation: const WidgetStatePropertyAll(0),
+                          ),
+                          child: authState.isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(l10n.registerButton),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
           ),
         ),
@@ -220,10 +291,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         decoration: BoxDecoration(
           color: isSelected
               ? theme.colorScheme.primary.withValues(alpha: 0.1)
-              : theme.colorScheme.surfaceContainer,
+              : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? theme.colorScheme.secondary : theme.colorScheme.outline.withValues(alpha: 0.2),
+            color: isSelected
+                ? theme.colorScheme.secondary
+                : theme.colorScheme.outline.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -231,17 +304,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           children: [
             Icon(
               icon,
-              color: isSelected ? theme.colorScheme.secondary : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              color: isSelected
+                  ? theme.colorScheme.secondary
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
             const SizedBox(width: 16),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? theme.colorScheme.onSurface : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? theme.colorScheme.onSurface
+                      : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
               ),
             ),
-            const Spacer(),
             if (isSelected)
               Icon(
                 Icons.check_circle,

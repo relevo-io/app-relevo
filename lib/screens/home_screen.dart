@@ -9,6 +9,8 @@ import '../l10n/app_localizations.dart';
 import '../widgets/offer_card_horizontal.dart';
 import '../widgets/offer_card_grid.dart';
 import '../widgets/offers_shimmer.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -18,19 +20,19 @@ class HomeScreen extends ConsumerWidget {
     final offersState = ref.watch(offersProvider);
     final themeMode = ref.watch(themeStateProvider);
     final theme = Theme.of(context);
+    final isLoggedIn = ref.watch(authProvider).value != null;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(
           'Relevo',
-          style: GoogleFonts.inter(
-            fontSize: 24,
-            fontWeight: FontWeight.w900,
-          ),
+          style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w900),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          if (isLoggedIn)
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           PopupMenuButton<String>(
             icon: const Icon(Icons.tune_outlined),
             onSelected: (String value) {
@@ -38,7 +40,9 @@ class HomeScreen extends ConsumerWidget {
                 ref.read(themeStateProvider.notifier).toggleTheme();
               } else {
                 final userId = ref.read(authProvider).value?.id;
-                ref.read(languageStateProvider.notifier).changeLanguage(value, userId: userId);
+                ref
+                    .read(languageStateProvider.notifier)
+                    .changeLanguage(value, userId: userId);
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -47,14 +51,16 @@ class HomeScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     Icon(
-                      themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+                      themeMode == ThemeMode.dark
+                          ? Icons.light_mode
+                          : Icons.dark_mode,
                       size: 20,
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      themeMode == ThemeMode.dark 
-                        ? AppLocalizations.of(context)!.themeLightMode 
-                        : AppLocalizations.of(context)!.themeDarkMode
+                      themeMode == ThemeMode.dark
+                          ? AppLocalizations.of(context)!.themeLightMode
+                          : AppLocalizations.of(context)!.themeDarkMode,
                     ),
                   ],
                 ),
@@ -83,98 +89,219 @@ class HomeScreen extends ConsumerWidget {
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                color: theme.brightness == Brightness.dark 
-                    ? (theme.appBarTheme.backgroundColor ?? const Color(0xFF020617)) 
-                    : theme.colorScheme.surface,
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.homeSearchHint,
-                          hintStyle: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
-                          prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                          filled: true,
-                          fillColor: theme.colorScheme.surfaceContainer,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: theme.colorScheme.secondary, width: 1),
+            if (isLoggedIn) ...[
+              SliverToBoxAdapter(
+                child: Container(
+                  color: theme.brightness == Brightness.dark
+                      ? (theme.appBarTheme.backgroundColor ??
+                            const Color(0xFF020617))
+                      : theme.colorScheme.surface,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: l10n.homeSearchHint,
+                            hintStyle: TextStyle(
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.5,
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.5,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
+                            filled: true,
+                            fillColor: theme.colorScheme.surfaceContainer,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.secondary,
+                                width: 1,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.1)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Container(
+                          width: double.infinity,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: theme.colorScheme.outline.withValues(
+                                alpha: 0.1,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.tune_outlined, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                l10n.homeFilters,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.homeCompanyOffers,
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          l10n.homeViewAll,
+                          style: TextStyle(color: theme.colorScheme.secondary),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 130,
+                  child: offersState.when(
+                    data: (offers) => ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.only(left: 16),
+                      itemCount: offers.length,
+                      itemBuilder: (context, index) =>
+                          OfferCardHorizontal(offer: offers[index]),
+                    ),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (err, st) => const Center(child: Text('Error')),
+                  ),
+                ),
+              ),
+            ] else ...[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 12.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.secondary,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.15,
+                          ),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            const Icon(Icons.tune_outlined, size: 20),
-                            const SizedBox(width: 8),
-                            Text(AppLocalizations.of(context)!.homeFilters, style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.info_outline_rounded,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              l10n.homeAboutTitle,
+                              style: GoogleFonts.inter(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.homeAboutDesc,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 1.5,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                          ),
+                          child: Text(l10n.homeAboutButton),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.homeCompanyOffers,
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        AppLocalizations.of(context)!.homeViewAll,
-                        style: TextStyle(color: theme.colorScheme.secondary),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 240,
-                child: offersState.when(
-                  data: (offers) => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(left: 16),
-                    itemCount: offers.length,
-                    itemBuilder: (context, index) => OfferCardHorizontal(offer: offers[index]),
                   ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (err, st) => const Center(child: Text('Error')),
                 ),
               ),
-            ),
+            ],
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
@@ -188,34 +315,171 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             offersState.when(
-              data: (offers) => SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 0.7,
+              data: (offers) {
+                final displayedOffers = isLoggedIn
+                    ? offers
+                    : offers.take(4).toList();
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.2,
+                        ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      Widget card = OfferCardGrid(
+                        offer: displayedOffers[index],
+                      );
+                      if (!isLoggedIn && (index == 2 || index == 3)) {
+                        card = ShaderMask(
+                          shaderCallback: (rect) {
+                            return LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.white,
+                                Colors.white.withValues(alpha: 0.0),
+                              ],
+                              stops: const [0.1, 0.9],
+                            ).createShader(rect);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: card,
+                        );
+                      }
+                      return card;
+                    }, childCount: displayedOffers.length),
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => OfferCardGrid(offer: offers[index]),
-                    childCount: offers.length,
-                  ),
-                ),
-              ),
+                );
+              },
               loading: () => const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: OffersShimmer(),
                 ),
               ),
-              error: (err, st) => const SliverToBoxAdapter(
-                child: Center(child: Text('Error')),
+              error: (err, st) =>
+                  const SliverToBoxAdapter(child: Center(child: Text('Error'))),
+            ),
+            if (!isLoggedIn)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.secondary,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.15,
+                          ),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.lock_outline_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.restrictedAlertTitle,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.restrictedAlertDesc,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            color: Colors.white.withValues(alpha: 0.8),
+                            fontSize: 13,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen(),
+                                    ),
+                                  );
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  side: const BorderSide(
+                                    color: Colors.white,
+                                    width: 1.5,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
+                                ),
+                                child: Text(l10n.profileRegisterButton),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: theme.colorScheme.primary,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
+                                ),
+                                child: Text(l10n.profileLoginButton),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 100),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
       ),

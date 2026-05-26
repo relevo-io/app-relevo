@@ -35,10 +35,13 @@ class Auth extends _$Auth {
     try {
       final userService = ref.read(authServiceProvider);
       final response = await userService.login(email, password);
-      
+
       await _storage.write(key: 'access_token', value: response.accessToken);
       if (response.refreshToken != null) {
-        await _storage.write(key: 'refresh_token', value: response.refreshToken!);
+        await _storage.write(
+          key: 'refresh_token',
+          value: response.refreshToken!,
+        );
       }
       state = AsyncValue.data(response.usuario);
     } catch (e, st) {

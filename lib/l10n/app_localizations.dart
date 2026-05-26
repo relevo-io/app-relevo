@@ -531,6 +531,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Registro completado. Inicia sesión.'**
   String get registerSuccess;
+
+  /// No description provided for @profileFeatureMarketplaceTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso al Marketplace'**
+  String get profileFeatureMarketplaceTitle;
+
+  /// No description provided for @profileFeatureMarketplaceDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Explora cientos de oportunidades de traspaso de negocios activos.'**
+  String get profileFeatureMarketplaceDesc;
+
+  /// No description provided for @profileFeatureChatTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Contacto Directo'**
+  String get profileFeatureChatTitle;
+
+  /// No description provided for @profileFeatureChatDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Habla con los propietarios de forma segura a través del chat.'**
+  String get profileFeatureChatDesc;
+
+  /// No description provided for @profileFeaturePublishTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Publica tu Negocio'**
+  String get profileFeaturePublishTitle;
+
+  /// No description provided for @profileFeaturePublishDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Vende o traspasa tu empresa con total confidencialidad.'**
+  String get profileFeaturePublishDesc;
+
+  /// No description provided for @restrictedAlertTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Quieres ver todos los detalles?'**
+  String get restrictedAlertTitle;
+
+  /// No description provided for @restrictedAlertDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Inicia sesión o regístrate en Relevo para ver los precios, descripciones completas y contactar con los propietarios.'**
+  String get restrictedAlertDesc;
+
+  /// No description provided for @homeAboutTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué es Relevo?'**
+  String get homeAboutTitle;
+
+  /// No description provided for @homeAboutDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Relevo es la plataforma líder para traspasar y adquirir empresas en funcionamiento de manera confidencial, directa y transparente. Conectamos a fundadores con la próxima generación de líderes.'**
+  String get homeAboutDesc;
+
+  /// No description provided for @homeAboutButton.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Quiénes somos?'**
+  String get homeAboutButton;
 }
 
 class _AppLocalizationsDelegate

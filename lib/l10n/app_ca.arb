@@ -71,5 +71,16 @@
     "errorInvalidEmail": "Email no vàlid",
     "errorPasswordTooShort": "La contrasenya ha de tenir almenys 6 caràcters",
     "errorRequiredField": "Aquest camp és obligatori",
-    "registerSuccess": "Registre completat. Inicia sessió."
+    "registerSuccess": "Registre completat. Inicia sessió.",
+    "profileFeatureMarketplaceTitle": "Accés al Marketplace",
+    "profileFeatureMarketplaceDesc": "Explora centenars d'oportunitats de traspàs de negocis actius.",
+    "profileFeatureChatTitle": "Contacte Directe",
+    "profileFeatureChatDesc": "Parla amb els propietaris de forma segura a través del xat.",
+    "profileFeaturePublishTitle": "Publica el teu Negoci",
+    "profileFeaturePublishDesc": "Ven o traspassa la teva empresa amb total confidencialitat.",
+    "restrictedAlertTitle": "Vols veure tots els detalls?",
+    "restrictedAlertDesc": "Inicia sessió o registra't a Relevo per veure els preus, descripcions completes i contactar amb els propietaris.",
+    "homeAboutTitle": "Què és Relevo?",
+    "homeAboutDesc": "Relevo és la plataforma líder per a traspassar i adquirir empreses en funcionament de manera confidencial, directa i transparent. Connectem fundadors amb la propera generació de líders.",
+    "homeAboutButton": "Qui som?"
 }
