@@ -20,7 +20,8 @@ class HomeScreen extends ConsumerWidget {
     final offersState = ref.watch(offersProvider);
     final themeMode = ref.watch(themeStateProvider);
     final theme = Theme.of(context);
-    final isLoggedIn = ref.watch(authProvider).value != null;
+    final user = ref.watch(authProvider).value;
+    final isLoggedIn = user != null;
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -205,13 +206,18 @@ class HomeScreen extends ConsumerWidget {
                 child: SizedBox(
                   height: 130,
                   child: offersState.when(
-                    data: (offers) => ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(left: 16),
-                      itemCount: offers.length,
-                      itemBuilder: (context, index) =>
-                          OfferCardHorizontal(offer: offers[index]),
-                    ),
+                    data: (offers) {
+                      final filtered = isLoggedIn
+                          ? offers.where((o) => o.owner != user.id).toList()
+                          : offers;
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(left: 16),
+                        itemCount: filtered.length,
+                        itemBuilder: (context, index) =>
+                            OfferCardHorizontal(offer: filtered[index]),
+                      );
+                    },
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
                     error: (err, st) => const Center(child: Text('Error')),
@@ -316,9 +322,12 @@ class HomeScreen extends ConsumerWidget {
             ),
             offersState.when(
               data: (offers) {
+                final filtered = isLoggedIn
+                    ? offers.where((o) => o.owner != user.id).toList()
+                    : offers;
                 final displayedOffers = isLoggedIn
-                    ? offers
-                    : offers.take(4).toList();
+                    ? filtered
+                    : filtered.take(4).toList();
                 return SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   sliver: SliverGrid(

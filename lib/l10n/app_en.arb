@@ -97,5 +97,10 @@
     "profileSaving": "Saving...",
     "profileLocationHint": "e.g., Barcelona, Catalonia",
     "profileBioHint": "Tell us a bit about yourself...",
-    "profileBackgroundHint": "Detail your professional experience and skills..."
+    "profileBackgroundHint": "Detail your professional experience and skills...",
+    "sellTitle": "My Selling Space",
+    "sellPublishButton": "Publish Offer",
+    "sellMyOffersSection": "Your Published Opportunities",
+    "sellEmptyStateTitle": "No businesses published yet",
+    "sellEmptyStateDesc": "We help you find the ideal buyer. Start listing your business with total confidentiality."
 }

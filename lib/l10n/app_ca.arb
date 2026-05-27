@@ -97,5 +97,10 @@
     "profileSaving": "Desant...",
     "profileLocationHint": "Ex. Barcelona, Catalunya",
     "profileBioHint": "Explica una mica sobre tu...",
-    "profileBackgroundHint": "Detalla la teva experiència i habilitats professionals..."
+    "profileBackgroundHint": "Detalla la teva experiència i habilitats professionals...",
+    "sellTitle": "El meu espai de venda",
+    "sellPublishButton": "Publicar Oferta",
+    "sellMyOffersSection": "Les teves oportunitats publicades",
+    "sellEmptyStateTitle": "Cap negoci publicat encara",
+    "sellEmptyStateDesc": "T'ajudem a trobar el comprador ideal. Comença publicant el teu negoci amb total confidencialitat."
 }

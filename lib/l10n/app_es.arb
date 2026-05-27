@@ -109,5 +109,10 @@
     "profileSaving": "Guardando...",
     "profileLocationHint": "Ej. Barcelona, Cataluña",
     "profileBioHint": "Cuéntanos un poco sobre ti...",
-    "profileBackgroundHint": "Detalla tu experiencia y habilidades profesionales..."
+    "profileBackgroundHint": "Detalla tu experiencia y habilidades profesionales...",
+    "sellTitle": "Mi espacio de venta",
+    "sellPublishButton": "Publicar Oferta",
+    "sellMyOffersSection": "Tus oportunidades publicadas",
+    "sellEmptyStateTitle": "Ningún negocio publicado todavía",
+    "sellEmptyStateDesc": "Te ayudamos a encontrar al comprador ideal. Comienza publicando tu negocio con total confidencialidad."
 }

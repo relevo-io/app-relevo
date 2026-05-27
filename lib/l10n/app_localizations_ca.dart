@@ -317,4 +317,20 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get profileBackgroundHint =>
       'Detalla la teva experiència i habilitats professionals...';
+
+  @override
+  String get sellTitle => 'El meu espai de venda';
+
+  @override
+  String get sellPublishButton => 'Publicar Oferta';
+
+  @override
+  String get sellMyOffersSection => 'Les teves oportunitats publicades';
+
+  @override
+  String get sellEmptyStateTitle => 'Cap negoci publicat encara';
+
+  @override
+  String get sellEmptyStateDesc =>
+      'T\'ajudem a trobar el comprador ideal. Comença publicant el teu negoci amb total confidencialitat.';
 }

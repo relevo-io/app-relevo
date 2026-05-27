@@ -687,6 +687,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Detalla tu experiencia y habilidades profesionales...'**
   String get profileBackgroundHint;
+
+  /// No description provided for @sellTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi espacio de venta'**
+  String get sellTitle;
+
+  /// No description provided for @sellPublishButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Publicar Oferta'**
+  String get sellPublishButton;
+
+  /// No description provided for @sellMyOffersSection.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus oportunidades publicadas'**
+  String get sellMyOffersSection;
+
+  /// No description provided for @sellEmptyStateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Ningún negocio publicado todavía'**
+  String get sellEmptyStateTitle;
+
+  /// No description provided for @sellEmptyStateDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Te ayudamos a encontrar al comprador ideal. Comienza publicando tu negocio con total confidencialidad.'**
+  String get sellEmptyStateDesc;
 }
 
 class _AppLocalizationsDelegate

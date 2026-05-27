@@ -14,7 +14,9 @@ class OfferCardGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isLoggedIn = ref.watch(authProvider).value != null;
+    final user = ref.watch(authProvider).value;
+    final isLoggedIn = user != null;
+    final isMyOffer = isLoggedIn && offer.owner == user.id;
 
     return GestureDetector(
       onTap: isLoggedIn ? null : () => showRestrictedDialog(context),
@@ -57,15 +59,16 @@ class OfferCardGrid extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      Icon(
-                        isLoggedIn
-                            ? Icons.favorite_border
-                            : Icons.lock_outline_rounded,
-                        size: 16,
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: isLoggedIn ? 0.5 : 0.3,
+                      if (!isMyOffer)
+                        Icon(
+                          isLoggedIn
+                              ? Icons.favorite_border
+                              : Icons.lock_outline_rounded,
+                          size: 16,
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: isLoggedIn ? 0.5 : 0.3,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 8),

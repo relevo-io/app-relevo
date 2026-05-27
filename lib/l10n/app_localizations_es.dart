@@ -316,4 +316,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get profileBackgroundHint =>
       'Detalla tu experiencia y habilidades profesionales...';
+
+  @override
+  String get sellTitle => 'Mi espacio de venta';
+
+  @override
+  String get sellPublishButton => 'Publicar Oferta';
+
+  @override
+  String get sellMyOffersSection => 'Tus oportunidades publicadas';
+
+  @override
+  String get sellEmptyStateTitle => 'Ningún negocio publicado todavía';
+
+  @override
+  String get sellEmptyStateDesc =>
+      'Te ayudamos a encontrar al comprador ideal. Comienza publicando tu negocio con total confidencialidad.';
 }

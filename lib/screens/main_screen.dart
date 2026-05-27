@@ -4,6 +4,7 @@ import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
+import 'sell_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -37,7 +38,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     final screens = [
       const HomeScreen(),
-      if (isLoggedIn) const Scaffold(body: Center(child: Text('Vender'))),
+      if (isLoggedIn) const SellScreen(),
       if (isLoggedIn) const Scaffold(body: Center(child: Text('Mensajes'))),
       const ProfileScreen(),
     ];
