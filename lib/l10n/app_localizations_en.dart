@@ -269,4 +269,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeAboutButton => 'Who are we?';
+
+  @override
+  String get profileSectionAbout => 'About Me';
+
+  @override
+  String get profileSectionProfessional => 'Professional Profile';
+
+  @override
+  String get profileLocationLabel => 'Location';
+
+  @override
+  String get profileBioLabel => 'Biography';
+
+  @override
+  String get profileBackgroundLabel => 'Experience & Capabilities';
+
+  @override
+  String get profileNoLocation => 'No location specified';
+
+  @override
+  String get profileNoBio => 'No biography written yet';
+
+  @override
+  String get profileNoBackground => 'No experience detailed yet';
+
+  @override
+  String get profileEditTitle => 'Edit Profile';
+
+  @override
+  String get profileSaveButton => 'Save changes';
+
+  @override
+  String get profileSaveSuccess => 'Profile updated successfully';
+
+  @override
+  String get profileSaving => 'Saving...';
+
+  @override
+  String get profileLocationHint => 'e.g., Barcelona, Catalonia';
+
+  @override
+  String get profileBioHint => 'Tell us a bit about yourself...';
+
+  @override
+  String get profileBackgroundHint =>
+      'Detail your professional experience and skills...';
 }

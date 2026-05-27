@@ -82,5 +82,20 @@
     "restrictedAlertDesc": "Log in or sign up on Relevo to view prices, full descriptions, and contact the owners.",
     "homeAboutTitle": "What is Relevo?",
     "homeAboutDesc": "Relevo is the leading platform to transfer and acquire established businesses in a confidential, direct, and transparent manner. We connect founders with the next generation of leaders.",
-    "homeAboutButton": "Who are we?"
+    "homeAboutButton": "Who are we?",
+    "profileSectionAbout": "About Me",
+    "profileSectionProfessional": "Professional Profile",
+    "profileLocationLabel": "Location",
+    "profileBioLabel": "Biography",
+    "profileBackgroundLabel": "Experience & Capabilities",
+    "profileNoLocation": "No location specified",
+    "profileNoBio": "No biography written yet",
+    "profileNoBackground": "No experience detailed yet",
+    "profileEditTitle": "Edit Profile",
+    "profileSaveButton": "Save changes",
+    "profileSaveSuccess": "Profile updated successfully",
+    "profileSaving": "Saving...",
+    "profileLocationHint": "e.g., Barcelona, Catalonia",
+    "profileBioHint": "Tell us a bit about yourself...",
+    "profileBackgroundHint": "Detail your professional experience and skills..."
 }

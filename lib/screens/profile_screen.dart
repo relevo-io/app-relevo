@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
+import 'edit_profile_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
@@ -22,11 +23,26 @@ class ProfileScreen extends ConsumerWidget {
           : locale == 'es'
           ? 'Cuenta Activa'
           : 'Active Account';
+      final l10n = AppLocalizations.of(context)!;
 
       return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.profileTitle),
+          title: Text(l10n.profileTitle),
           elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EditProfileScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+          ],
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -75,10 +91,7 @@ class ProfileScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            user?.fullName ??
-                                AppLocalizations.of(
-                                  context,
-                                )!.profileDefaultUser,
+                            user?.fullName ?? l10n.profileDefaultUser,
                             style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 18,
@@ -118,6 +131,158 @@ class ProfileScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 24),
+              // Sobre mi
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.profileSectionAbout,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 18,
+                          color: theme.colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            user?.location ?? l10n.profileNoLocation,
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              color: user?.location != null
+                                  ? theme.colorScheme.onSurface
+                                  : theme.colorScheme.onSurface.withValues(
+                                      alpha: 0.5,
+                                    ),
+                              fontWeight: user?.location != null
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 24, thickness: 0.5),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.profileBioLabel,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          user?.bio ?? l10n.profileNoBio,
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            color: user?.bio != null
+                                ? theme.colorScheme.onSurface
+                                : theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.5,
+                                  ),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Perfil Professional
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.profileSectionProfessional,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.profileBackgroundLabel,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          user?.professionalBackground ??
+                              l10n.profileNoBackground,
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            color: user?.professionalBackground != null
+                                ? theme.colorScheme.onSurface
+                                : theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.5,
+                                  ),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 32),
               Container(
                 decoration: BoxDecoration(
@@ -139,20 +304,20 @@ class ProfileScreen extends ConsumerWidget {
                     _buildProfileOption(
                       context,
                       Icons.settings_outlined,
-                      AppLocalizations.of(context)!.profileSettings,
+                      l10n.profileSettings,
                       isFirst: true,
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
                       context,
                       Icons.help_outline_rounded,
-                      AppLocalizations.of(context)!.profileHelp,
+                      l10n.profileHelp,
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
                       context,
                       Icons.logout_rounded,
-                      AppLocalizations.of(context)!.profileLogout,
+                      l10n.profileLogout,
                       isLast: true,
                       isDestructive: true,
                       onTap: () => ref.read(authProvider.notifier).logout(),

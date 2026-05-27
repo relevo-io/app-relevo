@@ -597,6 +597,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¿Quiénes somos?'**
   String get homeAboutButton;
+
+  /// No description provided for @profileSectionAbout.
+  ///
+  /// In es, this message translates to:
+  /// **'Sobre mí'**
+  String get profileSectionAbout;
+
+  /// No description provided for @profileSectionProfessional.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil Profesional'**
+  String get profileSectionProfessional;
+
+  /// No description provided for @profileLocationLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación'**
+  String get profileLocationLabel;
+
+  /// No description provided for @profileBioLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Biografía'**
+  String get profileBioLabel;
+
+  /// No description provided for @profileBackgroundLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Experiencia y capacidades'**
+  String get profileBackgroundLabel;
+
+  /// No description provided for @profileNoLocation.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin ubicación especificada'**
+  String get profileNoLocation;
+
+  /// No description provided for @profileNoBio.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin biografía redactada todavía'**
+  String get profileNoBio;
+
+  /// No description provided for @profileNoBackground.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin experiencia detallada todavía'**
+  String get profileNoBackground;
+
+  /// No description provided for @profileEditTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar Perfil'**
+  String get profileEditTitle;
+
+  /// No description provided for @profileSaveButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar cambios'**
+  String get profileSaveButton;
+
+  /// No description provided for @profileSaveSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil actualizado correctamente'**
+  String get profileSaveSuccess;
+
+  /// No description provided for @profileSaving.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando...'**
+  String get profileSaving;
+
+  /// No description provided for @profileLocationHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej. Barcelona, Cataluña'**
+  String get profileLocationHint;
+
+  /// No description provided for @profileBioHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuéntanos un poco sobre ti...'**
+  String get profileBioHint;
+
+  /// No description provided for @profileBackgroundHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalla tu experiencia y habilidades profesionales...'**
+  String get profileBackgroundHint;
 }
 
 class _AppLocalizationsDelegate

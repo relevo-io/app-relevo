@@ -95,4 +95,31 @@ class UserService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<void> updateProfile(
+    String userId, {
+    required String fullName,
+    String? location,
+    String? bio,
+    String? professionalBackground,
+  }) async {
+    try {
+      await _dio.patch(
+        '/usuarios/$userId',
+        data: {
+          'fullName': fullName,
+          'location': location,
+          'bio': bio,
+          'professionalBackground': professionalBackground,
+        },
+      );
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error actualizando perfil',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

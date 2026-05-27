@@ -94,5 +94,20 @@
     "restrictedAlertDesc": "Inicia sesión o regístrate en Relevo para ver los precios, descripciones completas y contactar con los propietarios.",
     "homeAboutTitle": "¿Qué es Relevo?",
     "homeAboutDesc": "Relevo es la plataforma líder para traspasar y adquirir empresas en funcionamiento de manera confidencial, directa y transparente. Conectamos a fundadores con la próxima generación de líderes.",
-    "homeAboutButton": "¿Quiénes somos?"
+    "homeAboutButton": "¿Quiénes somos?",
+    "profileSectionAbout": "Sobre mí",
+    "profileSectionProfessional": "Perfil Profesional",
+    "profileLocationLabel": "Ubicación",
+    "profileBioLabel": "Biografía",
+    "profileBackgroundLabel": "Experiencia y capacidades",
+    "profileNoLocation": "Sin ubicación especificada",
+    "profileNoBio": "Sin biografía redactada todavía",
+    "profileNoBackground": "Sin experiencia detallada todavía",
+    "profileEditTitle": "Editar Perfil",
+    "profileSaveButton": "Guardar cambios",
+    "profileSaveSuccess": "Perfil actualizado correctamente",
+    "profileSaving": "Guardando...",
+    "profileLocationHint": "Ej. Barcelona, Cataluña",
+    "profileBioHint": "Cuéntanos un poco sobre ti...",
+    "profileBackgroundHint": "Detalla tu experiencia y habilidades profesionales..."
 }

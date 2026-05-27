@@ -74,6 +74,33 @@ class Auth extends _$Auth {
     }
   }
 
+  Future<void> updateProfile({
+    required String fullName,
+    String? location,
+    String? bio,
+    String? professionalBackground,
+  }) async {
+    final currentUser = state.value;
+    if (currentUser == null) return;
+
+    state = const AsyncValue.loading();
+    try {
+      final userService = ref.read(authServiceProvider);
+      await userService.updateProfile(
+        currentUser.id,
+        fullName: fullName,
+        location: location,
+        bio: bio,
+        professionalBackground: professionalBackground,
+      );
+      final updatedUser = await userService.getMe();
+      state = AsyncValue.data(updatedUser);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     state = const AsyncValue.loading();
     await _storage.deleteAll();
