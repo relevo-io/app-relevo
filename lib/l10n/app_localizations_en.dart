@@ -331,4 +331,61 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sellEmptyStateDesc =>
       'We help you find the ideal buyer. Start listing your business with total confidentiality.';
+
+  @override
+  String get offerCreateTitle => 'Publish Business';
+
+  @override
+  String get offerSectorLabel => 'Business Sector';
+
+  @override
+  String get offerSectorHint => 'e.g., Hospitality, Automotive, Tech...';
+
+  @override
+  String get offerRegionLabel => 'Location / Region';
+
+  @override
+  String get offerRegionHint => 'e.g., Gironès, Barcelona, Andorra...';
+
+  @override
+  String get offerRevenueLabel => 'Annual Revenue Range';
+
+  @override
+  String get offerEmployeesLabel => 'Number of Employees';
+
+  @override
+  String get offerYearLabel => 'Creation Year (Optional)';
+
+  @override
+  String get offerYearHint => 'e.g., 2012';
+
+  @override
+  String get offerDescLabel => 'Brief Business Description';
+
+  @override
+  String get offerDescHint =>
+      'Summarize your business in a couple of catchy sentences...';
+
+  @override
+  String get offerExtendedLabel => 'Detailed Description (Optional)';
+
+  @override
+  String get offerExtendedHint =>
+      'Detail more aspects like customer base, assets, reason for transfer...';
+
+  @override
+  String get offerPublishButton => 'Publish Opportunity';
+
+  @override
+  String get offerPublishSuccess => 'Opportunity published successfully!';
+
+  @override
+  String get offerPublishError => 'Error publishing opportunity. Try again.';
+
+  @override
+  String get offerErrorInvalidYear => 'Enter a valid year';
+
+  @override
+  String get offerErrorDescTooShort =>
+      'Description must be at least 10 characters long';
 }

@@ -333,4 +333,62 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get sellEmptyStateDesc =>
       'T\'ajudem a trobar el comprador ideal. Comença publicant el teu negoci amb total confidencialitat.';
+
+  @override
+  String get offerCreateTitle => 'Publicar Negoci';
+
+  @override
+  String get offerSectorLabel => 'Sector del negoci';
+
+  @override
+  String get offerSectorHint => 'Ex. Hostaleria, Automoció, Tecnologia...';
+
+  @override
+  String get offerRegionLabel => 'Ubicació / Regió';
+
+  @override
+  String get offerRegionHint => 'Ex. Gironès, Barcelona, Andorra...';
+
+  @override
+  String get offerRevenueLabel => 'Rang de Facturació Anual';
+
+  @override
+  String get offerEmployeesLabel => 'Nombre d\'Empleats';
+
+  @override
+  String get offerYearLabel => 'Any de Creació (Opcional)';
+
+  @override
+  String get offerYearHint => 'Ex. 2012';
+
+  @override
+  String get offerDescLabel => 'Breu Descripció del Negoci';
+
+  @override
+  String get offerDescHint =>
+      'Resumeix el teu negoci en un parell de frases atractives...';
+
+  @override
+  String get offerExtendedLabel => 'Descripció Detallada (Opcional)';
+
+  @override
+  String get offerExtendedHint =>
+      'Explica més detalls com la clientela, actius, motiu de traspàs...';
+
+  @override
+  String get offerPublishButton => 'Publicar Oportunitat';
+
+  @override
+  String get offerPublishSuccess => 'Oferta publicada correctament!';
+
+  @override
+  String get offerPublishError =>
+      'Error en publicar l\'oferta. Prova-ho de nou.';
+
+  @override
+  String get offerErrorInvalidYear => 'Introdueix un any vàlid';
+
+  @override
+  String get offerErrorDescTooShort =>
+      'La descripció ha de tenir almenys 10 caràcters';
 }

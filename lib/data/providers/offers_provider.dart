@@ -8,7 +8,15 @@ part 'offers_provider.g.dart';
 @riverpod
 Future<List<Offer>> offers(Ref ref) async {
   final offerService = ref.watch(offerServiceProvider);
-  return offerService.getOffers();
+  final list = await offerService.getOffers();
+  list.sort((a, b) {
+    final aDate =
+        a.publishedAt ?? a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0);
+    final bDate =
+        b.publishedAt ?? b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0);
+    return bDate.compareTo(aDate);
+  });
+  return list;
 }
 
 @riverpod

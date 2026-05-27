@@ -5,6 +5,7 @@ import '../data/providers/offers_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/offer_card_grid.dart';
 import '../widgets/offers_shimmer.dart';
+import 'create_offer_screen.dart';
 
 class SellScreen extends ConsumerWidget {
   const SellScreen({super.key});
@@ -88,7 +89,14 @@ class SellScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CreateOfferScreen(),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: theme.colorScheme.primary,

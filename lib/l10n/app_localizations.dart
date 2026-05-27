@@ -717,6 +717,114 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Te ayudamos a encontrar al comprador ideal. Comienza publicando tu negocio con total confidencialidad.'**
   String get sellEmptyStateDesc;
+
+  /// No description provided for @offerCreateTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Publicar Negocio'**
+  String get offerCreateTitle;
+
+  /// No description provided for @offerSectorLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Sector del negocio'**
+  String get offerSectorLabel;
+
+  /// No description provided for @offerSectorHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej. Hostelería, Automoción, Tecnología...'**
+  String get offerSectorHint;
+
+  /// No description provided for @offerRegionLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación / Región'**
+  String get offerRegionLabel;
+
+  /// No description provided for @offerRegionHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej. Gironès, Barcelona, Andorra...'**
+  String get offerRegionHint;
+
+  /// No description provided for @offerRevenueLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango de Facturación Anual'**
+  String get offerRevenueLabel;
+
+  /// No description provided for @offerEmployeesLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de Empleados'**
+  String get offerEmployeesLabel;
+
+  /// No description provided for @offerYearLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Año de Creación (Opcional)'**
+  String get offerYearLabel;
+
+  /// No description provided for @offerYearHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej. 2012'**
+  String get offerYearHint;
+
+  /// No description provided for @offerDescLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Breve Descripción del Negocio'**
+  String get offerDescLabel;
+
+  /// No description provided for @offerDescHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Resume tu negocio en un par de frases atractivas...'**
+  String get offerDescHint;
+
+  /// No description provided for @offerExtendedLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción Detallada (Opcional)'**
+  String get offerExtendedLabel;
+
+  /// No description provided for @offerExtendedHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Explica más detalles como la clientela, activos, motivo de traspaso...'**
+  String get offerExtendedHint;
+
+  /// No description provided for @offerPublishButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Publicar Oportunidad'**
+  String get offerPublishButton;
+
+  /// No description provided for @offerPublishSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Oferta publicada correctamente!'**
+  String get offerPublishSuccess;
+
+  /// No description provided for @offerPublishError.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al publicar la oferta. Inténtalo de nuevo.'**
+  String get offerPublishError;
+
+  /// No description provided for @offerErrorInvalidYear.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce un año válido'**
+  String get offerErrorInvalidYear;
+
+  /// No description provided for @offerErrorDescTooShort.
+  ///
+  /// In es, this message translates to:
+  /// **'La descripción debe tener al menos 10 caracteres'**
+  String get offerErrorDescTooShort;
 }
 
 class _AppLocalizationsDelegate

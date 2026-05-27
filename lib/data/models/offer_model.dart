@@ -96,4 +96,57 @@ class Offer {
         return 'Detalles';
     }
   }
+
+  static const List<String> revenueOptions = [
+    'UNDER_100K',
+    'BETWEEN_100K_500K',
+    'BETWEEN_500K_1M',
+    'BETWEEN_1M_5M',
+    'OVER_5M',
+  ];
+
+  static const List<String> employeeOptions = [
+    '1_5',
+    '6_10',
+    '11_25',
+    '26_50',
+    '51_100',
+    '100_PLUS',
+  ];
+
+  static String formatRevenueRange(String value) {
+    switch (value) {
+      case 'UNDER_100K':
+        return '< 100.000 €';
+      case 'BETWEEN_100K_500K':
+        return '100.000 € - 500.000 €';
+      case 'BETWEEN_500K_1M':
+        return '500.000 € - 1.000.000 €';
+      case 'BETWEEN_1M_5M':
+        return '1.000.000 € - 5.000.000 €';
+      case 'OVER_5M':
+        return '> 5.000.000 €';
+      default:
+        return value;
+    }
+  }
+
+  static String formatEmployeeRange(String value) {
+    switch (value) {
+      case '1_5':
+        return '1 - 5';
+      case '6_10':
+        return '6 - 10';
+      case '11_25':
+        return '11 - 25';
+      case '26_50':
+        return '26 - 50';
+      case '51_100':
+        return '51 - 100';
+      case '100_PLUS':
+        return '100+';
+      default:
+        return value;
+    }
+  }
 }

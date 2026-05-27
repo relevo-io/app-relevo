@@ -26,4 +26,37 @@ class OfferService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<Offer> createOffer({
+    required String region,
+    required String sector,
+    String? revenueRange,
+    int? creationYear,
+    String? employeeRange,
+    required String companyDescription,
+    String? extendedDescription,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/ofertas',
+        data: {
+          'region': region,
+          'sector': sector,
+          'revenueRange': ?revenueRange,
+          'creationYear': ?creationYear,
+          'employeeRange': ?employeeRange,
+          'companyDescription': companyDescription,
+          'extendedDescription': ?extendedDescription,
+        },
+      );
+      return Offer.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al crear la oferta',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

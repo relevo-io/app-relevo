@@ -332,4 +332,62 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get sellEmptyStateDesc =>
       'Te ayudamos a encontrar al comprador ideal. Comienza publicando tu negocio con total confidencialidad.';
+
+  @override
+  String get offerCreateTitle => 'Publicar Negocio';
+
+  @override
+  String get offerSectorLabel => 'Sector del negocio';
+
+  @override
+  String get offerSectorHint => 'Ej. Hostelería, Automoción, Tecnología...';
+
+  @override
+  String get offerRegionLabel => 'Ubicación / Región';
+
+  @override
+  String get offerRegionHint => 'Ej. Gironès, Barcelona, Andorra...';
+
+  @override
+  String get offerRevenueLabel => 'Rango de Facturación Anual';
+
+  @override
+  String get offerEmployeesLabel => 'Número de Empleados';
+
+  @override
+  String get offerYearLabel => 'Año de Creación (Opcional)';
+
+  @override
+  String get offerYearHint => 'Ej. 2012';
+
+  @override
+  String get offerDescLabel => 'Breve Descripción del Negocio';
+
+  @override
+  String get offerDescHint =>
+      'Resume tu negocio en un par de frases atractivas...';
+
+  @override
+  String get offerExtendedLabel => 'Descripción Detallada (Opcional)';
+
+  @override
+  String get offerExtendedHint =>
+      'Explica más detalles como la clientela, activos, motivo de traspaso...';
+
+  @override
+  String get offerPublishButton => 'Publicar Oportunidad';
+
+  @override
+  String get offerPublishSuccess => '¡Oferta publicada correctamente!';
+
+  @override
+  String get offerPublishError =>
+      'Error al publicar la oferta. Inténtalo de nuevo.';
+
+  @override
+  String get offerErrorInvalidYear => 'Introduce un año válido';
+
+  @override
+  String get offerErrorDescTooShort =>
+      'La descripción debe tener al menos 10 caracteres';
 }
