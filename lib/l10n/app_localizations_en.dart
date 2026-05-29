@@ -388,4 +388,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offerErrorDescTooShort =>
       'Description must be at least 10 characters long';
+
+  @override
+  String get offerDetailsTitle => 'Offer Details';
+
+  @override
+  String get offerDetailsLocation => 'Location';
+
+  @override
+  String get offerDetailsRevenue => 'Annual Revenue';
+
+  @override
+  String get offerDetailsEmployees => 'Employees';
+
+  @override
+  String get offerDetailsYear => 'Creation Year';
+
+  @override
+  String get offerDetailsDescription => 'Business Description';
+
+  @override
+  String get offerDetailsExtended => 'Additional Information';
+
+  @override
+  String get offerDetailsApplyButton => 'Request Information';
+
+  @override
+  String get offerDetailsPublished => 'Published';
 }

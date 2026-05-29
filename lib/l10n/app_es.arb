@@ -132,5 +132,14 @@
     "offerPublishSuccess": "¡Oferta publicada correctamente!",
     "offerPublishError": "Error al publicar la oferta. Inténtalo de nuevo.",
     "offerErrorInvalidYear": "Introduce un año válido",
-    "offerErrorDescTooShort": "La descripción debe tener al menos 10 caracteres"
+    "offerErrorDescTooShort": "La descripción debe tener al menos 10 caracteres",
+    "offerDetailsTitle": "Detalle de la oferta",
+    "offerDetailsLocation": "Ubicación",
+    "offerDetailsRevenue": "Facturación anual",
+    "offerDetailsEmployees": "Empleados",
+    "offerDetailsYear": "Año de fundación",
+    "offerDetailsDescription": "Descripción del negocio",
+    "offerDetailsExtended": "Información detallada",
+    "offerDetailsApplyButton": "Solicitar información",
+    "offerDetailsPublished": "Publicado"
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/models/offer_model.dart';
 import '../data/providers/auth_provider.dart';
+import '../screens/offer_details_screen.dart';
 import 'restricted_dialog.dart';
 
 class OfferCardHorizontal extends ConsumerWidget {
@@ -16,9 +17,19 @@ class OfferCardHorizontal extends ConsumerWidget {
     final user = ref.watch(authProvider).value;
     final isLoggedIn = user != null;
     final isMyOffer = isLoggedIn && offer.owner == user.id;
+    final isDark = theme.brightness == Brightness.dark;
+    final priceColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.primary;
+    final secondaryColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.secondary;
 
     return GestureDetector(
-      onTap: isLoggedIn ? null : () => showRestrictedDialog(context),
+      onTap: isLoggedIn
+          ? () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OfferDetailsScreen(offer: offer),
+                ),
+              )
+          : () => showRestrictedDialog(context),
       child: Container(
         width: 220,
         margin: const EdgeInsets.only(right: 12),
@@ -54,7 +65,7 @@ class OfferCardHorizontal extends ConsumerWidget {
                             Icon(
                               Icons.verified,
                               size: 12,
-                              color: theme.colorScheme.secondary,
+                              color: secondaryColor,
                             ),
                             const SizedBox(width: 4),
                             Expanded(
@@ -65,9 +76,7 @@ class OfferCardHorizontal extends ConsumerWidget {
                                 style: GoogleFonts.inter(
                                   fontSize: 9,
                                   fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.onSurface.withValues(
-                                    alpha: 0.7,
-                                  ),
+                                  color: secondaryColor,
                                 ),
                               ),
                             ),
@@ -109,7 +118,7 @@ class OfferCardHorizontal extends ConsumerWidget {
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.primary,
+                        color: priceColor,
                       ),
                     ),
                   ],

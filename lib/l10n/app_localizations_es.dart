@@ -390,4 +390,31 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get offerErrorDescTooShort =>
       'La descripción debe tener al menos 10 caracteres';
+
+  @override
+  String get offerDetailsTitle => 'Detalle de la oferta';
+
+  @override
+  String get offerDetailsLocation => 'Ubicación';
+
+  @override
+  String get offerDetailsRevenue => 'Facturación anual';
+
+  @override
+  String get offerDetailsEmployees => 'Empleados';
+
+  @override
+  String get offerDetailsYear => 'Año de fundación';
+
+  @override
+  String get offerDetailsDescription => 'Descripción del negocio';
+
+  @override
+  String get offerDetailsExtended => 'Información detallada';
+
+  @override
+  String get offerDetailsApplyButton => 'Solicitar información';
+
+  @override
+  String get offerDetailsPublished => 'Publicado';
 }

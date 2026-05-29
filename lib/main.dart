@@ -4,11 +4,15 @@ import 'l10n/app_localizations.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'data/providers/language_provider.dart';
 import 'data/providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
+  timeago.setLocaleMessages('es', timeago.EsMessages());
+  timeago.setLocaleMessages('ca', timeago.CaMessages());
   runApp(const ProviderScope(child: MainApp()));
 }
 

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../data/models/offer_model.dart';
 import '../data/providers/auth_provider.dart';
+import '../screens/offer_details_screen.dart';
 import 'restricted_dialog.dart';
 
 class OfferCardGrid extends ConsumerWidget {
@@ -17,9 +18,20 @@ class OfferCardGrid extends ConsumerWidget {
     final user = ref.watch(authProvider).value;
     final isLoggedIn = user != null;
     final isMyOffer = isLoggedIn && offer.owner == user.id;
+    final isDark = theme.brightness == Brightness.dark;
+    final priceColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.primary;
+    final secondaryColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.secondary;
+    final localeCode = Localizations.localeOf(context).languageCode;
 
     return GestureDetector(
-      onTap: isLoggedIn ? null : () => showRestrictedDialog(context),
+      onTap: isLoggedIn
+          ? () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OfferDetailsScreen(offer: offer),
+                ),
+              )
+          : () => showRestrictedDialog(context),
       child: Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceContainer,
@@ -55,7 +67,7 @@ class OfferCardGrid extends ConsumerWidget {
                           style: GoogleFonts.inter(
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.secondary,
+                            color: secondaryColor,
                           ),
                         ),
                       ),
@@ -94,13 +106,13 @@ class OfferCardGrid extends ConsumerWidget {
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.primary,
+                        color: priceColor,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       offer.publishedAt != null
-                          ? timeago.format(offer.publishedAt!, locale: 'es')
+                          ? timeago.format(offer.publishedAt!, locale: localeCode)
                           : 'Ahora',
                       style: TextStyle(
                         fontSize: 9,

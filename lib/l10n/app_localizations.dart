@@ -825,6 +825,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'La descripción debe tener al menos 10 caracteres'**
   String get offerErrorDescTooShort;
+
+  /// No description provided for @offerDetailsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalle de la oferta'**
+  String get offerDetailsTitle;
+
+  /// No description provided for @offerDetailsLocation.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación'**
+  String get offerDetailsLocation;
+
+  /// No description provided for @offerDetailsRevenue.
+  ///
+  /// In es, this message translates to:
+  /// **'Facturación anual'**
+  String get offerDetailsRevenue;
+
+  /// No description provided for @offerDetailsEmployees.
+  ///
+  /// In es, this message translates to:
+  /// **'Empleados'**
+  String get offerDetailsEmployees;
+
+  /// No description provided for @offerDetailsYear.
+  ///
+  /// In es, this message translates to:
+  /// **'Año de fundación'**
+  String get offerDetailsYear;
+
+  /// No description provided for @offerDetailsDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción del negocio'**
+  String get offerDetailsDescription;
+
+  /// No description provided for @offerDetailsExtended.
+  ///
+  /// In es, this message translates to:
+  /// **'Información detallada'**
+  String get offerDetailsExtended;
+
+  /// No description provided for @offerDetailsApplyButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitar información'**
+  String get offerDetailsApplyButton;
+
+  /// No description provided for @offerDetailsPublished.
+  ///
+  /// In es, this message translates to:
+  /// **'Publicado'**
+  String get offerDetailsPublished;
 }
 
 class _AppLocalizationsDelegate

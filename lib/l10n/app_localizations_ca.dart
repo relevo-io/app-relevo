@@ -391,4 +391,31 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get offerErrorDescTooShort =>
       'La descripció ha de tenir almenys 10 caràcters';
+
+  @override
+  String get offerDetailsTitle => 'Detall de l\'oferta';
+
+  @override
+  String get offerDetailsLocation => 'Ubicació';
+
+  @override
+  String get offerDetailsRevenue => 'Facturació anual';
+
+  @override
+  String get offerDetailsEmployees => 'Treballadors';
+
+  @override
+  String get offerDetailsYear => 'Any de fundació';
+
+  @override
+  String get offerDetailsDescription => 'Descripció del negoci';
+
+  @override
+  String get offerDetailsExtended => 'Informació detallada';
+
+  @override
+  String get offerDetailsApplyButton => 'Sol·licitar informació';
+
+  @override
+  String get offerDetailsPublished => 'Publicat';
 }

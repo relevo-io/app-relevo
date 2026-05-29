@@ -120,5 +120,14 @@
     "offerPublishSuccess": "Oferta publicada correctament!",
     "offerPublishError": "Error en publicar l'oferta. Prova-ho de nou.",
     "offerErrorInvalidYear": "Introdueix un any vàlid",
-    "offerErrorDescTooShort": "La descripció ha de tenir almenys 10 caràcters"
+    "offerErrorDescTooShort": "La descripció ha de tenir almenys 10 caràcters",
+    "offerDetailsTitle": "Detall de l'oferta",
+    "offerDetailsLocation": "Ubicació",
+    "offerDetailsRevenue": "Facturació anual",
+    "offerDetailsEmployees": "Treballadors",
+    "offerDetailsYear": "Any de fundació",
+    "offerDetailsDescription": "Descripció del negoci",
+    "offerDetailsExtended": "Informació detallada",
+    "offerDetailsApplyButton": "Sol·licitar informació",
+    "offerDetailsPublished": "Publicat"
 }

@@ -16,7 +16,9 @@ void showRestrictedDialog(BuildContext context) {
         children: [
           Icon(
             Icons.lock_outline_rounded,
-            color: theme.colorScheme.primary,
+            color: theme.brightness == Brightness.dark
+                ? const Color(0xFF10B981)
+                : theme.colorScheme.primary,
             size: 28,
           ),
           const SizedBox(width: 12),

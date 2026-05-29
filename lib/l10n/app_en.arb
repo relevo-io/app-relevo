@@ -120,5 +120,14 @@
     "offerPublishSuccess": "Opportunity published successfully!",
     "offerPublishError": "Error publishing opportunity. Try again.",
     "offerErrorInvalidYear": "Enter a valid year",
-    "offerErrorDescTooShort": "Description must be at least 10 characters long"
+    "offerErrorDescTooShort": "Description must be at least 10 characters long",
+    "offerDetailsTitle": "Offer Details",
+    "offerDetailsLocation": "Location",
+    "offerDetailsRevenue": "Annual Revenue",
+    "offerDetailsEmployees": "Employees",
+    "offerDetailsYear": "Creation Year",
+    "offerDetailsDescription": "Business Description",
+    "offerDetailsExtended": "Additional Information",
+    "offerDetailsApplyButton": "Request Information",
+    "offerDetailsPublished": "Published"
 }
