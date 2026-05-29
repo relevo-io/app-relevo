@@ -102,15 +102,17 @@ class UserService {
     String? location,
     String? bio,
     String? professionalBackground,
+    List<String>? preferredRegions,
   }) async {
     try {
       await _dio.patch(
         '/usuarios/$userId',
         data: {
           'fullName': fullName,
-          'location': location,
-          'bio': bio,
-          'professionalBackground': professionalBackground,
+          'location': ?location,
+          'bio': ?bio,
+          'professionalBackground': ?professionalBackground,
+          'preferredRegions': ?preferredRegions,
         },
       );
     } on DioException catch (e) {

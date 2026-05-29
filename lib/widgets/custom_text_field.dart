@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -11,6 +12,8 @@ class CustomTextField extends StatelessWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final String? Function(String?)? validator;
   final int? maxLines;
+  final Color? fillColor;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -24,15 +27,18 @@ class CustomTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.validator,
     this.maxLines = 1,
+    this.fillColor,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final fillColor = isDark
-        ? theme.colorScheme.surface
-        : theme.colorScheme.onSurface.withValues(alpha: 0.05);
+    final resolvedFillColor = fillColor ??
+        (isDark
+            ? theme.colorScheme.surfaceContainer
+            : theme.colorScheme.onSurface.withValues(alpha: 0.05));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,6 +60,7 @@ class CustomTextField extends StatelessWidget {
           onFieldSubmitted: onFieldSubmitted,
           validator: validator,
           maxLines: isPassword ? 1 : maxLines,
+          inputFormatters: inputFormatters,
           style: TextStyle(color: theme.colorScheme.onSurface),
           decoration: InputDecoration(
             hintText: hint,
@@ -65,17 +72,17 @@ class CustomTextField extends StatelessWidget {
               color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
             filled: true,
-            fillColor: fillColor,
+            fillColor: resolvedFillColor,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.08),
+                color: theme.colorScheme.outline.withValues(alpha: isDark ? 0.25 : 0.08),
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.08),
+                color: theme.colorScheme.outline.withValues(alpha: isDark ? 0.25 : 0.08),
               ),
             ),
             errorBorder: OutlineInputBorder(

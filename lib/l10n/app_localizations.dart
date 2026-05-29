@@ -469,7 +469,7 @@ abstract class AppLocalizations {
   /// No description provided for @bottomNavInbox.
   ///
   /// In es, this message translates to:
-  /// **'Mensajes'**
+  /// **'Solicitudes'**
   String get bottomNavInbox;
 
   /// No description provided for @bottomNavYou.
@@ -879,6 +879,216 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Publicado'**
   String get offerDetailsPublished;
+
+  /// No description provided for @inboxTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Buzón de solicitudes'**
+  String get inboxTitle;
+
+  /// No description provided for @inboxTabReceived.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibidas'**
+  String get inboxTabReceived;
+
+  /// No description provided for @inboxTabSent.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviadas'**
+  String get inboxTabSent;
+
+  /// No description provided for @inboxEmptyReceived.
+  ///
+  /// In es, this message translates to:
+  /// **'No has recibido ninguna solicitud de acceso todavía'**
+  String get inboxEmptyReceived;
+
+  /// No description provided for @inboxEmptySent.
+  ///
+  /// In es, this message translates to:
+  /// **'No has enviado ninguna solicitud de acceso todavía'**
+  String get inboxEmptySent;
+
+  /// No description provided for @inboxStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get inboxStatusPending;
+
+  /// No description provided for @inboxStatusAccepted.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptada'**
+  String get inboxStatusAccepted;
+
+  /// No description provided for @inboxStatusRejected.
+  ///
+  /// In es, this message translates to:
+  /// **'Denegada'**
+  String get inboxStatusRejected;
+
+  /// No description provided for @inboxActionAccept.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar'**
+  String get inboxActionAccept;
+
+  /// No description provided for @inboxActionReject.
+  ///
+  /// In es, this message translates to:
+  /// **'Denegar'**
+  String get inboxActionReject;
+
+  /// No description provided for @inboxMessageLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensaje'**
+  String get inboxMessageLabel;
+
+  /// No description provided for @offerApplyFormTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud de acceso'**
+  String get offerApplyFormTitle;
+
+  /// No description provided for @offerApplyBackgroundLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Experiencia y capacidades (Background)'**
+  String get offerApplyBackgroundLabel;
+
+  /// No description provided for @offerApplyBackgroundHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Explica tu trayectoria o experiencia en el sector...'**
+  String get offerApplyBackgroundHint;
+
+  /// No description provided for @offerApplyRegionsLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Zonas preferidas de traspaso'**
+  String get offerApplyRegionsLabel;
+
+  /// No description provided for @offerApplyRegionsHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej: Gironès, Osona, Andorra (separadas por comas)...'**
+  String get offerApplyRegionsHint;
+
+  /// No description provided for @offerApplyBioLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Biografía'**
+  String get offerApplyBioLabel;
+
+  /// No description provided for @offerApplyBioHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Haz una breve descripción sobre quién eres y tus valores...'**
+  String get offerApplyBioHint;
+
+  /// No description provided for @offerApplyCvLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Currículum Vitae (PDF)'**
+  String get offerApplyCvLabel;
+
+  /// No description provided for @offerApplyCvSelect.
+  ///
+  /// In es, this message translates to:
+  /// **'Adjuntar currículum en formato PDF'**
+  String get offerApplyCvSelect;
+
+  /// No description provided for @offerApplyCvSelected.
+  ///
+  /// In es, this message translates to:
+  /// **'CV adjuntado: {filename}'**
+  String offerApplyCvSelected(Object filename);
+
+  /// No description provided for @offerApplySubmitButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar solicitud al propietario'**
+  String get offerApplySubmitButton;
+
+  /// No description provided for @offerApplyRequiredError.
+  ///
+  /// In es, this message translates to:
+  /// **'Este campo es obligatorio'**
+  String get offerApplyRequiredError;
+
+  /// No description provided for @offerApplyMinLengthError.
+  ///
+  /// In es, this message translates to:
+  /// **'Debe tener al menos {min} caracteres'**
+  String offerApplyMinLengthError(Object min);
+
+  /// No description provided for @offerApplyCvError.
+  ///
+  /// In es, this message translates to:
+  /// **'Por favor, adjunta tu currículum PDF'**
+  String get offerApplyCvError;
+
+  /// No description provided for @offerApplyCapitalLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Capital disponible (€)'**
+  String get offerApplyCapitalLabel;
+
+  /// No description provided for @offerApplyCapitalHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Ej: 50000'**
+  String get offerApplyCapitalHint;
+
+  /// No description provided for @offerApplyCapitalError.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce un importe válido (>= 0)'**
+  String get offerApplyCapitalError;
+
+  /// No description provided for @offerApplyFinancingLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Necesitas financiación?'**
+  String get offerApplyFinancingLabel;
+
+  /// No description provided for @offerApplyNdaLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Acepto el acuerdo de confidencialidad (NDA) y me comprometo a mantener reservados los detalles de la oferta.'**
+  String get offerApplyNdaLabel;
+
+  /// No description provided for @offerApplyNdaError.
+  ///
+  /// In es, this message translates to:
+  /// **'Debes aceptar el acuerdo de confidencialidad para continuar.'**
+  String get offerApplyNdaError;
+
+  /// No description provided for @offerApplySuccessTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Solicitud enviada!'**
+  String get offerApplySuccessTitle;
+
+  /// No description provided for @offerApplySuccessMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu solicitud se ha enviado correctamente al propietario de la oferta.'**
+  String get offerApplySuccessMessage;
+
+  /// No description provided for @offerApplySuccessOk.
+  ///
+  /// In es, this message translates to:
+  /// **'Entendido'**
+  String get offerApplySuccessOk;
+
+  /// No description provided for @offerApplyErrorPrefix.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al enviar la solicitud: {error}'**
+  String offerApplyErrorPrefix(Object error);
 }
 
 class _AppLocalizationsDelegate

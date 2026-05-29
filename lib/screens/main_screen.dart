@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
+import 'inbox_screen.dart';
 import 'profile_screen.dart';
 import 'sell_screen.dart';
 
@@ -39,7 +40,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     final screens = [
       const HomeScreen(),
       if (isLoggedIn) const SellScreen(),
-      if (isLoggedIn) const Scaffold(body: Center(child: Text('Mensajes'))),
+      if (isLoggedIn) const InboxScreen(),
       const ProfileScreen(),
     ];
 
@@ -57,8 +58,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           label: l10n.bottomNavSell,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(Icons.mail_outline),
-          activeIcon: const Icon(Icons.mail),
+          icon: const Icon(Icons.assignment_outlined),
+          activeIcon: const Icon(Icons.assignment),
           label: l10n.bottomNavInbox,
         ),
       ],

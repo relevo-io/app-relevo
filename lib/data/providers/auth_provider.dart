@@ -79,6 +79,7 @@ class Auth extends _$Auth {
     String? location,
     String? bio,
     String? professionalBackground,
+    List<String>? preferredRegions,
   }) async {
     final currentUser = state.value;
     if (currentUser == null) return;
@@ -92,6 +93,7 @@ class Auth extends _$Auth {
         location: location,
         bio: bio,
         professionalBackground: professionalBackground,
+        preferredRegions: preferredRegions,
       );
       final updatedUser = await userService.getMe();
       state = AsyncValue.data(updatedUser);

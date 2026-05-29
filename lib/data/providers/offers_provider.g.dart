@@ -46,7 +46,7 @@ final class OffersProvider
   }
 }
 
-String _$offersHash() => r'f0b2de3b37a8e57d4cafb43197790327fe48f273';
+String _$offersHash() => r'c909a332e7c3dbfb3b94c33241859e5fc1429e8e';
 
 @ProviderFor(myOffers)
 final myOffersProvider = MyOffersProvider._();

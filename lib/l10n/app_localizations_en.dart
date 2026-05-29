@@ -200,7 +200,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bottomNavSell => 'Sell';
 
   @override
-  String get bottomNavInbox => 'Inbox';
+  String get bottomNavInbox => 'Requests';
 
   @override
   String get bottomNavYou => 'You';
@@ -415,4 +415,122 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offerDetailsPublished => 'Published';
+
+  @override
+  String get inboxTitle => 'Requests Inbox';
+
+  @override
+  String get inboxTabReceived => 'Received';
+
+  @override
+  String get inboxTabSent => 'Sent';
+
+  @override
+  String get inboxEmptyReceived =>
+      'You haven\'t received any access requests yet';
+
+  @override
+  String get inboxEmptySent => 'You haven\'t sent any access requests yet';
+
+  @override
+  String get inboxStatusPending => 'Pending';
+
+  @override
+  String get inboxStatusAccepted => 'Accepted';
+
+  @override
+  String get inboxStatusRejected => 'Rejected';
+
+  @override
+  String get inboxActionAccept => 'Accept';
+
+  @override
+  String get inboxActionReject => 'Reject';
+
+  @override
+  String get inboxMessageLabel => 'Message';
+
+  @override
+  String get offerApplyFormTitle => 'Access Request';
+
+  @override
+  String get offerApplyBackgroundLabel => 'Professional Background';
+
+  @override
+  String get offerApplyBackgroundHint =>
+      'Explain your background or experience in the sector...';
+
+  @override
+  String get offerApplyRegionsLabel => 'Preferred Regions for Transfer';
+
+  @override
+  String get offerApplyRegionsHint =>
+      'e.g., Gironès, Osona, Andorra (comma-separated)...';
+
+  @override
+  String get offerApplyBioLabel => 'Biography';
+
+  @override
+  String get offerApplyBioHint =>
+      'Write a brief description of who you are and your values...';
+
+  @override
+  String get offerApplyCvLabel => 'Curriculum Vitae (PDF)';
+
+  @override
+  String get offerApplyCvSelect => 'Attach your CV in PDF format';
+
+  @override
+  String offerApplyCvSelected(Object filename) {
+    return 'CV attached: $filename';
+  }
+
+  @override
+  String get offerApplySubmitButton => 'Send Request to Owner';
+
+  @override
+  String get offerApplyRequiredError => 'This field is required';
+
+  @override
+  String offerApplyMinLengthError(Object min) {
+    return 'Must be at least $min characters long';
+  }
+
+  @override
+  String get offerApplyCvError => 'Please attach your PDF resume';
+
+  @override
+  String get offerApplyCapitalLabel => 'Available capital (€)';
+
+  @override
+  String get offerApplyCapitalHint => 'e.g., 50000';
+
+  @override
+  String get offerApplyCapitalError => 'Enter a valid amount (>= 0)';
+
+  @override
+  String get offerApplyFinancingLabel => 'Do you need financing?';
+
+  @override
+  String get offerApplyNdaLabel =>
+      'I accept the non-disclosure agreement (NDA) and commit to keep the details of the offer confidential.';
+
+  @override
+  String get offerApplyNdaError =>
+      'You must accept the non-disclosure agreement to continue.';
+
+  @override
+  String get offerApplySuccessTitle => 'Request sent!';
+
+  @override
+  String get offerApplySuccessMessage =>
+      'Your request has been successfully sent to the owner of the offer.';
+
+  @override
+  String get offerApplySuccessOk => 'Got it';
+
+  @override
+  String offerApplyErrorPrefix(Object error) {
+    return 'Error sending request: $error';
+  }
 }

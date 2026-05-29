@@ -27,6 +27,20 @@ class OfferService {
     }
   }
 
+  Future<Offer> getOfferById(String id) async {
+    try {
+      final response = await _dio.get('/ofertas/$id');
+      return Offer.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener la oferta',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
   Future<Offer> createOffer({
     required String region,
     required String sector,
