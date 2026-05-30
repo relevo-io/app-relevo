@@ -204,7 +204,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 130,
+                  height: 160,
                   child: offersState.when(
                     data: (offers) {
                       final filtered = isLoggedIn
@@ -336,7 +336,7 @@ class HomeScreen extends ConsumerWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 16,
-                          childAspectRatio: 1.2,
+                          childAspectRatio: 1.05,
                         ),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       Widget card = OfferCardGrid(

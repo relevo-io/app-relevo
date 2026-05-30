@@ -43,7 +43,9 @@ class Auth extends _$Auth {
           value: response.refreshToken!,
         );
       }
-      state = AsyncValue.data(response.usuario);
+      
+      final fullUser = await userService.getMe();
+      state = AsyncValue.data(fullUser);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;

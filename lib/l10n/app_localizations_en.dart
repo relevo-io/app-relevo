@@ -533,4 +533,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String offerApplyErrorPrefix(Object error) {
     return 'Error sending request: $error';
   }
+
+  @override
+  String get inboxErrorLoading => 'Error loading requests';
+
+  @override
+  String get inboxRetry => 'Retry';
+
+  @override
+  String get inboxStatusUpdatedSuccessfully => 'successfully.';
+
+  @override
+  String get inboxOwnerLabel => 'Owner';
+
+  @override
+  String get inboxNotAvailable => 'N/A';
+
+  @override
+  String get solicitudApplicantData => 'Applicant details';
+
+  @override
+  String get solicitudNoBio => 'No biography specified.';
+
+  @override
+  String get solicitudNoBackground => 'No professional background specified.';
+
+  @override
+  String get solicitudPreferencesFinance => 'Preferences & Financials';
+
+  @override
+  String get solicitudAllRegions => 'All regions';
+
+  @override
+  String get solicitudNotSpecified => 'Not specified';
+
+  @override
+  String get solicitudYes => 'Yes';
+
+  @override
+  String get solicitudNo => 'No';
+
+  @override
+  String get solicitudDocSecurity => 'Documentation & Security';
+
+  @override
+  String get solicitudNdaTitle => 'Non-Disclosure Agreement (NDA)';
+
+  @override
+  String get solicitudAccepted => 'Accepted';
+
+  @override
+  String get solicitudCvTitle => 'Curriculum Vitae';
+
+  @override
+  String get solicitudCvPdfSubtitle => 'Attached PDF file';
+
+  @override
+  String get solicitudCvView => 'View';
+
+  @override
+  String get solicitudCvPreviewComingSoon => 'CV preview coming soon!';
 }

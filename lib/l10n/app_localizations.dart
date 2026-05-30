@@ -1089,6 +1089,126 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Error al enviar la solicitud: {error}'**
   String offerApplyErrorPrefix(Object error);
+
+  /// No description provided for @inboxErrorLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al cargar las solicitudes'**
+  String get inboxErrorLoading;
+
+  /// No description provided for @inboxRetry.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a intentar'**
+  String get inboxRetry;
+
+  /// No description provided for @inboxStatusUpdatedSuccessfully.
+  ///
+  /// In es, this message translates to:
+  /// **'correctamente.'**
+  String get inboxStatusUpdatedSuccessfully;
+
+  /// No description provided for @inboxOwnerLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Propietario'**
+  String get inboxOwnerLabel;
+
+  /// No description provided for @inboxNotAvailable.
+  ///
+  /// In es, this message translates to:
+  /// **'N/A'**
+  String get inboxNotAvailable;
+
+  /// No description provided for @solicitudApplicantData.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos del solicitante'**
+  String get solicitudApplicantData;
+
+  /// No description provided for @solicitudNoBio.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin biografía especificada.'**
+  String get solicitudNoBio;
+
+  /// No description provided for @solicitudNoBackground.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin trayectoria profesional especificada.'**
+  String get solicitudNoBackground;
+
+  /// No description provided for @solicitudPreferencesFinance.
+  ///
+  /// In es, this message translates to:
+  /// **'Preferencias y Financieros'**
+  String get solicitudPreferencesFinance;
+
+  /// No description provided for @solicitudAllRegions.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las regiones'**
+  String get solicitudAllRegions;
+
+  /// No description provided for @solicitudNotSpecified.
+  ///
+  /// In es, this message translates to:
+  /// **'No especificado'**
+  String get solicitudNotSpecified;
+
+  /// No description provided for @solicitudYes.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí'**
+  String get solicitudYes;
+
+  /// No description provided for @solicitudNo.
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get solicitudNo;
+
+  /// No description provided for @solicitudDocSecurity.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentación y Seguridad'**
+  String get solicitudDocSecurity;
+
+  /// No description provided for @solicitudNdaTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'NDA de acuerdo de confidencialidad'**
+  String get solicitudNdaTitle;
+
+  /// No description provided for @solicitudAccepted.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptado'**
+  String get solicitudAccepted;
+
+  /// No description provided for @solicitudCvTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Currículum Vitae'**
+  String get solicitudCvTitle;
+
+  /// No description provided for @solicitudCvPdfSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Archivo adjunto en PDF'**
+  String get solicitudCvPdfSubtitle;
+
+  /// No description provided for @solicitudCvView.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver'**
+  String get solicitudCvView;
+
+  /// No description provided for @solicitudCvPreviewComingSoon.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Visualización de CV próximamente!'**
+  String get solicitudCvPreviewComingSoon;
 }
 
 class _AppLocalizationsDelegate

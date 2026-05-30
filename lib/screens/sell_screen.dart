@@ -193,7 +193,7 @@ class SellScreen extends ConsumerWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 16,
-                          childAspectRatio: 1.2,
+                          childAspectRatio: 1.05,
                         ),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return OfferCardGrid(offer: offers[index]);

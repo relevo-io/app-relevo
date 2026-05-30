@@ -7,7 +7,9 @@ import '../data/providers/offers_provider.dart';
 import '../data/providers/solicitud_provider.dart';
 import '../data/services/offer_service.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/request_status_badge.dart';
 import 'offer_details_screen.dart';
+import 'solicitud_details_screen.dart';
 
 class InboxScreen extends ConsumerWidget {
   const InboxScreen({super.key});
@@ -78,7 +80,7 @@ class InboxScreen extends ConsumerWidget {
               const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 48),
               const SizedBox(height: 16),
               Text(
-                'Error al carregar les sol·licituds',
+                l10n.inboxErrorLoading,
                 style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -90,7 +92,7 @@ class InboxScreen extends ConsumerWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () => ref.invalidate(receivedRequestsProvider),
-                child: const Text('Tornar a intentar'),
+                child: Text(l10n.inboxRetry),
               ),
             ],
           ),
@@ -140,56 +142,61 @@ class InboxScreen extends ConsumerWidget {
             final offer = request.opportunity;
             final status = request.status;
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(
-                    alpha: isDark ? 0.15 : 0.45,
-                  ),
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SolicitudDetailsScreen(solicitud: request),
                 ),
-                boxShadow: isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
               ),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Text(
-                          offer.sector.toUpperCase(),
-                          style: GoogleFonts.inter(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w800,
-                            color: isDark ? const Color(0xFF10B981) : theme.colorScheme.secondary,
-                            letterSpacing: 0.8,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(
+                      alpha: isDark ? 0.15 : 0.45,
+                    ),
+                  ),
+                  boxShadow: isDark
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            offer.sector.toUpperCase(),
+                            style: GoogleFonts.inter(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w800,
+                              color: isDark ? const Color(0xFF10B981) : theme.colorScheme.secondary,
+                              letterSpacing: 0.8,
+                            ),
                           ),
                         ),
-                      ),
-                      _buildStatusBadge(context, status),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  InkWell(
-                    onTap: () => _navigateToOffer(context, ref, offer),
-                    child: Row(
+                        RequestStatusBadge(status: status),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
                       children: [
                         Expanded(
                           child: Text(
@@ -198,8 +205,6 @@ class InboxScreen extends ConsumerWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
                               color: theme.colorScheme.onSurface,
-                              decoration: TextDecoration.underline,
-                              decorationColor: theme.colorScheme.onSurface.withValues(alpha: 0.3),
                             ),
                           ),
                         ),
@@ -209,7 +214,6 @@ class InboxScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -244,7 +248,7 @@ class InboxScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          l10n.inboxMessageLabel,
+                          l10n.offerApplyBackgroundLabel.toUpperCase(),
                           style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
@@ -254,7 +258,26 @@ class InboxScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          request.message ?? '',
+                          request.professionalBackground ?? '',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            height: 1.4,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          l10n.offerApplyBioLabel.toUpperCase(),
+                          style: GoogleFonts.inter(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          request.bio ?? '',
                           style: GoogleFonts.inter(
                             fontSize: 13,
                             height: 1.4,
@@ -277,7 +300,7 @@ class InboxScreen extends ConsumerWidget {
                                   ScaffoldMessenger.of(context).clearSnackBars();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('${l10n.inboxStatusRejected} correctament.'),
+                                      content: Text('${l10n.inboxStatusRejected} ${l10n.inboxStatusUpdatedSuccessfully}'),
                                       backgroundColor: Colors.redAccent,
                                     ),
                                   );
@@ -318,7 +341,7 @@ class InboxScreen extends ConsumerWidget {
                                   ScaffoldMessenger.of(context).clearSnackBars();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('${l10n.inboxStatusAccepted} correctament!'),
+                                      content: Text('${l10n.inboxStatusAccepted} ${l10n.inboxStatusUpdatedSuccessfully}'),
                                       backgroundColor: isDark ? const Color(0xFF10B981) : theme.colorScheme.secondary,
                                     ),
                                   );
@@ -354,8 +377,9 @@ class InboxScreen extends ConsumerWidget {
                   ],
                 ],
               ),
-            );
-          },
+            ),
+          );
+        },
         );
       },
     );
@@ -385,7 +409,7 @@ class InboxScreen extends ConsumerWidget {
               const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 48),
               const SizedBox(height: 16),
               Text(
-                'Error al carregar les sol·licituds',
+                l10n.inboxErrorLoading,
                 style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -397,7 +421,7 @@ class InboxScreen extends ConsumerWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () => ref.invalidate(sentRequestsProvider),
-                child: const Text('Tornar a intentar'),
+                child: Text(l10n.inboxRetry),
               ),
             ],
           ),
@@ -490,7 +514,7 @@ class InboxScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      _buildStatusBadge(context, status),
+                      RequestStatusBadge(status: status),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -527,7 +551,7 @@ class InboxScreen extends ConsumerWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Propietari: ${request.owner.fullName.isNotEmpty ? request.owner.fullName : 'S/N'}',
+                        '${l10n.inboxOwnerLabel}: ${request.owner.fullName.isNotEmpty ? request.owner.fullName : l10n.inboxNotAvailable}',
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -536,7 +560,6 @@ class InboxScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
@@ -551,7 +574,7 @@ class InboxScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          l10n.inboxMessageLabel,
+                          l10n.offerApplyBackgroundLabel.toUpperCase(),
                           style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
@@ -561,7 +584,26 @@ class InboxScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          request.message ?? '',
+                          request.professionalBackground ?? '',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            height: 1.4,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          l10n.offerApplyBioLabel.toUpperCase(),
+                          style: GoogleFonts.inter(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          request.bio ?? '',
                           style: GoogleFonts.inter(
                             fontSize: 13,
                             height: 1.4,
@@ -628,53 +670,5 @@ class InboxScreen extends ConsumerWidget {
         );
       });
     }
-  }
-
-  Widget _buildStatusBadge(BuildContext context, String status) {
-    final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    Color bgColor;
-    Color textColor;
-    String label;
-
-    switch (status) {
-      case 'PENDING':
-        bgColor = isDark ? const Color(0x33FF9800) : const Color(0xFFFFF3CD);
-        textColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFF856404);
-        label = l10n.inboxStatusPending;
-        break;
-      case 'ACCEPTED':
-        bgColor = isDark ? const Color(0x3310B981) : const Color(0xFFD4EDDA);
-        textColor = isDark ? const Color(0xFF34D399) : const Color(0xFF155724);
-        label = l10n.inboxStatusAccepted;
-        break;
-      case 'REJECTED':
-        bgColor = isDark ? const Color(0x33EF5350) : const Color(0xFFF8D7DA);
-        textColor = isDark ? const Color(0xFFE57373) : const Color(0xFF721C24);
-        label = l10n.inboxStatusRejected;
-        break;
-      default:
-        bgColor = theme.colorScheme.surface;
-        textColor = theme.colorScheme.onSurface;
-        label = '';
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.inter(
-          fontSize: 11,
-          fontWeight: FontWeight.bold,
-          color: textColor,
-        ),
-      ),
-    );
   }
 }

@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../data/models/offer_model.dart';
 import '../data/providers/auth_provider.dart';
+import '../data/providers/solicitud_provider.dart';
 import '../screens/offer_details_screen.dart';
+import 'request_status_badge.dart';
 import 'restricted_dialog.dart';
 
 class OfferCardGrid extends ConsumerWidget {
@@ -22,6 +24,11 @@ class OfferCardGrid extends ConsumerWidget {
     final priceColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.primary;
     final secondaryColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.secondary;
     final localeCode = Localizations.localeOf(context).languageCode;
+
+    final sentRequestsAsync = isLoggedIn ? ref.watch(sentRequestsProvider) : null;
+    final sentRequests = sentRequestsAsync?.value ?? [];
+    final existingRequestList = sentRequests.where((r) => r.opportunity.id == offer.id);
+    final existingRequest = existingRequestList.isNotEmpty ? existingRequestList.first : null;
 
     return GestureDetector(
       onTap: isLoggedIn
@@ -98,29 +105,37 @@ class OfferCardGrid extends ConsumerWidget {
                 ],
               ),
               if (isLoggedIn)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      offer.formattedRevenue,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w900,
-                        color: priceColor,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      offer.publishedAt != null
-                          ? timeago.format(offer.publishedAt!, locale: localeCode)
-                          : 'Ahora',
-                      style: TextStyle(
-                        fontSize: 9,
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          offer.formattedRevenue,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w900,
+                            color: priceColor,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 2),
+                        Text(
+                          offer.publishedAt != null
+                              ? timeago.format(offer.publishedAt!, locale: localeCode)
+                              : 'Ahora',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    if (existingRequest != null)
+                      RequestStatusBadge(status: existingRequest.status, isMini: true),
                   ],
                 ),
             ],

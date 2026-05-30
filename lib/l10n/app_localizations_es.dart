@@ -537,4 +537,66 @@ class AppLocalizationsEs extends AppLocalizations {
   String offerApplyErrorPrefix(Object error) {
     return 'Error al enviar la solicitud: $error';
   }
+
+  @override
+  String get inboxErrorLoading => 'Error al cargar las solicitudes';
+
+  @override
+  String get inboxRetry => 'Volver a intentar';
+
+  @override
+  String get inboxStatusUpdatedSuccessfully => 'correctamente.';
+
+  @override
+  String get inboxOwnerLabel => 'Propietario';
+
+  @override
+  String get inboxNotAvailable => 'N/A';
+
+  @override
+  String get solicitudApplicantData => 'Datos del solicitante';
+
+  @override
+  String get solicitudNoBio => 'Sin biografía especificada.';
+
+  @override
+  String get solicitudNoBackground =>
+      'Sin trayectoria profesional especificada.';
+
+  @override
+  String get solicitudPreferencesFinance => 'Preferencias y Financieros';
+
+  @override
+  String get solicitudAllRegions => 'Todas las regiones';
+
+  @override
+  String get solicitudNotSpecified => 'No especificado';
+
+  @override
+  String get solicitudYes => 'Sí';
+
+  @override
+  String get solicitudNo => 'No';
+
+  @override
+  String get solicitudDocSecurity => 'Documentación y Seguridad';
+
+  @override
+  String get solicitudNdaTitle => 'NDA de acuerdo de confidencialidad';
+
+  @override
+  String get solicitudAccepted => 'Aceptado';
+
+  @override
+  String get solicitudCvTitle => 'Currículum Vitae';
+
+  @override
+  String get solicitudCvPdfSubtitle => 'Archivo adjunto en PDF';
+
+  @override
+  String get solicitudCvView => 'Ver';
+
+  @override
+  String get solicitudCvPreviewComingSoon =>
+      '¡Visualización de CV próximamente!';
 }

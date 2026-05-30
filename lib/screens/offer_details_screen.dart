@@ -31,6 +31,11 @@ class OfferDetailsScreen extends ConsumerWidget {
 
     final isDark = theme.brightness == Brightness.dark;
 
+    final sentRequestsAsync = ref.watch(sentRequestsProvider);
+    final sentRequests = sentRequestsAsync.value ?? [];
+    final existingRequestList = sentRequests.where((r) => r.opportunity.id == offer.id);
+    final existingRequest = existingRequestList.isNotEmpty ? existingRequestList.first : null;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.offerDetailsTitle),
@@ -237,25 +242,132 @@ class OfferDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => ApplyFormBottomSheet(offer: offer),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(54),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(l10n.offerDetailsApplyButton),
-                ),
+                child: existingRequest != null
+                    ? _buildStatusBanner(context, existingRequest.status, localeCode)
+                    : ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => ApplyFormBottomSheet(offer: offer),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(54),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(l10n.offerDetailsApplyButton),
+                      ),
               ),
             ),
+    );
+  }
+
+  Widget _buildStatusBanner(BuildContext context, String status, String localeCode) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    Color bgColor;
+    Color textColor;
+    IconData icon;
+    String description;
+
+    switch (status) {
+      case 'PENDING':
+        bgColor = isDark ? const Color(0x33FF9800) : const Color(0xFFFFF3CD);
+        textColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFF856404);
+        icon = Icons.hourglass_empty_rounded;
+        if (localeCode == 'ca') {
+          description = "Pendent de revisió pel propietari.";
+        } else if (localeCode == 'es') {
+          description = "Pendiente de revisión por el propietario.";
+        } else {
+          description = "Pending review by the owner.";
+        }
+        break;
+      case 'ACCEPTED':
+        bgColor = isDark ? const Color(0x3310B981) : const Color(0xFFD4EDDA);
+        textColor = isDark ? const Color(0xFF34D399) : const Color(0xFF155724);
+        icon = Icons.check_circle_outline_rounded;
+        if (localeCode == 'ca') {
+          description = "Sol·licitud acceptada! Es posaran en contacte.";
+        } else if (localeCode == 'es') {
+          description = "¡Solicitud aceptada! Se pondrán en contacto.";
+        } else {
+          description = "Application accepted! They will contact you.";
+        }
+        break;
+      case 'REJECTED':
+      default:
+        bgColor = isDark ? const Color(0x33EF5350) : const Color(0xFFF8D7DA);
+        textColor = isDark ? const Color(0xFFE57373) : const Color(0xFF721C24);
+        icon = Icons.cancel_outlined;
+        if (localeCode == 'ca') {
+          description = "Sol·licitud denegada per a aquesta oportunitat.";
+        } else if (localeCode == 'es') {
+          description = "Solicitud denegada para esta oportunidad.";
+        } else {
+          description = "Application denied for this opportunity.";
+        }
+        break;
+    }
+
+    final String label = status == 'PENDING'
+        ? l10n.inboxStatusPending
+        : status == 'ACCEPTED'
+            ? l10n.inboxStatusAccepted
+            : l10n.inboxStatusRejected;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: textColor.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: textColor,
+            size: 28,
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label.toUpperCase(),
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    color: textColor,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: textColor.withValues(alpha: 0.8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -347,10 +459,36 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
   PlatformFile? _pickedCvFile;
   String? _cvError;
   bool _isSubmitting = false;
+  bool _isFormValid = false;
+
+  void _validateForm() {
+    final background = _backgroundController.text.trim();
+    final regions = _regionsController.text.trim();
+    final bio = _bioController.text.trim();
+    final capitalStr = _capitalController.text.trim();
+
+    final hasBackground = background.length >= 10;
+    final hasRegions = regions.isNotEmpty;
+    final hasBio = bio.length >= 10;
+    final hasCapital = capitalStr.isNotEmpty && (double.tryParse(capitalStr) != null && double.tryParse(capitalStr)! >= 0);
+
+    final isValid = hasBackground && hasRegions && hasBio && hasCapital && _ndaAccepted;
+
+    if (_isFormValid != isValid) {
+      setState(() {
+        _isFormValid = isValid;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _backgroundController.addListener(_validateForm);
+    _regionsController.addListener(_validateForm);
+    _bioController.addListener(_validateForm);
+    _capitalController.addListener(_validateForm);
+
     // Pre-fill with existing profile data as suggestions (not profile update)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final user = ref.read(authProvider).value;
@@ -359,6 +497,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
         _regionsController.text = user.preferredRegions?.join(', ') ?? '';
         _bioController.text = user.bio ?? '';
       }
+      _validateForm();
     });
   }
 
@@ -656,7 +795,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
 
               // ── Botó d'enviament ──
               ElevatedButton(
-                onPressed: _isSubmitting
+                onPressed: (!_isFormValid || _isSubmitting)
                     ? null
                     : () async {
                         setState(() {
@@ -875,7 +1014,10 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     return InkWell(
-      onTap: () => setState(() => _ndaAccepted = !_ndaAccepted),
+      onTap: () {
+        setState(() => _ndaAccepted = !_ndaAccepted);
+        _validateForm();
+      },
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -917,7 +1059,10 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
             ),
             Checkbox(
               value: _ndaAccepted,
-              onChanged: (v) => setState(() => _ndaAccepted = v ?? false),
+              onChanged: (v) {
+                setState(() => _ndaAccepted = v ?? false);
+                _validateForm();
+              },
               activeColor: isDark ? const Color(0xFF10B981) : theme.colorScheme.primary,
             ),
           ],

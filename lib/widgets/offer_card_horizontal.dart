@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/models/offer_model.dart';
 import '../data/providers/auth_provider.dart';
+import '../data/providers/solicitud_provider.dart';
 import '../screens/offer_details_screen.dart';
+import 'request_status_badge.dart';
 import 'restricted_dialog.dart';
 
 class OfferCardHorizontal extends ConsumerWidget {
@@ -20,6 +22,11 @@ class OfferCardHorizontal extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
     final priceColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.primary;
     final secondaryColor = isDark ? const Color(0xFF4ADE80) : theme.colorScheme.secondary;
+
+    final sentRequestsAsync = isLoggedIn ? ref.watch(sentRequestsProvider) : null;
+    final sentRequests = sentRequestsAsync?.value ?? [];
+    final existingRequestList = sentRequests.where((r) => r.opportunity.id == offer.id);
+    final existingRequest = existingRequestList.isNotEmpty ? existingRequestList.first : null;
 
     return GestureDetector(
       onTap: isLoggedIn
@@ -110,8 +117,9 @@ class OfferCardHorizontal extends ConsumerWidget {
                 ],
               ),
               if (isLoggedIn)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       offer.formattedRevenueShort,
@@ -121,6 +129,8 @@ class OfferCardHorizontal extends ConsumerWidget {
                         color: priceColor,
                       ),
                     ),
+                    if (existingRequest != null)
+                      RequestStatusBadge(status: existingRequest.status, isMini: true),
                   ],
                 ),
             ],
