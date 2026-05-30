@@ -625,8 +625,8 @@ class InboxScreen extends ConsumerWidget {
   void _navigateToOffer(BuildContext context, WidgetRef ref, Offer partialOffer) {
     final allOffersAsync = ref.read(offersProvider);
     Offer? fullOffer;
-    if (allOffersAsync is AsyncData<List<Offer>>) {
-      final match = allOffersAsync.value.where((o) => o.id == partialOffer.id);
+    if (allOffersAsync is AsyncData<OffersState>) {
+      final match = allOffersAsync.value.items.where((o) => o.id == partialOffer.id);
       if (match.isNotEmpty) {
         fullOffer = match.first;
       }

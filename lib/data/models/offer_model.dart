@@ -26,12 +26,17 @@ class Offer {
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) {
+    final dynamic rawOwner = json['owner'];
+    final String parsedOwner = rawOwner is Map
+        ? (rawOwner['_id'] ?? rawOwner['id'] ?? '').toString()
+        : (rawOwner ?? '').toString();
+
     return Offer(
       id: json['_id'] ?? '',
       region: json['region'] ?? '',
       sector: json['sector'] ?? '',
       revenueRange: json['revenueRange'],
-      owner: json['owner'] ?? '',
+      owner: parsedOwner,
       creationYear: json['creationYear'],
       employeeRange: json['employeeRange'],
       companyDescription: json['companyDescription'] ?? '',

@@ -9,20 +9,57 @@ import '../l10n/app_localizations.dart';
 import '../widgets/offer_card_horizontal.dart';
 import '../widgets/offer_card_grid.dart';
 import '../widgets/offers_shimmer.dart';
+import '../widgets/custom_search_bar.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final isLoggedIn = ref.read(authProvider).value != null;
+    if (!isLoggedIn) return; // Do not fetch more pages if not logged in
+
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(offersProvider.notifier).fetchNextPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final offersState = ref.watch(offersProvider);
     final themeMode = ref.watch(themeStateProvider);
     final theme = Theme.of(context);
     final user = ref.watch(authProvider).value;
     final isLoggedIn = user != null;
     final l10n = AppLocalizations.of(context)!;
+    final localeCode = Localizations.localeOf(context).languageCode;
+
+    final noOffersText = localeCode == 'ca'
+        ? 'No s\'han trobat ofertes'
+        : localeCode == 'en'
+            ? 'No offers found'
+            : 'No se encontraron ofertas';
 
     return Scaffold(
       appBar: AppBar(
@@ -32,8 +69,6 @@ class HomeScreen extends ConsumerWidget {
           style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w900),
         ),
         actions: [
-          if (isLoggedIn)
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           PopupMenuButton<String>(
             icon: const Icon(Icons.tune_outlined),
             onSelected: (String value) {
@@ -85,9 +120,15 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => ref.refresh(offersProvider.future),
+        onRefresh: () async {
+          ref.invalidate(offersProvider);
+          try {
+            await ref.read(offersProvider.future);
+          } catch (_) {}
+        },
         color: theme.colorScheme.secondary,
         child: CustomScrollView(
+          controller: _scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             if (isLoggedIn) ...[
@@ -105,41 +146,13 @@ class HomeScreen extends ConsumerWidget {
                           horizontal: 16.0,
                           vertical: 8.0,
                         ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: l10n.homeSearchHint,
-                            hintStyle: TextStyle(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                            ),
-                            filled: true,
-                            fillColor: theme.colorScheme.surfaceContainer,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: theme.colorScheme.outline.withValues(
-                                  alpha: 0.2,
-                                ),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: theme.colorScheme.secondary,
-                                width: 1,
-                              ),
-                            ),
-                          ),
+                        child: CustomSearchBar(
+                          hintText: l10n.homeSearchHint,
+                          onSearch: (query) {
+                            ref
+                                .read(offersProvider.notifier)
+                                .updateSearchQuery(query);
+                          },
                         ),
                       ),
                       Padding(
@@ -206,10 +219,24 @@ class HomeScreen extends ConsumerWidget {
                 child: SizedBox(
                   height: 160,
                   child: offersState.when(
-                    data: (offers) {
+                    data: (stateData) {
                       final filtered = isLoggedIn
-                          ? offers.where((o) => o.owner != user.id).toList()
-                          : offers;
+                          ? stateData.items.where((o) => o.owner != user.id).toList()
+                          : stateData.items;
+                      if (filtered.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              noOffersText,
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.only(left: 16),
@@ -321,13 +348,34 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             offersState.when(
-              data: (offers) {
+              data: (stateData) {
+                final offers = stateData.items;
                 final filtered = isLoggedIn
                     ? offers.where((o) => o.owner != user.id).toList()
                     : offers;
                 final displayedOffers = isLoggedIn
                     ? filtered
                     : filtered.take(4).toList();
+
+                if (displayedOffers.isEmpty) {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          noOffersText,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
                 return SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   sliver: SliverGrid(
@@ -371,8 +419,23 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               error: (err, st) =>
-                  const SliverToBoxAdapter(child: Center(child: Text('Error'))),
+                  SliverToBoxAdapter(child: Center(child: Text('Error: $err'))),
             ),
+            if (offersState.value?.isLoadingMore ?? false)
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                  child: Center(
+                    child: SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (!isLoggedIn)
               SliverToBoxAdapter(
                 child: Padding(

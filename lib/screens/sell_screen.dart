@@ -19,7 +19,12 @@ class SellScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.sellTitle), elevation: 0),
       body: RefreshIndicator(
-        onRefresh: () => ref.refresh(offersProvider.future),
+        onRefresh: () async {
+          ref.invalidate(myOffersProvider);
+          try {
+            await ref.read(myOffersProvider.future);
+          } catch (_) {}
+        },
         color: theme.colorScheme.secondary,
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),

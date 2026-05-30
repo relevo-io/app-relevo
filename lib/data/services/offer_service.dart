@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../network/dio_client.dart';
 import '../models/offer_model.dart';
+import '../models/pagination_model.dart';
 
 final offerServiceProvider = Provider<OfferService>((ref) {
   return OfferService(ref.read(dioProvider));
@@ -12,15 +13,63 @@ class OfferService {
 
   OfferService(this._dio);
 
-  Future<List<Offer>> getOffers() async {
+  Future<PaginatedResult<Offer>> getOffers({
+    int page = 1,
+    int limit = 12,
+    String? search,
+    String? excludeOwnerId,
+  }) async {
     try {
-      final response = await _dio.get('/ofertas');
+      final response = await _dio.get(
+        '/ofertas',
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+          if (search != null && search.isNotEmpty) 'search': search,
+          if (excludeOwnerId != null && excludeOwnerId.isNotEmpty)
+            'excludeOwnerId': excludeOwnerId,
+        },
+      );
+      if (response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> data = response.data;
+        final List<dynamic> itemsJson = data['items'] ?? [];
+        final items = itemsJson.map((json) => Offer.fromJson(json)).toList();
+        final pagination = PaginationMetadata.fromJson(data['pagination'] ?? {});
+        return PaginatedResult(items: items, pagination: pagination);
+      } else {
+        final List<dynamic> data = response.data;
+        final items = data.map((json) => Offer.fromJson(json)).toList();
+        return PaginatedResult(
+          items: items,
+          pagination: PaginationMetadata(
+            page: 1,
+            limit: items.length,
+            totalItems: items.length,
+            totalPages: 1,
+            hasNextPage: false,
+            hasPrevPage: false,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener ofertas',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<List<Offer>> getMyOffers() async {
+    try {
+      final response = await _dio.get('/ofertas/me');
       final List<dynamic> data = response.data;
       return data.map((json) => Offer.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         throw Exception(
-          e.response?.data['message'] ?? 'Error al obtener ofertas',
+          e.response?.data['message'] ?? 'Error al obtener mis ofertas',
         );
       }
       throw Exception('Error de conexión: ${e.message}');
@@ -56,11 +105,11 @@ class OfferService {
         data: {
           'region': region,
           'sector': sector,
-          'revenueRange': ?revenueRange,
-          'creationYear': ?creationYear,
-          'employeeRange': ?employeeRange,
+          'revenueRange': revenueRange,
+          'creationYear': creationYear,
+          'employeeRange': employeeRange,
           'companyDescription': companyDescription,
-          'extendedDescription': ?extendedDescription,
+          'extendedDescription': extendedDescription,
         },
       );
       return Offer.fromJson(response.data);
