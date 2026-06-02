@@ -598,4 +598,102 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get solicitudCvPreviewComingSoon => 'Visualització de CV pròximament!';
+
+  @override
+  String get profileMentoring => 'Programa de Mentoring';
+
+  @override
+  String get mentoringTitle => 'Mentoring';
+
+  @override
+  String get mentoringProgressLabel => 'El teu progrés';
+
+  @override
+  String mentoringDurationMinutes(Object duration) {
+    return '$duration min';
+  }
+
+  @override
+  String get mentoringModuleCompleted => 'Completat';
+
+  @override
+  String get mentoringModulePending => 'Pendent';
+
+  @override
+  String get mentoringCompletedAlert =>
+      'Enhorabona! Has completat aquest mòdul de mentoring.';
+
+  @override
+  String get mentoringMarkAsCompleted => 'Marcar com a completat';
+
+  @override
+  String get mentoringItemTip => 'Consell';
+
+  @override
+  String get mentoringItemQuestion => 'Pregunta';
+
+  @override
+  String get mentoringItemTask => 'Tasca';
+
+  @override
+  String get mentoringDetailTitle => 'Detalls del Mòdul';
+
+  @override
+  String get mentoringLoading => 'Carregant mentoring...';
+
+  @override
+  String mentoringError(Object error) {
+    return 'Error carregant mentoring: $error';
+  }
+
+  @override
+  String get profileAlerts => 'Alertes de cerca';
+
+  @override
+  String get profileNotifications => 'Notificacions';
+
+  @override
+  String get alertsTitle => 'Gestionar Alertes';
+
+  @override
+  String get alertsEmpty => 'No tens cap alerta configurada.';
+
+  @override
+  String get alertsCreateButton => 'Activar Alerta';
+
+  @override
+  String get alertsDeleteSuccess => 'Alerta eliminada correctament';
+
+  @override
+  String get alertsCreateSuccess => 'Alerta creada correctament';
+
+  @override
+  String get alertsSelectRevenue =>
+      'Selecciona el rang de facturació d\'interès:';
+
+  @override
+  String get notificationsTitle => 'Bústia de Notificacions';
+
+  @override
+  String get notificationsEmpty => 'No tens cap notificació.';
+
+  @override
+  String notificationsNewOffer(Object sector) {
+    return 'S\'ha publicat una nova oferta en el sector $sector que s\'ajusta a les teves preferències.';
+  }
+
+  @override
+  String get revenueRangeUNDER_100K => 'Menys de 100K €';
+
+  @override
+  String get revenueRangeBETWEEN_100K_500K => 'Entre 100K € i 500K €';
+
+  @override
+  String get revenueRangeBETWEEN_500K_1M => 'Entre 500K € i 1M €';
+
+  @override
+  String get revenueRangeBETWEEN_1M_5M => 'Entre 1M € i 5M €';
+
+  @override
+  String get revenueRangeOVER_5M => 'Més de 5M €';
 }

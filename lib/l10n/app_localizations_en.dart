@@ -593,4 +593,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get solicitudCvPreviewComingSoon => 'CV preview coming soon!';
+
+  @override
+  String get profileMentoring => 'Mentoring Program';
+
+  @override
+  String get mentoringTitle => 'Mentoring';
+
+  @override
+  String get mentoringProgressLabel => 'Your progress';
+
+  @override
+  String mentoringDurationMinutes(Object duration) {
+    return '$duration min';
+  }
+
+  @override
+  String get mentoringModuleCompleted => 'Completed';
+
+  @override
+  String get mentoringModulePending => 'Pending';
+
+  @override
+  String get mentoringCompletedAlert =>
+      'Congratulations! You have completed this mentoring module.';
+
+  @override
+  String get mentoringMarkAsCompleted => 'Mark as Completed';
+
+  @override
+  String get mentoringItemTip => 'Tip';
+
+  @override
+  String get mentoringItemQuestion => 'Question';
+
+  @override
+  String get mentoringItemTask => 'Task';
+
+  @override
+  String get mentoringDetailTitle => 'Module Details';
+
+  @override
+  String get mentoringLoading => 'Loading mentoring...';
+
+  @override
+  String mentoringError(Object error) {
+    return 'Error loading mentoring: $error';
+  }
+
+  @override
+  String get profileAlerts => 'Search Alerts';
+
+  @override
+  String get profileNotifications => 'Notifications';
+
+  @override
+  String get alertsTitle => 'Manage Alerts';
+
+  @override
+  String get alertsEmpty => 'You have no configured alerts.';
+
+  @override
+  String get alertsCreateButton => 'Activate Alert';
+
+  @override
+  String get alertsDeleteSuccess => 'Alert deleted successfully';
+
+  @override
+  String get alertsCreateSuccess => 'Alert created successfully';
+
+  @override
+  String get alertsSelectRevenue => 'Select the revenue range of interest:';
+
+  @override
+  String get notificationsTitle => 'Notification Inbox';
+
+  @override
+  String get notificationsEmpty => 'You have no notifications.';
+
+  @override
+  String notificationsNewOffer(Object sector) {
+    return 'A new offer in the $sector sector has been published that matches your preferences.';
+  }
+
+  @override
+  String get revenueRangeUNDER_100K => 'Under 100K €';
+
+  @override
+  String get revenueRangeBETWEEN_100K_500K => 'Between 100K € and 500K €';
+
+  @override
+  String get revenueRangeBETWEEN_500K_1M => 'Between 500K € and 1M €';
+
+  @override
+  String get revenueRangeBETWEEN_1M_5M => 'Between 1M € and 5M €';
+
+  @override
+  String get revenueRangeOVER_5M => 'Over 5M €';
 }

@@ -1209,6 +1209,186 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¡Visualización de CV próximamente!'**
   String get solicitudCvPreviewComingSoon;
+
+  /// No description provided for @profileMentoring.
+  ///
+  /// In es, this message translates to:
+  /// **'Programa de Mentoring'**
+  String get profileMentoring;
+
+  /// No description provided for @mentoringTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mentoring'**
+  String get mentoringTitle;
+
+  /// No description provided for @mentoringProgressLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu progreso'**
+  String get mentoringProgressLabel;
+
+  /// No description provided for @mentoringDurationMinutes.
+  ///
+  /// In es, this message translates to:
+  /// **'{duration} min'**
+  String mentoringDurationMinutes(Object duration);
+
+  /// No description provided for @mentoringModuleCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Completado'**
+  String get mentoringModuleCompleted;
+
+  /// No description provided for @mentoringModulePending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get mentoringModulePending;
+
+  /// No description provided for @mentoringCompletedAlert.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Enhorabuena! Has completado este módulo de mentoring.'**
+  String get mentoringCompletedAlert;
+
+  /// No description provided for @mentoringMarkAsCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como completado'**
+  String get mentoringMarkAsCompleted;
+
+  /// No description provided for @mentoringItemTip.
+  ///
+  /// In es, this message translates to:
+  /// **'Consejo'**
+  String get mentoringItemTip;
+
+  /// No description provided for @mentoringItemQuestion.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta'**
+  String get mentoringItemQuestion;
+
+  /// No description provided for @mentoringItemTask.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarea'**
+  String get mentoringItemTask;
+
+  /// No description provided for @mentoringDetailTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles del Módulo'**
+  String get mentoringDetailTitle;
+
+  /// No description provided for @mentoringLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando mentoring...'**
+  String get mentoringLoading;
+
+  /// No description provided for @mentoringError.
+  ///
+  /// In es, this message translates to:
+  /// **'Error cargando mentoring: {error}'**
+  String mentoringError(Object error);
+
+  /// No description provided for @profileAlerts.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas de búsqueda'**
+  String get profileAlerts;
+
+  /// No description provided for @profileNotifications.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificaciones'**
+  String get profileNotifications;
+
+  /// No description provided for @alertsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar Alertas'**
+  String get alertsTitle;
+
+  /// No description provided for @alertsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes ninguna alerta configurada.'**
+  String get alertsEmpty;
+
+  /// No description provided for @alertsCreateButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar Alerta'**
+  String get alertsCreateButton;
+
+  /// No description provided for @alertsDeleteSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Alerta eliminada correctamente'**
+  String get alertsDeleteSuccess;
+
+  /// No description provided for @alertsCreateSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Alerta creada correctamente'**
+  String get alertsCreateSuccess;
+
+  /// No description provided for @alertsSelectRevenue.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona el rango de facturación de interés:'**
+  String get alertsSelectRevenue;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Buzón de Notificaciones'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes ninguna notificación.'**
+  String get notificationsEmpty;
+
+  /// No description provided for @notificationsNewOffer.
+  ///
+  /// In es, this message translates to:
+  /// **'Se ha publicado una nueva oferta en el sector {sector} que se ajusta a tus preferencias.'**
+  String notificationsNewOffer(Object sector);
+
+  /// No description provided for @revenueRangeUNDER_100K.
+  ///
+  /// In es, this message translates to:
+  /// **'Menos de 100K €'**
+  String get revenueRangeUNDER_100K;
+
+  /// No description provided for @revenueRangeBETWEEN_100K_500K.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 100K € y 500K €'**
+  String get revenueRangeBETWEEN_100K_500K;
+
+  /// No description provided for @revenueRangeBETWEEN_500K_1M.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 500K € y 1M €'**
+  String get revenueRangeBETWEEN_500K_1M;
+
+  /// No description provided for @revenueRangeBETWEEN_1M_5M.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 1M € y 5M €'**
+  String get revenueRangeBETWEEN_1M_5M;
+
+  /// No description provided for @revenueRangeOVER_5M.
+  ///
+  /// In es, this message translates to:
+  /// **'Más de 5M €'**
+  String get revenueRangeOVER_5M;
 }
 
 class _AppLocalizationsDelegate
