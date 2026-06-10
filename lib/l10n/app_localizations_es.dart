@@ -697,4 +697,148 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get revenueRangeOVER_5M => 'Más de 5M €';
+
+  @override
+  String get mentoringTabBuy => 'Quiero comprar';
+
+  @override
+  String get mentoringTabSell => 'Quiero vender';
+
+  @override
+  String get mentoringNoModules => 'No hay módulos en esta ruta';
+
+  @override
+  String mentoringErrorLoadingContent(Object error) {
+    return 'Error al cargar el contenido: $error';
+  }
+
+  @override
+  String get mentoring_seller_m1_title => 'Preparar el negocio';
+
+  @override
+  String get mentoring_seller_m1_description =>
+      'Organiza la información clave antes de publicar tu traspaso.';
+
+  @override
+  String get mentoring_seller_m1_i1_title => 'Preparar la información';
+
+  @override
+  String get mentoring_seller_m2_title => 'Definir el precio';
+
+  @override
+  String get mentoring_seller_m2_description =>
+      'Criterios para valorar y poner un precio de salida realista.';
+
+  @override
+  String get mentoring_seller_m2_i1_title => 'Valoración del negocio';
+
+  @override
+  String get mentoring_seller_m3_title => 'Crear el anuncio';
+
+  @override
+  String get mentoring_seller_m3_description =>
+      'Cómo redactar una descripción atractiva y confidencial.';
+
+  @override
+  String get mentoring_seller_m3_i1_title => 'Redacción confidencial';
+
+  @override
+  String get mentoring_seller_m4_title => 'Filtrar compradores';
+
+  @override
+  String get mentoring_seller_m4_description =>
+      'Cómo gestionar las peticiones de información de forma segura.';
+
+  @override
+  String get mentoring_seller_m4_i1_title => 'Gestión de solicitudes';
+
+  @override
+  String get mentoring_seller_m5_title => 'Negociación de venta';
+
+  @override
+  String get mentoring_seller_m5_description =>
+      'Consejos para llegar a un acuerdo mutuo de traspaso de negocio.';
+
+  @override
+  String get mentoring_seller_m5_i1_title => 'El proceso de negociación';
+
+  @override
+  String get mentoring_seller_m6_title => 'Contrato y traspaso';
+
+  @override
+  String get mentoring_seller_m6_description =>
+      'Redacción de contratos, inventario y trámites legales.';
+
+  @override
+  String get mentoring_seller_m6_i1_title => 'Cierre de la venta';
+
+  @override
+  String get mentoring_buyer_m1_title => 'Definir objetivos de compra';
+
+  @override
+  String get mentoring_buyer_m1_description =>
+      'Aprende a establecer tus criterios de búsqueda de negocio.';
+
+  @override
+  String get mentoring_buyer_m1_i1_title => 'Definir criterios';
+
+  @override
+  String get mentoring_buyer_m2_title => 'Buscar negocios';
+
+  @override
+  String get mentoring_buyer_m2_description =>
+      'Cómo encontrar las mejores oportunidades de traspaso.';
+
+  @override
+  String get mentoring_buyer_m2_i1_title => 'Búsqueda de oportunidades';
+
+  @override
+  String get mentoring_buyer_m3_title => 'Analizar la viabilidad';
+
+  @override
+  String get mentoring_buyer_m3_description =>
+      'Recomendaciones para evaluar la rentabilidad del negocio.';
+
+  @override
+  String get mentoring_buyer_m3_i1_title => 'Análisis financiero';
+
+  @override
+  String get mentoring_buyer_m4_title => 'Negociación y oferta';
+
+  @override
+  String get mentoring_buyer_m4_description =>
+      'Consejos para hacer una oferta de compra inicial atractiva.';
+
+  @override
+  String get mentoring_buyer_m4_i1_title => 'Presentación de la oferta';
+
+  @override
+  String get mentoring_buyer_m5_title => 'Due Diligence';
+
+  @override
+  String get mentoring_buyer_m5_description =>
+      'Cómo hacer la auditoría y revisión del negocio antes de firmar.';
+
+  @override
+  String get mentoring_buyer_m5_i1_title => 'Auditoría del negocio';
+
+  @override
+  String get mentoring_buyer_m6_title => 'Financiación';
+
+  @override
+  String get mentoring_buyer_m6_description =>
+      'Opciones para conseguir el capital necesario para el traspaso.';
+
+  @override
+  String get mentoring_buyer_m6_i1_title => 'Estructuras de financiación';
+
+  @override
+  String get mentoring_buyer_m7_title => 'Transición y cierre';
+
+  @override
+  String get mentoring_buyer_m7_description =>
+      'Los pasos finales para firmar el contrato e iniciar la gestión.';
+
+  @override
+  String get mentoring_buyer_m7_i1_title => 'Traspaso de poderes';
 }

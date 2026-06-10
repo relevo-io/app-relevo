@@ -696,4 +696,148 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get revenueRangeOVER_5M => 'Més de 5M €';
+
+  @override
+  String get mentoringTabBuy => 'Vull comprar';
+
+  @override
+  String get mentoringTabSell => 'Vull vendre';
+
+  @override
+  String get mentoringNoModules => 'No hi ha mòduls en aquesta ruta';
+
+  @override
+  String mentoringErrorLoadingContent(Object error) {
+    return 'Error al carregar el contingut: $error';
+  }
+
+  @override
+  String get mentoring_seller_m1_title => 'Preparar el negoci';
+
+  @override
+  String get mentoring_seller_m1_description =>
+      'Organitza la informació clau abans de publicar el teu traspàs.';
+
+  @override
+  String get mentoring_seller_m1_i1_title => 'Preparar la informació';
+
+  @override
+  String get mentoring_seller_m2_title => 'Definir el preu';
+
+  @override
+  String get mentoring_seller_m2_description =>
+      'Criteris per valorar i posar un preu de sortida realista.';
+
+  @override
+  String get mentoring_seller_m2_i1_title => 'Valoració del negoci';
+
+  @override
+  String get mentoring_seller_m3_title => 'Crear l\'anunci';
+
+  @override
+  String get mentoring_seller_m3_description =>
+      'Com redactar una descripció atractiva i confidencial.';
+
+  @override
+  String get mentoring_seller_m3_i1_title => 'Redacció confidencial';
+
+  @override
+  String get mentoring_seller_m4_title => 'Filtrar compradors';
+
+  @override
+  String get mentoring_seller_m4_description =>
+      'Com gestionar les peticions d\'informació de forma segura.';
+
+  @override
+  String get mentoring_seller_m4_i1_title => 'Gestió de sol·licituds';
+
+  @override
+  String get mentoring_seller_m5_title => 'Negociació de venda';
+
+  @override
+  String get mentoring_seller_m5_description =>
+      'Consells per arribar a un acord mutu de traspàs de negoci.';
+
+  @override
+  String get mentoring_seller_m5_i1_title => 'El procés de negociació';
+
+  @override
+  String get mentoring_seller_m6_title => 'Contracte i traspàs';
+
+  @override
+  String get mentoring_seller_m6_description =>
+      'Redacció de contractes, inventari i tràmits legals.';
+
+  @override
+  String get mentoring_seller_m6_i1_title => 'Tancament de la venda';
+
+  @override
+  String get mentoring_buyer_m1_title => 'Definir els objectius de compra';
+
+  @override
+  String get mentoring_buyer_m1_description =>
+      'Aprèn a establir els teus criteris de cerca de negoci.';
+
+  @override
+  String get mentoring_buyer_m1_i1_title => 'Definir criteris';
+
+  @override
+  String get mentoring_buyer_m2_title => 'Cercar negocis';
+
+  @override
+  String get mentoring_buyer_m2_description =>
+      'Com trobar les millors oportunitats de traspàs.';
+
+  @override
+  String get mentoring_buyer_m2_i1_title => 'Cerca d\'oportunitats';
+
+  @override
+  String get mentoring_buyer_m3_title => 'Analitzar la viabilitat';
+
+  @override
+  String get mentoring_buyer_m3_description =>
+      'Recomanacions per avaluar la rendibilitat del negoci.';
+
+  @override
+  String get mentoring_buyer_m3_i1_title => 'Anàlisi financera';
+
+  @override
+  String get mentoring_buyer_m4_title => 'Negociació i oferta';
+
+  @override
+  String get mentoring_buyer_m4_description =>
+      'Consells per fer una oferta de compra inicial atractiva.';
+
+  @override
+  String get mentoring_buyer_m4_i1_title => 'Presentació de l\'oferta';
+
+  @override
+  String get mentoring_buyer_m5_title => 'Due Diligence';
+
+  @override
+  String get mentoring_buyer_m5_description =>
+      'Com fer l\'auditoria i revisió del negoci abans de signar.';
+
+  @override
+  String get mentoring_buyer_m5_i1_title => 'Auditoria del negoci';
+
+  @override
+  String get mentoring_buyer_m6_title => 'Finançament';
+
+  @override
+  String get mentoring_buyer_m6_description =>
+      'Opcions per aconseguir el capital necessari per al traspàs.';
+
+  @override
+  String get mentoring_buyer_m6_i1_title => 'Estructures de finançament';
+
+  @override
+  String get mentoring_buyer_m7_title => 'Transició i tancament';
+
+  @override
+  String get mentoring_buyer_m7_description =>
+      'Els passos finals per signar el contracte i iniciar la gestió.';
+
+  @override
+  String get mentoring_buyer_m7_i1_title => 'Traspàs de poders';
 }

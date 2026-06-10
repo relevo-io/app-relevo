@@ -3,13 +3,39 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/providers/mentoring_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../data/models/mentoring_module_model.dart';
+import '../data/models/mentoring_progress_model.dart';
+import '../utils/mentoring_localizations.dart';
 import 'module_detail_screen.dart';
 
-class MentoringScreen extends ConsumerWidget {
+class MentoringScreen extends ConsumerStatefulWidget {
   const MentoringScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MentoringScreen> createState() => _MentoringScreenState();
+}
+
+class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final modulesAsync = ref.watch(mentoringModulesProvider);
     final progressAsync = ref.watch(mentoringProgressStateProvider);
     final theme = Theme.of(context);
@@ -44,87 +70,120 @@ class MentoringScreen extends ConsumerWidget {
             data: (progress) {
               final percentage = progress.progressPercentage;
 
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Progress Header Card
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            theme.colorScheme.primary,
-                            theme.colorScheme.secondary,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.mentoringProgressLabel,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                theme.colorScheme.primary,
+                                theme.colorScheme.secondary,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: LinearProgressIndicator(
-                                    value: percentage / 100.0,
-                                    backgroundColor: Colors.white.withValues(alpha: 0.2),
-                                    valueColor: const AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
-                                    ),
-                                    minHeight: 12,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text(
-                                '$percentage%',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
                               ),
                             ],
                           ),
-                        ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.mentoringProgressLabel,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: LinearProgressIndicator(
+                                        value: percentage / 100.0,
+                                        backgroundColor: Colors.white.withValues(alpha: 0.2),
+                                        valueColor: const AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
+                                        ),
+                                        minHeight: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    '$percentage%',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    // Modules List
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: modules.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 16),
-                      itemBuilder: (context, index) {
-                        final module = modules[index];
-                        final isCompleted = progress.completedModules.contains(module.id);
-
-                        return _buildModuleCard(context, module, isCompleted, l10n);
-                      },
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: _TabBarDelegate(
+                        child: Container(
+                          color: theme.colorScheme.surface,
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TabBar(
+                              controller: _tabController,
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: theme.colorScheme.primary,
+                              ),
+                              labelColor: Colors.white,
+                              unselectedLabelColor: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              tabs: [
+                                Tab(text: l10n.mentoringTabBuy),
+                                Tab(text: l10n.mentoringTabSell),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildModulesList(
+                      context,
+                      modules.where((m) => m.route == 'BUY').toList(),
+                      progress,
+                      l10n,
+                    ),
+                    _buildModulesList(
+                      context,
+                      modules.where((m) => m.route == 'SELL').toList(),
+                      progress,
+                      l10n,
                     ),
                   ],
                 ),
@@ -133,6 +192,40 @@ class MentoringScreen extends ConsumerWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildModulesList(
+    BuildContext context,
+    List<MentoringModule> list,
+    MentoringProgress progress,
+    AppLocalizations l10n,
+  ) {
+    final theme = Theme.of(context);
+    if (list.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text(
+            l10n.mentoringNoModules,
+            style: TextStyle(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+      itemCount: list.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      itemBuilder: (context, index) {
+        final module = list[index];
+        final isCompleted = progress.completedModules.contains(module.id);
+        return _buildModuleCard(context, module, isCompleted, l10n);
+      },
     );
   }
 
@@ -201,7 +294,7 @@ class MentoringScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    module.title,
+                    l10n.translateMentoringKey(module.titleKey),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -210,7 +303,7 @@ class MentoringScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    module.description,
+                    l10n.translateMentoringKey(module.descriptionKey),
                     style: TextStyle(
                       fontSize: 13,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
@@ -266,5 +359,26 @@ class MentoringScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  _TabBarDelegate({required this.child});
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+  @override
+  double get maxExtent => 64.0;
+
+  @override
+  double get minExtent => 64.0;
+
+  @override
+  bool shouldRebuild(covariant _TabBarDelegate oldDelegate) {
+    return oldDelegate.child != child;
   }
 }

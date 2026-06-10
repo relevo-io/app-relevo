@@ -1,39 +1,36 @@
 class MentoringItem {
   final String type; // 'tip', 'question', 'task'
-  final String title;
-  final String text;
-  final List<String>? options;
+  final String titleKey;
+  final String contentKey;
 
   MentoringItem({
     required this.type,
-    required this.title,
-    required this.text,
-    this.options,
+    required this.titleKey,
+    required this.contentKey,
   });
 
   factory MentoringItem.fromJson(Map<String, dynamic> json) {
     return MentoringItem(
       type: json['type'] ?? 'tip',
-      title: json['title'] ?? '',
-      text: json['text'] ?? '',
-      options: json['options'] != null ? List<String>.from(json['options']) : null,
+      titleKey: json['titleKey'] ?? '',
+      contentKey: json['contentKey'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'type': type,
-      'title': title,
-      'text': text,
-      if (options != null) 'options': options,
+      'titleKey': titleKey,
+      'contentKey': contentKey,
     };
   }
 }
 
 class MentoringModule {
   final String id;
-  final String title;
-  final String description;
+  final String route; // 'BUY' or 'SELL'
+  final String titleKey;
+  final String descriptionKey;
   final List<MentoringItem> items;
   final int order;
   final int duration;
@@ -41,8 +38,9 @@ class MentoringModule {
 
   MentoringModule({
     required this.id,
-    required this.title,
-    required this.description,
+    required this.route,
+    required this.titleKey,
+    required this.descriptionKey,
     required this.items,
     required this.order,
     required this.duration,
@@ -52,8 +50,9 @@ class MentoringModule {
   factory MentoringModule.fromJson(Map<String, dynamic> json) {
     return MentoringModule(
       id: json['_id'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
+      route: json['route'] ?? 'BUY',
+      titleKey: json['titleKey'] ?? '',
+      descriptionKey: json['descriptionKey'] ?? '',
       items: json['items'] != null
           ? (json['items'] as List)
               .map((item) => MentoringItem.fromJson(item))
@@ -68,8 +67,9 @@ class MentoringModule {
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'title': title,
-      'description': description,
+      'route': route,
+      'titleKey': titleKey,
+      'descriptionKey': descriptionKey,
       'items': items.map((item) => item.toJson()).toList(),
       'order': order,
       'duration': duration,

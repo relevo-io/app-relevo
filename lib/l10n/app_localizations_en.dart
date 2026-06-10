@@ -690,4 +690,148 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get revenueRangeOVER_5M => 'Over 5M €';
+
+  @override
+  String get mentoringTabBuy => 'I want to buy';
+
+  @override
+  String get mentoringTabSell => 'I want to sell';
+
+  @override
+  String get mentoringNoModules => 'No modules in this route';
+
+  @override
+  String mentoringErrorLoadingContent(Object error) {
+    return 'Error loading content: $error';
+  }
+
+  @override
+  String get mentoring_seller_m1_title => 'Prepare the business';
+
+  @override
+  String get mentoring_seller_m1_description =>
+      'Organize key information before listing your transfer.';
+
+  @override
+  String get mentoring_seller_m1_i1_title => 'Prepare information';
+
+  @override
+  String get mentoring_seller_m2_title => 'Set the price';
+
+  @override
+  String get mentoring_seller_m2_description =>
+      'Criteria to value and set a realistic asking price.';
+
+  @override
+  String get mentoring_seller_m2_i1_title => 'Business valuation';
+
+  @override
+  String get mentoring_seller_m3_title => 'Create the listing';
+
+  @override
+  String get mentoring_seller_m3_description =>
+      'How to write an attractive and confidential description.';
+
+  @override
+  String get mentoring_seller_m3_i1_title => 'Confidential writing';
+
+  @override
+  String get mentoring_seller_m4_title => 'Screen buyers';
+
+  @override
+  String get mentoring_seller_m4_description =>
+      'How to securely manage requests for information.';
+
+  @override
+  String get mentoring_seller_m4_i1_title => 'Managing requests';
+
+  @override
+  String get mentoring_seller_m5_title => 'Selling negotiation';
+
+  @override
+  String get mentoring_seller_m5_description =>
+      'Tips to reach a mutual agreement for the business transfer.';
+
+  @override
+  String get mentoring_seller_m5_i1_title => 'The negotiation process';
+
+  @override
+  String get mentoring_seller_m6_title => 'Contract and transfer';
+
+  @override
+  String get mentoring_seller_m6_description =>
+      'Writing contracts, inventory, and legal paperwork.';
+
+  @override
+  String get mentoring_seller_m6_i1_title => 'Closing the sale';
+
+  @override
+  String get mentoring_buyer_m1_title => 'Define buying objectives';
+
+  @override
+  String get mentoring_buyer_m1_description =>
+      'Learn to set your business search criteria.';
+
+  @override
+  String get mentoring_buyer_m1_i1_title => 'Define criteria';
+
+  @override
+  String get mentoring_buyer_m2_title => 'Search businesses';
+
+  @override
+  String get mentoring_buyer_m2_description =>
+      'How to find the best transfer opportunities.';
+
+  @override
+  String get mentoring_buyer_m2_i1_title => 'Searching for opportunities';
+
+  @override
+  String get mentoring_buyer_m3_title => 'Analyze viability';
+
+  @override
+  String get mentoring_buyer_m3_description =>
+      'Recommendations to evaluate business profitability.';
+
+  @override
+  String get mentoring_buyer_m3_i1_title => 'Financial analysis';
+
+  @override
+  String get mentoring_buyer_m4_title => 'Negotiation and offer';
+
+  @override
+  String get mentoring_buyer_m4_description =>
+      'Tips to make an attractive initial buying offer.';
+
+  @override
+  String get mentoring_buyer_m4_i1_title => 'Presenting the offer';
+
+  @override
+  String get mentoring_buyer_m5_title => 'Due Diligence';
+
+  @override
+  String get mentoring_buyer_m5_description =>
+      'How to audit and review the business before signing.';
+
+  @override
+  String get mentoring_buyer_m5_i1_title => 'Auditing the business';
+
+  @override
+  String get mentoring_buyer_m6_title => 'Financing';
+
+  @override
+  String get mentoring_buyer_m6_description =>
+      'Options to secure the necessary capital for the transfer.';
+
+  @override
+  String get mentoring_buyer_m6_i1_title => 'Financing structures';
+
+  @override
+  String get mentoring_buyer_m7_title => 'Transition and closing';
+
+  @override
+  String get mentoring_buyer_m7_description =>
+      'The final steps to sign the contract and start managing.';
+
+  @override
+  String get mentoring_buyer_m7_i1_title => 'Transfer of powers';
 }

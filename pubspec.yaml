@@ -21,6 +21,7 @@ dependencies:
   shimmer: ^3.0.0
   timeago: ^3.7.1
   file_picker: ^3.0.4
+  flutter_markdown: ^0.7.5
 
 dev_dependencies:
   flutter_test:

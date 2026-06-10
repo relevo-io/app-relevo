@@ -55,4 +55,27 @@ class MentoringService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<String> getMarkdownContent(String route, String contentKey, String lang) async {
+    try {
+      final response = await _dio.get(
+        '/mentoring/content/$route/$contentKey',
+        queryParameters: {'lang': lang},
+        options: Options(responseType: ResponseType.plain),
+      );
+      return response.data ?? '';
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final errorData = e.response?.data;
+        if (errorData is Map) {
+          throw Exception(
+            errorData['message'] ?? 'Error al obtener el contenido de mentoring',
+          );
+        } else {
+          throw Exception(errorData.toString());
+        }
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

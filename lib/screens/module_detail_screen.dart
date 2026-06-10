@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import '../data/models/mentoring_module_model.dart';
 import '../data/providers/mentoring_provider.dart';
+import '../data/services/mentoring_service.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/mentoring_localizations.dart';
 
 class ModuleDetailScreen extends ConsumerStatefulWidget {
   final MentoringModule module;
@@ -77,7 +80,7 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
                 children: [
                   // Module Header
                   Text(
-                    widget.module.title,
+                    l10n.translateMentoringKey(widget.module.titleKey),
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurface,
@@ -85,7 +88,7 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.module.description,
+                    l10n.translateMentoringKey(widget.module.descriptionKey),
                     style: TextStyle(
                       fontSize: 14,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
@@ -143,6 +146,7 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
     AppLocalizations l10n,
   ) {
     final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     IconData icon;
     Color color;
     String typeLabel;
@@ -198,55 +202,60 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            item.title,
+            l10n.translateMentoringKey(item.titleKey),
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            item.text,
-            style: TextStyle(
-              fontSize: 13,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-              height: 1.4,
-            ),
-          ),
-          if (item.options != null && item.options!.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            ...item.options!.map((option) => Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          const SizedBox(height: 8),
+          FutureBuilder<String>(
+            future: ref.read(mentoringServiceProvider).getMarkdownContent(
+                  widget.module.route,
+                  item.contentKey,
+                  locale,
+                ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.radio_button_off_outlined,
-                        size: 16,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          option,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                    ],
+                );
+              } else if (snapshot.hasError) {
+                return Text(
+                  l10n.mentoringErrorLoadingContent(snapshot.error.toString()),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.colorScheme.error,
                   ),
-                )),
-          ],
+                );
+              } else {
+                final markdownText = snapshot.data ?? '';
+                return MarkdownBody(
+                  data: markdownText,
+                  selectable: true,
+                  styleSheet: MarkdownStyleSheet(
+                    p: TextStyle(
+                      fontSize: 13,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                      height: 1.4,
+                    ),
+                    listBullet: TextStyle(
+                      fontSize: 13,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
