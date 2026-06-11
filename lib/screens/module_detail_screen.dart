@@ -238,10 +238,11 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
                 );
               } else {
                 final markdownText = snapshot.data ?? '';
+                final isDark = theme.brightness == Brightness.dark;
                 return MarkdownBody(
                   data: markdownText,
                   selectable: true,
-                  styleSheet: MarkdownStyleSheet(
+                  styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
                     p: TextStyle(
                       fontSize: 13,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
@@ -250,6 +251,25 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
                     listBullet: TextStyle(
                       fontSize: 13,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
+                    blockquoteDecoration: BoxDecoration(
+                      color: isDark
+                          ? theme.colorScheme.surfaceContainerHigh
+                          : Colors.amber.shade50,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border(
+                        left: BorderSide(
+                          color: Colors.amber.shade700,
+                          width: 4,
+                        ),
+                      ),
+                    ),
+                    blockquote: TextStyle(
+                      fontSize: 13,
+                      fontStyle: FontStyle.italic,
+                      color: isDark
+                          ? Colors.amber.shade200
+                          : Colors.amber.shade900,
                     ),
                   ),
                 );
