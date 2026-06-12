@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
+import '../providers/language_provider.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   return DioClient(const FlutterSecureStorage(), ref: ref).dio;
@@ -49,10 +50,13 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Inject access token if available
     final token = await storage.read(key: 'access_token');
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
+    }
+    final locale = ref?.read(languageStateProvider);
+    if (locale != null) {
+      options.headers['Accept-Language'] = locale.languageCode;
     }
     return handler.next(options);
   }

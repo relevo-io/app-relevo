@@ -1209,6 +1209,444 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¡Visualización de CV próximamente!'**
   String get solicitudCvPreviewComingSoon;
+
+  /// No description provided for @profileMentoring.
+  ///
+  /// In es, this message translates to:
+  /// **'Programa de Mentoring'**
+  String get profileMentoring;
+
+  /// No description provided for @mentoringTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mentoring'**
+  String get mentoringTitle;
+
+  /// No description provided for @mentoringProgressLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu progreso'**
+  String get mentoringProgressLabel;
+
+  /// No description provided for @mentoringDurationMinutes.
+  ///
+  /// In es, this message translates to:
+  /// **'{duration} min'**
+  String mentoringDurationMinutes(Object duration);
+
+  /// No description provided for @mentoringModuleCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Completado'**
+  String get mentoringModuleCompleted;
+
+  /// No description provided for @mentoringModulePending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get mentoringModulePending;
+
+  /// No description provided for @mentoringCompletedAlert.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Enhorabuena! Has completado este módulo de mentoring.'**
+  String get mentoringCompletedAlert;
+
+  /// No description provided for @mentoringMarkAsCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como completado'**
+  String get mentoringMarkAsCompleted;
+
+  /// No description provided for @mentoringItemTip.
+  ///
+  /// In es, this message translates to:
+  /// **'Consejo'**
+  String get mentoringItemTip;
+
+  /// No description provided for @mentoringItemQuestion.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregunta'**
+  String get mentoringItemQuestion;
+
+  /// No description provided for @mentoringItemTask.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarea'**
+  String get mentoringItemTask;
+
+  /// No description provided for @mentoringDetailTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles del Módulo'**
+  String get mentoringDetailTitle;
+
+  /// No description provided for @mentoringLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando mentoring...'**
+  String get mentoringLoading;
+
+  /// No description provided for @mentoringError.
+  ///
+  /// In es, this message translates to:
+  /// **'Error cargando mentoring: {error}'**
+  String mentoringError(Object error);
+
+  /// No description provided for @profileAlerts.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas de búsqueda'**
+  String get profileAlerts;
+
+  /// No description provided for @profileNotifications.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificaciones'**
+  String get profileNotifications;
+
+  /// No description provided for @alertsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar Alertas'**
+  String get alertsTitle;
+
+  /// No description provided for @alertsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes ninguna alerta configurada.'**
+  String get alertsEmpty;
+
+  /// No description provided for @alertsCreateButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar Alerta'**
+  String get alertsCreateButton;
+
+  /// No description provided for @alertsDeleteSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Alerta eliminada correctamente'**
+  String get alertsDeleteSuccess;
+
+  /// No description provided for @alertsCreateSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Alerta creada correctamente'**
+  String get alertsCreateSuccess;
+
+  /// No description provided for @alertsSelectRevenue.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona el rango de facturación de interés:'**
+  String get alertsSelectRevenue;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Buzón de Notificaciones'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes ninguna notificación.'**
+  String get notificationsEmpty;
+
+  /// No description provided for @notificationsNewOffer.
+  ///
+  /// In es, this message translates to:
+  /// **'Se ha publicado una nueva oferta en el sector {sector} que se ajusta a tus preferencias.'**
+  String notificationsNewOffer(Object sector);
+
+  /// No description provided for @revenueRangeUNDER_100K.
+  ///
+  /// In es, this message translates to:
+  /// **'Menos de 100K €'**
+  String get revenueRangeUNDER_100K;
+
+  /// No description provided for @revenueRangeBETWEEN_100K_500K.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 100K € y 500K €'**
+  String get revenueRangeBETWEEN_100K_500K;
+
+  /// No description provided for @revenueRangeBETWEEN_500K_1M.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 500K € y 1M €'**
+  String get revenueRangeBETWEEN_500K_1M;
+
+  /// No description provided for @revenueRangeBETWEEN_1M_5M.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 1M € y 5M €'**
+  String get revenueRangeBETWEEN_1M_5M;
+
+  /// No description provided for @revenueRangeOVER_5M.
+  ///
+  /// In es, this message translates to:
+  /// **'Más de 5M €'**
+  String get revenueRangeOVER_5M;
+
+  /// No description provided for @mentoringTabBuy.
+  ///
+  /// In es, this message translates to:
+  /// **'Quiero comprar'**
+  String get mentoringTabBuy;
+
+  /// No description provided for @mentoringTabSell.
+  ///
+  /// In es, this message translates to:
+  /// **'Quiero vender'**
+  String get mentoringTabSell;
+
+  /// No description provided for @mentoringNoModules.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay módulos en esta ruta'**
+  String get mentoringNoModules;
+
+  /// No description provided for @mentoringErrorLoadingContent.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al cargar el contenido: {error}'**
+  String mentoringErrorLoadingContent(Object error);
+
+  /// No description provided for @mentoring_seller_m1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Preparar la empresa para la venta'**
+  String get mentoring_seller_m1_title;
+
+  /// No description provided for @mentoring_seller_m1_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprender a identificar el mejor momento para vender, entender los motivos habituales de venta y evitar errores frecuentes antes de publicar la oferta.'**
+  String get mentoring_seller_m1_description;
+
+  /// No description provided for @mentoring_seller_m1_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Preparar la venta'**
+  String get mentoring_seller_m1_i1_title;
+
+  /// No description provided for @mentoring_seller_m2_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Organizar la documentación'**
+  String get mentoring_seller_m2_title;
+
+  /// No description provided for @mentoring_seller_m2_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Preparar la documentación financiera, legal y operativa necesaria para transmitir confianza a los posibles compradores.'**
+  String get mentoring_seller_m2_description;
+
+  /// No description provided for @mentoring_seller_m2_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentación clave'**
+  String get mentoring_seller_m2_i1_title;
+
+  /// No description provided for @mentoring_seller_m3_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Valorar la empresa'**
+  String get mentoring_seller_m3_title;
+
+  /// No description provided for @mentoring_seller_m3_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprender qué factores determinan el valor de una empresa, como la rentabilidad, los activos y el potencial de crecimiento.'**
+  String get mentoring_seller_m3_description;
+
+  /// No description provided for @mentoring_seller_m3_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Valoración del negocio'**
+  String get mentoring_seller_m3_i1_title;
+
+  /// No description provided for @mentoring_seller_m4_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear una oferta atractiva'**
+  String get mentoring_seller_m4_title;
+
+  /// No description provided for @mentoring_seller_m4_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprender a presentar el negocio de manera profesional, destacando los puntos fuertes y protegiendo la información confidencial.'**
+  String get mentoring_seller_m4_description;
+
+  /// No description provided for @mentoring_seller_m4_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Presentación profesional'**
+  String get mentoring_seller_m4_i1_title;
+
+  /// No description provided for @mentoring_seller_m5_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar contactos y negociaciones'**
+  String get mentoring_seller_m5_title;
+
+  /// No description provided for @mentoring_seller_m5_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Filtrar posibles compradores, compartir información de manera progresiva y gestionar las negociaciones con profesionalidad.'**
+  String get mentoring_seller_m5_description;
+
+  /// No description provided for @mentoring_seller_m5_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'El proceso de negociación'**
+  String get mentoring_seller_m5_i1_title;
+
+  /// No description provided for @mentoring_seller_m6_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar la venta'**
+  String get mentoring_seller_m6_title;
+
+  /// No description provided for @mentoring_seller_m6_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Completar las fases finales del proceso, incluyendo la Due Diligence, la firma de los contratos y la preparación de la transición.'**
+  String get mentoring_seller_m6_description;
+
+  /// No description provided for @mentoring_seller_m6_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Cierre de la venta'**
+  String get mentoring_seller_m6_i1_title;
+
+  /// No description provided for @mentoring_buyer_m1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Definir los objetivos de compra'**
+  String get mentoring_buyer_m1_title;
+
+  /// No description provided for @mentoring_buyer_m1_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Determinar el presupuesto disponible, los sectores de interés y las características que debería tener la empresa ideal.'**
+  String get mentoring_buyer_m1_description;
+
+  /// No description provided for @mentoring_buyer_m1_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Definir criterios'**
+  String get mentoring_buyer_m1_i1_title;
+
+  /// No description provided for @mentoring_buyer_m2_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar oportunidades'**
+  String get mentoring_buyer_m2_title;
+
+  /// No description provided for @mentoring_buyer_m2_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprender dónde encontrar empresas en venta y cómo realizar un primer filtrado de oportunidades potenciales.'**
+  String get mentoring_buyer_m2_description;
+
+  /// No description provided for @mentoring_buyer_m2_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Búsqueda de oportunidades'**
+  String get mentoring_buyer_m2_i1_title;
+
+  /// No description provided for @mentoring_buyer_m3_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Analizar la situación financiera'**
+  String get mentoring_buyer_m3_title;
+
+  /// No description provided for @mentoring_buyer_m3_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Interpretar la información financiera de la empresa, incluyendo facturación, beneficios, endeudamiento y liquidez.'**
+  String get mentoring_buyer_m3_description;
+
+  /// No description provided for @mentoring_buyer_m3_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Análisis financiero'**
+  String get mentoring_buyer_m3_i1_title;
+
+  /// No description provided for @mentoring_buyer_m4_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Valorar si el precio es correcto'**
+  String get mentoring_buyer_m4_title;
+
+  /// No description provided for @mentoring_buyer_m4_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Analizar si la valoración propuesta por el vendedor es coherente con la realidad y el potencial del negocio.'**
+  String get mentoring_buyer_m4_description;
+
+  /// No description provided for @mentoring_buyer_m4_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Evaluar la valoración'**
+  String get mentoring_buyer_m4_i1_title;
+
+  /// No description provided for @mentoring_buyer_m5_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Negociar la compra'**
+  String get mentoring_buyer_m5_title;
+
+  /// No description provided for @mentoring_buyer_m5_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Prepararse para negociar el precio y las condiciones de la operación, identificando riesgos y oportunidades.'**
+  String get mentoring_buyer_m5_description;
+
+  /// No description provided for @mentoring_buyer_m5_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Estrategias de negociación'**
+  String get mentoring_buyer_m5_i1_title;
+
+  /// No description provided for @mentoring_buyer_m6_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Formalizar la adquisición'**
+  String get mentoring_buyer_m6_title;
+
+  /// No description provided for @mentoring_buyer_m6_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar la documentación legal, completar la Due Diligence y formalizar la compra mediante los contratos correspondientes.'**
+  String get mentoring_buyer_m6_description;
+
+  /// No description provided for @mentoring_buyer_m6_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Contratos y cierre'**
+  String get mentoring_buyer_m6_i1_title;
+
+  /// No description provided for @mentoring_buyer_m7_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Gestionar la empresa después de la compra'**
+  String get mentoring_buyer_m7_title;
+
+  /// No description provided for @mentoring_buyer_m7_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Planificar la transición, mantener la confianza del equipo y de los clientes, y establecer las bases para el futuro crecimiento del negocio.'**
+  String get mentoring_buyer_m7_description;
+
+  /// No description provided for @mentoring_buyer_m7_i1_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Traspaso de poderes'**
+  String get mentoring_buyer_m7_i1_title;
 }
 
 class _AppLocalizationsDelegate

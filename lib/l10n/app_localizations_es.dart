@@ -599,4 +599,247 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get solicitudCvPreviewComingSoon =>
       '¡Visualización de CV próximamente!';
+
+  @override
+  String get profileMentoring => 'Programa de Mentoring';
+
+  @override
+  String get mentoringTitle => 'Mentoring';
+
+  @override
+  String get mentoringProgressLabel => 'Tu progreso';
+
+  @override
+  String mentoringDurationMinutes(Object duration) {
+    return '$duration min';
+  }
+
+  @override
+  String get mentoringModuleCompleted => 'Completado';
+
+  @override
+  String get mentoringModulePending => 'Pendiente';
+
+  @override
+  String get mentoringCompletedAlert =>
+      '¡Enhorabuena! Has completado este módulo de mentoring.';
+
+  @override
+  String get mentoringMarkAsCompleted => 'Marcar como completado';
+
+  @override
+  String get mentoringItemTip => 'Consejo';
+
+  @override
+  String get mentoringItemQuestion => 'Pregunta';
+
+  @override
+  String get mentoringItemTask => 'Tarea';
+
+  @override
+  String get mentoringDetailTitle => 'Detalles del Módulo';
+
+  @override
+  String get mentoringLoading => 'Cargando mentoring...';
+
+  @override
+  String mentoringError(Object error) {
+    return 'Error cargando mentoring: $error';
+  }
+
+  @override
+  String get profileAlerts => 'Alertas de búsqueda';
+
+  @override
+  String get profileNotifications => 'Notificaciones';
+
+  @override
+  String get alertsTitle => 'Gestionar Alertas';
+
+  @override
+  String get alertsEmpty => 'No tienes ninguna alerta configurada.';
+
+  @override
+  String get alertsCreateButton => 'Activar Alerta';
+
+  @override
+  String get alertsDeleteSuccess => 'Alerta eliminada correctamente';
+
+  @override
+  String get alertsCreateSuccess => 'Alerta creada correctamente';
+
+  @override
+  String get alertsSelectRevenue =>
+      'Selecciona el rango de facturación de interés:';
+
+  @override
+  String get notificationsTitle => 'Buzón de Notificaciones';
+
+  @override
+  String get notificationsEmpty => 'No tienes ninguna notificación.';
+
+  @override
+  String notificationsNewOffer(Object sector) {
+    return 'Se ha publicado una nueva oferta en el sector $sector que se ajusta a tus preferencias.';
+  }
+
+  @override
+  String get revenueRangeUNDER_100K => 'Menos de 100K €';
+
+  @override
+  String get revenueRangeBETWEEN_100K_500K => 'Entre 100K € y 500K €';
+
+  @override
+  String get revenueRangeBETWEEN_500K_1M => 'Entre 500K € y 1M €';
+
+  @override
+  String get revenueRangeBETWEEN_1M_5M => 'Entre 1M € y 5M €';
+
+  @override
+  String get revenueRangeOVER_5M => 'Más de 5M €';
+
+  @override
+  String get mentoringTabBuy => 'Quiero comprar';
+
+  @override
+  String get mentoringTabSell => 'Quiero vender';
+
+  @override
+  String get mentoringNoModules => 'No hay módulos en esta ruta';
+
+  @override
+  String mentoringErrorLoadingContent(Object error) {
+    return 'Error al cargar el contenido: $error';
+  }
+
+  @override
+  String get mentoring_seller_m1_title => 'Preparar la empresa para la venta';
+
+  @override
+  String get mentoring_seller_m1_description =>
+      'Aprender a identificar el mejor momento para vender, entender los motivos habituales de venta y evitar errores frecuentes antes de publicar la oferta.';
+
+  @override
+  String get mentoring_seller_m1_i1_title => 'Preparar la venta';
+
+  @override
+  String get mentoring_seller_m2_title => 'Organizar la documentación';
+
+  @override
+  String get mentoring_seller_m2_description =>
+      'Preparar la documentación financiera, legal y operativa necesaria para transmitir confianza a los posibles compradores.';
+
+  @override
+  String get mentoring_seller_m2_i1_title => 'Documentación clave';
+
+  @override
+  String get mentoring_seller_m3_title => 'Valorar la empresa';
+
+  @override
+  String get mentoring_seller_m3_description =>
+      'Comprender qué factores determinan el valor de una empresa, como la rentabilidad, los activos y el potencial de crecimiento.';
+
+  @override
+  String get mentoring_seller_m3_i1_title => 'Valoración del negocio';
+
+  @override
+  String get mentoring_seller_m4_title => 'Crear una oferta atractiva';
+
+  @override
+  String get mentoring_seller_m4_description =>
+      'Aprender a presentar el negocio de manera profesional, destacando los puntos fuertes y protegiendo la información confidencial.';
+
+  @override
+  String get mentoring_seller_m4_i1_title => 'Presentación profesional';
+
+  @override
+  String get mentoring_seller_m5_title => 'Gestionar contactos y negociaciones';
+
+  @override
+  String get mentoring_seller_m5_description =>
+      'Filtrar posibles compradores, compartir información de manera progresiva y gestionar las negociaciones con profesionalidad.';
+
+  @override
+  String get mentoring_seller_m5_i1_title => 'El proceso de negociación';
+
+  @override
+  String get mentoring_seller_m6_title => 'Cerrar la venta';
+
+  @override
+  String get mentoring_seller_m6_description =>
+      'Completar las fases finales del proceso, incluyendo la Due Diligence, la firma de los contratos y la preparación de la transición.';
+
+  @override
+  String get mentoring_seller_m6_i1_title => 'Cierre de la venta';
+
+  @override
+  String get mentoring_buyer_m1_title => 'Definir los objetivos de compra';
+
+  @override
+  String get mentoring_buyer_m1_description =>
+      'Determinar el presupuesto disponible, los sectores de interés y las características que debería tener la empresa ideal.';
+
+  @override
+  String get mentoring_buyer_m1_i1_title => 'Definir criterios';
+
+  @override
+  String get mentoring_buyer_m2_title => 'Buscar oportunidades';
+
+  @override
+  String get mentoring_buyer_m2_description =>
+      'Aprender dónde encontrar empresas en venta y cómo realizar un primer filtrado de oportunidades potenciales.';
+
+  @override
+  String get mentoring_buyer_m2_i1_title => 'Búsqueda de oportunidades';
+
+  @override
+  String get mentoring_buyer_m3_title => 'Analizar la situación financiera';
+
+  @override
+  String get mentoring_buyer_m3_description =>
+      'Interpretar la información financiera de la empresa, incluyendo facturación, beneficios, endeudamiento y liquidez.';
+
+  @override
+  String get mentoring_buyer_m3_i1_title => 'Análisis financiero';
+
+  @override
+  String get mentoring_buyer_m4_title => 'Valorar si el precio es correcto';
+
+  @override
+  String get mentoring_buyer_m4_description =>
+      'Analizar si la valoración propuesta por el vendedor es coherente con la realidad y el potencial del negocio.';
+
+  @override
+  String get mentoring_buyer_m4_i1_title => 'Evaluar la valoración';
+
+  @override
+  String get mentoring_buyer_m5_title => 'Negociar la compra';
+
+  @override
+  String get mentoring_buyer_m5_description =>
+      'Prepararse para negociar el precio y las condiciones de la operación, identificando riesgos y oportunidades.';
+
+  @override
+  String get mentoring_buyer_m5_i1_title => 'Estrategias de negociación';
+
+  @override
+  String get mentoring_buyer_m6_title => 'Formalizar la adquisición';
+
+  @override
+  String get mentoring_buyer_m6_description =>
+      'Revisar la documentación legal, completar la Due Diligence y formalizar la compra mediante los contratos correspondientes.';
+
+  @override
+  String get mentoring_buyer_m6_i1_title => 'Contratos y cierre';
+
+  @override
+  String get mentoring_buyer_m7_title =>
+      'Gestionar la empresa después de la compra';
+
+  @override
+  String get mentoring_buyer_m7_description =>
+      'Planificar la transición, mantener la confianza del equipo y de los clientes, y establecer las bases para el futuro crecimiento del negocio.';
+
+  @override
+  String get mentoring_buyer_m7_i1_title => 'Traspaso de poderes';
 }

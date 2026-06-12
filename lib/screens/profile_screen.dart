@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
+import '../data/providers/notification_provider.dart';
 import '../l10n/app_localizations.dart';
 import 'edit_profile_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
+import 'mentoring_screen.dart';
+import 'manage_alerts_screen.dart';
+import 'notifications_inbox_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -303,15 +307,50 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     _buildProfileOption(
                       context,
-                      Icons.settings_outlined,
-                      l10n.profileSettings,
+                      Icons.school_outlined,
+                      l10n.profileMentoring,
                       isFirst: true,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MentoringScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
                       context,
-                      Icons.help_outline_rounded,
-                      l10n.profileHelp,
+                      Icons.notifications_none_outlined,
+                      l10n.profileNotifications,
+                      trailing: ref.watch(unreadNotificationsCountProvider) > 0
+                          ? Badge.count(
+                              count: ref.watch(unreadNotificationsCountProvider),
+                            )
+                          : null,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationsInboxScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
+                      Icons.notifications_active_outlined,
+                      l10n.profileAlerts,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ManageAlertsScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
@@ -555,6 +594,7 @@ class ProfileScreen extends ConsumerWidget {
     bool isFirst = false,
     bool isLast = false,
     bool isDestructive = false,
+    Widget? trailing,
     VoidCallback? onTap,
   }) {
     final theme = Theme.of(context);
@@ -587,12 +627,21 @@ class ProfileScreen extends ConsumerWidget {
               : theme.colorScheme.onSurface,
         ),
       ),
-      trailing: Icon(
-        Icons.chevron_right_rounded,
-        size: 20,
-        color: isDestructive
-            ? theme.colorScheme.error.withValues(alpha: 0.4)
-            : theme.colorScheme.onSurface.withValues(alpha: 0.4),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (trailing != null) ...[
+            trailing,
+            const SizedBox(width: 8),
+          ],
+          Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: isDestructive
+                ? theme.colorScheme.error.withValues(alpha: 0.4)
+                : theme.colorScheme.onSurface.withValues(alpha: 0.4),
+          ),
+        ],
       ),
       onTap: onTap ?? () {},
     );
