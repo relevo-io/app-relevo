@@ -713,131 +713,132 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get mentoring_seller_m1_title => 'Preparar el negocio';
+  String get mentoring_seller_m1_title => 'Preparar la empresa para la venta';
 
   @override
   String get mentoring_seller_m1_description =>
-      'Organiza la información clave antes de publicar tu traspaso.';
+      'Aprender a identificar el mejor momento para vender, entender los motivos habituales de venta y evitar errores frecuentes antes de publicar la oferta.';
 
   @override
-  String get mentoring_seller_m1_i1_title => 'Preparar la información';
+  String get mentoring_seller_m1_i1_title => 'Preparar la venta';
 
   @override
-  String get mentoring_seller_m2_title => 'Definir el precio';
+  String get mentoring_seller_m2_title => 'Organizar la documentación';
 
   @override
   String get mentoring_seller_m2_description =>
-      'Criterios para valorar y poner un precio de salida realista.';
+      'Preparar la documentación financiera, legal y operativa necesaria para transmitir confianza a los posibles compradores.';
 
   @override
-  String get mentoring_seller_m2_i1_title => 'Valoración del negocio';
+  String get mentoring_seller_m2_i1_title => 'Documentación clave';
 
   @override
-  String get mentoring_seller_m3_title => 'Crear el anuncio';
+  String get mentoring_seller_m3_title => 'Valorar la empresa';
 
   @override
   String get mentoring_seller_m3_description =>
-      'Cómo redactar una descripción atractiva y confidencial.';
+      'Comprender qué factores determinan el valor de una empresa, como la rentabilidad, los activos y el potencial de crecimiento.';
 
   @override
-  String get mentoring_seller_m3_i1_title => 'Redacción confidencial';
+  String get mentoring_seller_m3_i1_title => 'Valoración del negocio';
 
   @override
-  String get mentoring_seller_m4_title => 'Filtrar compradores';
+  String get mentoring_seller_m4_title => 'Crear una oferta atractiva';
 
   @override
   String get mentoring_seller_m4_description =>
-      'Cómo gestionar las peticiones de información de forma segura.';
+      'Aprender a presentar el negocio de manera profesional, destacando los puntos fuertes y protegiendo la información confidencial.';
 
   @override
-  String get mentoring_seller_m4_i1_title => 'Gestión de solicitudes';
+  String get mentoring_seller_m4_i1_title => 'Presentación profesional';
 
   @override
-  String get mentoring_seller_m5_title => 'Negociación de venta';
+  String get mentoring_seller_m5_title => 'Gestionar contactos y negociaciones';
 
   @override
   String get mentoring_seller_m5_description =>
-      'Consejos para llegar a un acuerdo mutuo de traspaso de negocio.';
+      'Filtrar posibles compradores, compartir información de manera progresiva y gestionar las negociaciones con profesionalidad.';
 
   @override
   String get mentoring_seller_m5_i1_title => 'El proceso de negociación';
 
   @override
-  String get mentoring_seller_m6_title => 'Contrato y traspaso';
+  String get mentoring_seller_m6_title => 'Cerrar la venta';
 
   @override
   String get mentoring_seller_m6_description =>
-      'Redacción de contratos, inventario y trámites legales.';
+      'Completar las fases finales del proceso, incluyendo la Due Diligence, la firma de los contratos y la preparación de la transición.';
 
   @override
   String get mentoring_seller_m6_i1_title => 'Cierre de la venta';
 
   @override
-  String get mentoring_buyer_m1_title => 'Definir objetivos de compra';
+  String get mentoring_buyer_m1_title => 'Definir los objetivos de compra';
 
   @override
   String get mentoring_buyer_m1_description =>
-      'Aprende a establecer tus criterios de búsqueda de negocio.';
+      'Determinar el presupuesto disponible, los sectores de interés y las características que debería tener la empresa ideal.';
 
   @override
   String get mentoring_buyer_m1_i1_title => 'Definir criterios';
 
   @override
-  String get mentoring_buyer_m2_title => 'Buscar negocios';
+  String get mentoring_buyer_m2_title => 'Buscar oportunidades';
 
   @override
   String get mentoring_buyer_m2_description =>
-      'Cómo encontrar las mejores oportunidades de traspaso.';
+      'Aprender dónde encontrar empresas en venta y cómo realizar un primer filtrado de oportunidades potenciales.';
 
   @override
   String get mentoring_buyer_m2_i1_title => 'Búsqueda de oportunidades';
 
   @override
-  String get mentoring_buyer_m3_title => 'Analizar la viabilidad';
+  String get mentoring_buyer_m3_title => 'Analizar la situación financiera';
 
   @override
   String get mentoring_buyer_m3_description =>
-      'Recomendaciones para evaluar la rentabilidad del negocio.';
+      'Interpretar la información financiera de la empresa, incluyendo facturación, beneficios, endeudamiento y liquidez.';
 
   @override
   String get mentoring_buyer_m3_i1_title => 'Análisis financiero';
 
   @override
-  String get mentoring_buyer_m4_title => 'Negociación y oferta';
+  String get mentoring_buyer_m4_title => 'Valorar si el precio es correcto';
 
   @override
   String get mentoring_buyer_m4_description =>
-      'Consejos para hacer una oferta de compra inicial atractiva.';
+      'Analizar si la valoración propuesta por el vendedor es coherente con la realidad y el potencial del negocio.';
 
   @override
-  String get mentoring_buyer_m4_i1_title => 'Presentación de la oferta';
+  String get mentoring_buyer_m4_i1_title => 'Evaluar la valoración';
 
   @override
-  String get mentoring_buyer_m5_title => 'Due Diligence';
+  String get mentoring_buyer_m5_title => 'Negociar la compra';
 
   @override
   String get mentoring_buyer_m5_description =>
-      'Cómo hacer la auditoría y revisión del negocio antes de firmar.';
+      'Prepararse para negociar el precio y las condiciones de la operación, identificando riesgos y oportunidades.';
 
   @override
-  String get mentoring_buyer_m5_i1_title => 'Auditoría del negocio';
+  String get mentoring_buyer_m5_i1_title => 'Estrategias de negociación';
 
   @override
-  String get mentoring_buyer_m6_title => 'Financiación';
+  String get mentoring_buyer_m6_title => 'Formalizar la adquisición';
 
   @override
   String get mentoring_buyer_m6_description =>
-      'Opciones para conseguir el capital necesario para el traspaso.';
+      'Revisar la documentación legal, completar la Due Diligence y formalizar la compra mediante los contratos correspondientes.';
 
   @override
-  String get mentoring_buyer_m6_i1_title => 'Estructuras de financiación';
+  String get mentoring_buyer_m6_i1_title => 'Contratos y cierre';
 
   @override
-  String get mentoring_buyer_m7_title => 'Transición y cierre';
+  String get mentoring_buyer_m7_title =>
+      'Gestionar la empresa después de la compra';
 
   @override
   String get mentoring_buyer_m7_description =>
-      'Los pasos finales para firmar el contrato e iniciar la gestión.';
+      'Planificar la transición, mantener la confianza del equipo y de los clientes, y establecer las bases para el futuro crecimiento del negocio.';
 
   @override
   String get mentoring_buyer_m7_i1_title => 'Traspaso de poderes';

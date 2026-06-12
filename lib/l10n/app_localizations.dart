@@ -1417,85 +1417,85 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_seller_m1_title.
   ///
   /// In es, this message translates to:
-  /// **'Preparar el negocio'**
+  /// **'Preparar la empresa para la venta'**
   String get mentoring_seller_m1_title;
 
   /// No description provided for @mentoring_seller_m1_description.
   ///
   /// In es, this message translates to:
-  /// **'Organiza la información clave antes de publicar tu traspaso.'**
+  /// **'Aprender a identificar el mejor momento para vender, entender los motivos habituales de venta y evitar errores frecuentes antes de publicar la oferta.'**
   String get mentoring_seller_m1_description;
 
   /// No description provided for @mentoring_seller_m1_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Preparar la información'**
+  /// **'Preparar la venta'**
   String get mentoring_seller_m1_i1_title;
 
   /// No description provided for @mentoring_seller_m2_title.
   ///
   /// In es, this message translates to:
-  /// **'Definir el precio'**
+  /// **'Organizar la documentación'**
   String get mentoring_seller_m2_title;
 
   /// No description provided for @mentoring_seller_m2_description.
   ///
   /// In es, this message translates to:
-  /// **'Criterios para valorar y poner un precio de salida realista.'**
+  /// **'Preparar la documentación financiera, legal y operativa necesaria para transmitir confianza a los posibles compradores.'**
   String get mentoring_seller_m2_description;
 
   /// No description provided for @mentoring_seller_m2_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Valoración del negocio'**
+  /// **'Documentación clave'**
   String get mentoring_seller_m2_i1_title;
 
   /// No description provided for @mentoring_seller_m3_title.
   ///
   /// In es, this message translates to:
-  /// **'Crear el anuncio'**
+  /// **'Valorar la empresa'**
   String get mentoring_seller_m3_title;
 
   /// No description provided for @mentoring_seller_m3_description.
   ///
   /// In es, this message translates to:
-  /// **'Cómo redactar una descripción atractiva y confidencial.'**
+  /// **'Comprender qué factores determinan el valor de una empresa, como la rentabilidad, los activos y el potencial de crecimiento.'**
   String get mentoring_seller_m3_description;
 
   /// No description provided for @mentoring_seller_m3_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Redacción confidencial'**
+  /// **'Valoración del negocio'**
   String get mentoring_seller_m3_i1_title;
 
   /// No description provided for @mentoring_seller_m4_title.
   ///
   /// In es, this message translates to:
-  /// **'Filtrar compradores'**
+  /// **'Crear una oferta atractiva'**
   String get mentoring_seller_m4_title;
 
   /// No description provided for @mentoring_seller_m4_description.
   ///
   /// In es, this message translates to:
-  /// **'Cómo gestionar las peticiones de información de forma segura.'**
+  /// **'Aprender a presentar el negocio de manera profesional, destacando los puntos fuertes y protegiendo la información confidencial.'**
   String get mentoring_seller_m4_description;
 
   /// No description provided for @mentoring_seller_m4_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Gestión de solicitudes'**
+  /// **'Presentación profesional'**
   String get mentoring_seller_m4_i1_title;
 
   /// No description provided for @mentoring_seller_m5_title.
   ///
   /// In es, this message translates to:
-  /// **'Negociación de venta'**
+  /// **'Gestionar contactos y negociaciones'**
   String get mentoring_seller_m5_title;
 
   /// No description provided for @mentoring_seller_m5_description.
   ///
   /// In es, this message translates to:
-  /// **'Consejos para llegar a un acuerdo mutuo de traspaso de negocio.'**
+  /// **'Filtrar posibles compradores, compartir información de manera progresiva y gestionar las negociaciones con profesionalidad.'**
   String get mentoring_seller_m5_description;
 
   /// No description provided for @mentoring_seller_m5_i1_title.
@@ -1507,13 +1507,13 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_seller_m6_title.
   ///
   /// In es, this message translates to:
-  /// **'Contrato y traspaso'**
+  /// **'Cerrar la venta'**
   String get mentoring_seller_m6_title;
 
   /// No description provided for @mentoring_seller_m6_description.
   ///
   /// In es, this message translates to:
-  /// **'Redacción de contratos, inventario y trámites legales.'**
+  /// **'Completar las fases finales del proceso, incluyendo la Due Diligence, la firma de los contratos y la preparación de la transición.'**
   String get mentoring_seller_m6_description;
 
   /// No description provided for @mentoring_seller_m6_i1_title.
@@ -1525,13 +1525,13 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_buyer_m1_title.
   ///
   /// In es, this message translates to:
-  /// **'Definir objetivos de compra'**
+  /// **'Definir los objetivos de compra'**
   String get mentoring_buyer_m1_title;
 
   /// No description provided for @mentoring_buyer_m1_description.
   ///
   /// In es, this message translates to:
-  /// **'Aprende a establecer tus criterios de búsqueda de negocio.'**
+  /// **'Determinar el presupuesto disponible, los sectores de interés y las características que debería tener la empresa ideal.'**
   String get mentoring_buyer_m1_description;
 
   /// No description provided for @mentoring_buyer_m1_i1_title.
@@ -1543,13 +1543,13 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_buyer_m2_title.
   ///
   /// In es, this message translates to:
-  /// **'Buscar negocios'**
+  /// **'Buscar oportunidades'**
   String get mentoring_buyer_m2_title;
 
   /// No description provided for @mentoring_buyer_m2_description.
   ///
   /// In es, this message translates to:
-  /// **'Cómo encontrar las mejores oportunidades de traspaso.'**
+  /// **'Aprender dónde encontrar empresas en venta y cómo realizar un primer filtrado de oportunidades potenciales.'**
   String get mentoring_buyer_m2_description;
 
   /// No description provided for @mentoring_buyer_m2_i1_title.
@@ -1561,13 +1561,13 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_buyer_m3_title.
   ///
   /// In es, this message translates to:
-  /// **'Analizar la viabilidad'**
+  /// **'Analizar la situación financiera'**
   String get mentoring_buyer_m3_title;
 
   /// No description provided for @mentoring_buyer_m3_description.
   ///
   /// In es, this message translates to:
-  /// **'Recomendaciones para evaluar la rentabilidad del negocio.'**
+  /// **'Interpretar la información financiera de la empresa, incluyendo facturación, beneficios, endeudamiento y liquidez.'**
   String get mentoring_buyer_m3_description;
 
   /// No description provided for @mentoring_buyer_m3_i1_title.
@@ -1579,67 +1579,67 @@ abstract class AppLocalizations {
   /// No description provided for @mentoring_buyer_m4_title.
   ///
   /// In es, this message translates to:
-  /// **'Negociación y oferta'**
+  /// **'Valorar si el precio es correcto'**
   String get mentoring_buyer_m4_title;
 
   /// No description provided for @mentoring_buyer_m4_description.
   ///
   /// In es, this message translates to:
-  /// **'Consejos para hacer una oferta de compra inicial atractiva.'**
+  /// **'Analizar si la valoración propuesta por el vendedor es coherente con la realidad y el potencial del negocio.'**
   String get mentoring_buyer_m4_description;
 
   /// No description provided for @mentoring_buyer_m4_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Presentación de la oferta'**
+  /// **'Evaluar la valoración'**
   String get mentoring_buyer_m4_i1_title;
 
   /// No description provided for @mentoring_buyer_m5_title.
   ///
   /// In es, this message translates to:
-  /// **'Due Diligence'**
+  /// **'Negociar la compra'**
   String get mentoring_buyer_m5_title;
 
   /// No description provided for @mentoring_buyer_m5_description.
   ///
   /// In es, this message translates to:
-  /// **'Cómo hacer la auditoría y revisión del negocio antes de firmar.'**
+  /// **'Prepararse para negociar el precio y las condiciones de la operación, identificando riesgos y oportunidades.'**
   String get mentoring_buyer_m5_description;
 
   /// No description provided for @mentoring_buyer_m5_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Auditoría del negocio'**
+  /// **'Estrategias de negociación'**
   String get mentoring_buyer_m5_i1_title;
 
   /// No description provided for @mentoring_buyer_m6_title.
   ///
   /// In es, this message translates to:
-  /// **'Financiación'**
+  /// **'Formalizar la adquisición'**
   String get mentoring_buyer_m6_title;
 
   /// No description provided for @mentoring_buyer_m6_description.
   ///
   /// In es, this message translates to:
-  /// **'Opciones para conseguir el capital necesario para el traspaso.'**
+  /// **'Revisar la documentación legal, completar la Due Diligence y formalizar la compra mediante los contratos correspondientes.'**
   String get mentoring_buyer_m6_description;
 
   /// No description provided for @mentoring_buyer_m6_i1_title.
   ///
   /// In es, this message translates to:
-  /// **'Estructuras de financiación'**
+  /// **'Contratos y cierre'**
   String get mentoring_buyer_m6_i1_title;
 
   /// No description provided for @mentoring_buyer_m7_title.
   ///
   /// In es, this message translates to:
-  /// **'Transición y cierre'**
+  /// **'Gestionar la empresa después de la compra'**
   String get mentoring_buyer_m7_title;
 
   /// No description provided for @mentoring_buyer_m7_description.
   ///
   /// In es, this message translates to:
-  /// **'Los pasos finales para firmar el contrato e iniciar la gestión.'**
+  /// **'Planificar la transición, mantener la confianza del equipo y de los clientes, y establecer las bases para el futuro crecimiento del negocio.'**
   String get mentoring_buyer_m7_description;
 
   /// No description provided for @mentoring_buyer_m7_i1_title.
