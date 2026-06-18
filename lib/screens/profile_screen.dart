@@ -10,6 +10,7 @@ import 'register_screen.dart';
 import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
 import 'notifications_inbox_screen.dart';
+import 'chat_list_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -315,6 +316,20 @@ class ProfileScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MentoringScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
+                      Icons.chat_bubble_outline_rounded,
+                      l10n.profileFeatureChatTitle,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChatListScreen(),
                           ),
                         );
                       },

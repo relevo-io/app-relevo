@@ -8,6 +8,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import 'data/providers/language_provider.dart';
 import 'data/providers/theme_provider.dart';
+import 'data/providers/chat_providers.dart';
 import 'screens/main_screen.dart';
 
 void main() {
@@ -21,6 +22,9 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Inicializar y mantener viva la conexión WebSocket de chat si el usuario está autenticado
+    ref.watch(socketConnectionManagerProvider);
+
     final themeMode = ref.watch(themeStateProvider);
     final currentLocale = ref.watch(languageStateProvider);
 
