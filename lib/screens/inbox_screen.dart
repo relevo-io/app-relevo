@@ -99,8 +99,10 @@ class InboxScreen extends ConsumerWidget {
         ),
       ),
       data: (requests) {
-        if (requests.isEmpty) {
-          return Center(
+        final content = requests.isEmpty
+            ? SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Center(
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
@@ -131,11 +133,11 @@ class InboxScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          );
-        }
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          ),
+        )
+            : ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
           itemCount: requests.length,
           itemBuilder: (context, index) {
             final request = requests[index];
@@ -381,6 +383,17 @@ class InboxScreen extends ConsumerWidget {
           );
         },
         );
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(receivedRequestsProvider);
+            try {
+              await ref.read(receivedRequestsProvider.future);
+            } catch (_) {}
+          },
+          color: const Color(0xFF10B981),
+          child: content,
+        );
       },
     );
   }
@@ -428,8 +441,10 @@ class InboxScreen extends ConsumerWidget {
         ),
       ),
       data: (requests) {
-        if (requests.isEmpty) {
-          return Center(
+        final content = requests.isEmpty
+            ? SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Center(
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
@@ -460,11 +475,11 @@ class InboxScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          );
-        }
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          ),
+        )
+            : ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
           itemCount: requests.length,
           itemBuilder: (context, index) {
             final request = requests[index];
@@ -617,6 +632,17 @@ class InboxScreen extends ConsumerWidget {
               ),
             );
           },
+        );
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(sentRequestsProvider);
+            try {
+              await ref.read(sentRequestsProvider.future);
+            } catch (_) {}
+          },
+          color: const Color(0xFF10B981),
+          child: content,
         );
       },
     );

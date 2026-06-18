@@ -11,7 +11,26 @@ import 'data/providers/theme_provider.dart';
 import 'data/providers/chat_providers.dart';
 import 'screens/main_screen.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_relevo/data/services/push_notification_service.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Manejando un mensaje en segundo plano: ${message.messageId}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    print('*** Error al inicializar Firebase en main(): $e');
+  }
+
   timeago.setLocaleMessages('es', timeago.EsMessages());
   timeago.setLocaleMessages('ca', timeago.CaMessages());
   runApp(const ProviderScope(child: MainApp()));
@@ -24,11 +43,14 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Inicializar y mantener viva la conexión WebSocket de chat si el usuario está autenticado
     ref.watch(socketConnectionManagerProvider);
+    // Inicializar y mantener vivo el gestor de notificaciones push
+    ref.watch(notificationManagerProvider);
 
     final themeMode = ref.watch(themeStateProvider);
     final currentLocale = ref.watch(languageStateProvider);
 
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Relevo',
       debugShowCheckedModeBanner: false,
       locale: currentLocale,

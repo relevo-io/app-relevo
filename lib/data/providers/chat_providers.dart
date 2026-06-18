@@ -7,6 +7,7 @@ import 'package:flutter_relevo/data/models/message_model.dart';
 import 'package:flutter_relevo/data/services/chat_service.dart';
 import 'package:flutter_relevo/data/services/socket_service.dart';
 import 'package:flutter_relevo/data/providers/auth_provider.dart';
+import 'package:flutter_relevo/data/services/push_notification_service.dart';
 
 part 'chat_providers.g.dart';
 
@@ -313,4 +314,22 @@ class ChatRoomPresence extends _$ChatRoomPresence {
 
     return false;
   }
+}
+
+@Riverpod(keepAlive: true)
+void notificationManager(Ref ref) {
+  final authState = ref.watch(authProvider);
+  final pushService = ref.read(pushNotificationServiceProvider);
+
+  authState.when(
+    data: (user) {
+      if (user != null) {
+        pushService.initialize();
+      } else {
+        pushService.cleanup();
+      }
+    },
+    error: (_, __) => pushService.cleanup(),
+    loading: () {},
+  );
 }

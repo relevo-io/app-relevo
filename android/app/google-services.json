@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "889003247844",
+    "project_id": "relevo-minimo2",
+    "storage_bucket": "relevo-minimo2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889003247844:android:505468db1454f20c6404f1",
+        "android_client_info": {
+          "package_name": "com.android.relevo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-QQRPI4jS05Ege8Fpu5bquygmy8_eD30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "889003247844-1cpjf20lg3bso4i5tmb75thm1l4mkuds.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ios.relevo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

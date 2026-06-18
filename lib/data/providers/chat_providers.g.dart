@@ -363,3 +363,46 @@ abstract class _$ChatRoomPresence extends $Notifier<bool> {
     element.handleCreate(ref, () => build(_$args));
   }
 }
+
+String _$notificationManagerHash() => r'89e530ab7d3ab7db3d928a6fcf7cc923f538561d2';
+
+@ProviderFor(notificationManager)
+final notificationManagerProvider = NotificationManagerProvider._();
+
+final class NotificationManagerProvider
+    extends $FunctionalProvider<void, void, void>
+    with $Provider<void> {
+  NotificationManagerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'notificationManagerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationManagerHash();
+
+  @$internal
+  @override
+  $ProviderElement<void> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  void create(Ref ref) {
+    return notificationManager(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(void value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<void>(value),
+    );
+  }
+}
+
+typedef NotificationManagerRef = Ref;

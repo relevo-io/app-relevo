@@ -15,7 +15,7 @@ class NotificationService {
   Future<List<NotificationModel>> getNotifications() async {
     try {
       final response = await _dio.get('/notificaciones');
-      final List<dynamic> data = response.data;
+      final List<dynamic> data = response.data['items'] ?? [];
       return data.map((json) => NotificationModel.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
@@ -30,7 +30,7 @@ class NotificationService {
   Future<NotificationModel> markAsRead(String notificationId) async {
     try {
       final response = await _dio.patch('/notificaciones/$notificationId/read');
-      return NotificationModel.fromJson(response.data);
+      return NotificationModel.fromJson(response.data['notification']);
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         throw Exception(

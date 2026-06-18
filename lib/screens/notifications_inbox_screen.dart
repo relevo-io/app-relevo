@@ -42,34 +42,33 @@ class NotificationsInboxScreen extends ConsumerWidget {
           ),
         ),
         data: (notifications) {
-          if (notifications.isEmpty) {
-            return Center(
-              child: Text(
-                l10n.notificationsEmpty,
-                style: GoogleFonts.inter(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  fontSize: 14,
-                ),
-              ),
-            );
-          }
-
-          return ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(24.0),
-            itemCount: notifications.length,
+          final content = notifications.isEmpty
+              ? SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Center(
+                    child: Text(
+                      l10n.notificationsEmpty,
+                      style: GoogleFonts.inter(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(24.0),
+                  itemCount: notifications.length,
             separatorBuilder: (context, index) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
               final notification = notifications[index];
               final isUnread = !notification.isRead;
-              final String contentText;
-
-              if (notification.type == 'NUEVA_OFERTA') {
-                final sector = notification.data['sector'] ?? '';
-                contentText = l10n.notificationsNewOffer(sector);
-              } else {
-                contentText = notification.type;
-              }
+              final String titleText = notification.title.isNotEmpty
+                  ? notification.title
+                  : (notification.type == 'NUEVA_OFERTA'
+                      ? l10n.notificationsNewOffer(notification.data['sector'] ?? '')
+                      : notification.type);
+              final String bodyText = notification.body;
 
               final timeAgoStr = notification.createdAt != null
                   ? timeago.format(notification.createdAt!, locale: locale)
@@ -113,14 +112,24 @@ class NotificationsInboxScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            contentText,
+                            titleText,
                             style: GoogleFonts.inter(
                               fontWeight:
-                                  isUnread ? FontWeight.bold : FontWeight.normal,
+                                  isUnread ? FontWeight.bold : FontWeight.w700,
                               fontSize: 14,
                               color: theme.colorScheme.onSurface,
                             ),
                           ),
+                          if (bodyText.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              bodyText,
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                              ),
+                            ),
+                          ],
                           if (timeAgoStr.isNotEmpty) ...[
                             const SizedBox(height: 8),
                             Text(
@@ -149,6 +158,17 @@ class NotificationsInboxScreen extends ConsumerWidget {
                 ),
               );
             },
+          );
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(notificationsStateProvider);
+              try {
+                await ref.read(notificationsStateProvider.future);
+              } catch (_) {}
+            },
+            color: const Color(0xFF10B981),
+            child: content,
           );
         },
       ),
