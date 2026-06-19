@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../data/providers/auth_provider.dart';
 import '../data/providers/notification_provider.dart';
 import '../data/providers/chat_providers.dart';
 import '../l10n/app_localizations.dart';
+import '../theme/relevo_theme.dart';
 import 'edit_profile_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
 import 'notifications_inbox_screen.dart';
-import 'chat_list_screen.dart';
 import 'favorites_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -21,303 +22,181 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final locale = Localizations.localeOf(context).languageCode;
+    final l10n = AppLocalizations.of(context)!;
 
     if (authState.hasValue && authState.value != null) {
-      final user = authState.value;
-      final locale = Localizations.localeOf(context).languageCode;
-      final badgeText = locale == 'ca'
-          ? 'Compte Actiu'
-          : locale == 'es'
-          ? 'Cuenta Activa'
-          : 'Active Account';
-      final l10n = AppLocalizations.of(context)!;
+      final user = authState.value!;
 
       return Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.profileTitle),
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditProfileScreen(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(width: 8),
-          ],
-        ),
+        // Set appBar to null because MainScreen has a central AppBar
+        appBar: null,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.all(24.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.secondary,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
+              // 1. Avatar Card Block (Matches 2nd screenshot)
+              RelevoCard(
+                color: theme.colorScheme.surfaceContainer,
+                padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 20.0),
+                child: Column(
                   children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.person_rounded,
-                        size: 36,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user?.fullName ?? l10n.profileDefaultUser,
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 18,
+                    // Avatar image with floating edit pencil button
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 54,
+                          backgroundColor: theme.colorScheme.primary,
+                          child: Text(
+                            user.fullName.isNotEmpty
+                                ? user.fullName.split(' ').map((e) => e.isEmpty ? '' : e[0]).take(2).join().toUpperCase()
+                                : '?',
+                            style: GoogleFonts.outfit(
+                              fontSize: 32,
                               fontWeight: FontWeight.w900,
+                              color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            user?.email ?? '',
-                            style: GoogleFonts.inter(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              badgeText,
-                              style: const TextStyle(
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const EditProfileScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 36,
+                              width: 36,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF00B286), // Emerald Green
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.colorScheme.surfaceContainer,
+                                  width: 2.5,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.edit,
                                 color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
+                                size: 16,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 16),
+                    // Name (Centered)
+                    Text(
+                      user.fullName,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    // Email (Centered)
+                    Text(
+                      user.email,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-              // Sobre mi
-              Container(
+              const SizedBox(height: 16),
+
+              // 2. Mentoring Readiness Card (Matches 2nd screenshot)
+              RelevoCard(
+                color: theme.colorScheme.surfaceContainer,
                 padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      l10n.profileSectionAbout,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.onSurface,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.school_outlined,
+                              color: theme.colorScheme.primary,
+                              size: 22,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              locale == 'ca' ? 'Mentoring Readiness' : 'Mentoring Readiness',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '75 %',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                            color: const Color(0xFF00B286),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Green Progress bar
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: const LinearProgressIndicator(
+                        value: 0.75,
+                        minHeight: 8,
+                        backgroundColor: Color(0xFFECEEF0),
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          size: 18,
-                          color: theme.colorScheme.secondary,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            user?.location ?? l10n.profileNoLocation,
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              color: user?.location != null
-                                  ? theme.colorScheme.onSurface
-                                  : theme.colorScheme.onSurface.withValues(
-                                      alpha: 0.5,
-                                    ),
-                              fontWeight: user?.location != null
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 24, thickness: 0.5),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.profileBioLabel,
-                          style: GoogleFonts.inter(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.5,
-                            ),
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          user?.bio ?? l10n.profileNoBio,
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
-                            color: user?.bio != null
-                                ? theme.colorScheme.onSurface
-                                : theme.colorScheme.onSurface.withValues(
-                                    alpha: 0.5,
-                                  ),
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      locale == 'ca'
+                          ? 'Completa la teva documentació legal per desbloquejar el matching premium de compradors.'
+                          : 'Complete your legal documentation to unlock premium buyer matching.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 13,
+                        color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-              // Perfil Professional
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.profileSectionProfessional,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.profileBackgroundLabel,
-                          style: GoogleFonts.inter(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.5,
-                            ),
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          user?.professionalBackground ??
-                              l10n.profileNoBackground,
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
-                            color: user?.professionalBackground != null
-                                ? theme.colorScheme.onSurface
-                                : theme.colorScheme.onSurface.withValues(
-                                    alpha: 0.5,
-                                  ),
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
+
+              // 3. Options List Card (Matches 2nd screenshot)
+              RelevoCard(
                 child: Column(
                   children: [
                     _buildProfileOption(
                       context,
-                      Icons.school_outlined,
-                      l10n.profileMentoring,
-                      isFirst: true,
+                      Icons.person_outline_rounded,
+                      locale == 'ca' ? 'Editar perfil' : 'Editar perfil',
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MentoringScreen(),
+                            builder: (context) => const EditProfileScreen(),
                           ),
                         );
                       },
@@ -325,27 +204,8 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
                       context,
-                      Icons.chat_bubble_outline_rounded,
-                      l10n.profileFeatureChatTitle,
-                      trailing: ref.watch(unreadChatsCountProvider) > 0
-                          ? Badge.count(
-                              count: ref.watch(unreadChatsCountProvider),
-                            )
-                          : null,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChatListScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.favorite_border,
-                      locale == 'ca' ? 'Els meus preferits' : locale == 'es' ? 'Mis favoritos' : 'My Favorites',
+                      Icons.bookmark_border_outlined,
+                      locale == 'ca' ? 'Els meus preferits' : 'Mis favoritos',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -359,26 +219,7 @@ class ProfileScreen extends ConsumerWidget {
                     _buildProfileOption(
                       context,
                       Icons.notifications_none_outlined,
-                      l10n.profileNotifications,
-                      trailing: ref.watch(unreadNotificationsCountProvider) > 0
-                          ? Badge.count(
-                              count: ref.watch(unreadNotificationsCountProvider),
-                            )
-                          : null,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NotificationsInboxScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.notifications_active_outlined,
-                      l10n.profileAlerts,
+                      locale == 'ca' ? 'Alertes de cerca' : 'Alertas de búsqueda',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -391,9 +232,24 @@ class ProfileScreen extends ConsumerWidget {
                     const Divider(height: 1, indent: 56, endIndent: 16),
                     _buildProfileOption(
                       context,
+                      Icons.settings_outlined,
+                      locale == 'ca'
+                          ? 'Configuració de notificacions'
+                          : 'Configuración de notificaciones',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationsInboxScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
                       Icons.logout_rounded,
-                      l10n.profileLogout,
-                      isLast: true,
+                      locale == 'ca' ? 'Tancar sessió' : 'Cerrar sesión',
                       isDestructive: true,
                       onTap: () => ref.read(authProvider.notifier).logout(),
                     ),
@@ -406,7 +262,7 @@ class ProfileScreen extends ConsumerWidget {
       );
     }
 
-    final l10n = AppLocalizations.of(context)!;
+    // Guest Profile view
     final List<Map<String, String>> features = [
       {
         'title': l10n.profileFeatureMarketplaceTitle,
@@ -439,6 +295,7 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      appBar: null,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -458,8 +315,8 @@ class ProfileScreen extends ConsumerWidget {
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                         colors: [
-                          theme.colorScheme.primary.withValues(alpha: 0.15),
-                          theme.colorScheme.secondary.withValues(alpha: 0.15),
+                          theme.colorScheme.primary.withOpacity(0.15),
+                          theme.colorScheme.secondary.withOpacity(0.15),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -474,9 +331,7 @@ class ProfileScreen extends ConsumerWidget {
                           color: theme.colorScheme.surfaceContainer,
                           boxShadow: [
                             BoxShadow(
-                              color: theme.colorScheme.shadow.withValues(
-                                alpha: 0.05,
-                              ),
+                              color: theme.shadowColor.withOpacity(0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -497,7 +352,6 @@ class ProfileScreen extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
-                    color: theme.colorScheme.onSurface,
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -506,33 +360,15 @@ class ProfileScreen extends ConsumerWidget {
                   l10n.profileNotRegisteredSubtitle,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
                     height: 1.4,
                   ),
                 ),
                 const SizedBox(height: 32),
-                Container(
+
+                // Features Bento details in RelevoCard
+                RelevoCard(
                   padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        theme.colorScheme.primary,
-                        theme.colorScheme.secondary,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colorScheme.primary.withValues(
-                          alpha: 0.15,
-                        ),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
                   child: Column(
                     children: features.map((feature) {
                       final isLast = features.last == feature;
@@ -544,13 +380,13 @@ class ProfileScreen extends ConsumerWidget {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.15),
+                                color: theme.colorScheme.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 getIcon(feature['icon']!),
                                 size: 20,
-                                color: Colors.white,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
                             const SizedBox(width: 14),
@@ -560,20 +396,16 @@ class ProfileScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     feature['title']!,
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     feature['desc']!,
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.8,
-                                      ),
+                                      color: theme.colorScheme.onSurface.withOpacity(0.6),
                                       fontSize: 12,
                                       height: 1.3,
                                     ),
@@ -597,9 +429,6 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  style: theme.elevatedButtonTheme.style?.copyWith(
-                    elevation: const WidgetStatePropertyAll(0),
-                  ),
                   child: Text(l10n.profileLoginButton),
                 ),
                 const SizedBox(height: 12),
@@ -627,28 +456,18 @@ class ProfileScreen extends ConsumerWidget {
     BuildContext context,
     IconData icon,
     String title, {
-    bool isFirst = false,
-    bool isLast = false,
     bool isDestructive = false,
-    Widget? trailing,
     VoidCallback? onTap,
   }) {
     final theme = Theme.of(context);
-    final color = isDestructive
-        ? theme.colorScheme.error
-        : theme.colorScheme.primary;
+    final color = isDestructive ? theme.colorScheme.error : theme.colorScheme.primary;
+
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(isFirst ? 20 : 0),
-          bottom: Radius.circular(isLast ? 20 : 0),
-        ),
-      ),
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.08),
+          color: color.withOpacity(0.08),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, color: color, size: 20),
@@ -658,26 +477,15 @@ class ProfileScreen extends ConsumerWidget {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 14,
-          color: isDestructive
-              ? theme.colorScheme.error
-              : theme.colorScheme.onSurface,
+          color: isDestructive ? theme.colorScheme.error : theme.colorScheme.onSurface,
         ),
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (trailing != null) ...[
-            trailing,
-            const SizedBox(width: 8),
-          ],
-          Icon(
-            Icons.chevron_right_rounded,
-            size: 20,
-            color: isDestructive
-                ? theme.colorScheme.error.withValues(alpha: 0.4)
-                : theme.colorScheme.onSurface.withValues(alpha: 0.4),
-          ),
-        ],
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        size: 20,
+        color: isDestructive
+            ? theme.colorScheme.error.withOpacity(0.4)
+            : theme.colorScheme.onSurface.withOpacity(0.4),
       ),
       onTap: onTap ?? () {},
     );

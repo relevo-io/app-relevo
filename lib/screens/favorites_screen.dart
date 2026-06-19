@@ -102,7 +102,7 @@ class FavoritesScreen extends ConsumerWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 16,
-                childAspectRatio: 1.05,
+                childAspectRatio: 0.72,
               ),
               itemCount: offers.length,
               itemBuilder: (context, index) {

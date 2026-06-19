@@ -17,7 +17,7 @@ class SellScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.sellTitle), elevation: 0),
+      appBar: null,
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(myOffersProvider);
@@ -98,7 +98,7 @@ class SellScreen extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CreateOfferScreen(),
+                              builder: (context) => CreateOfferScreen(),
                             ),
                           );
                         },
@@ -198,7 +198,7 @@ class SellScreen extends ConsumerWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 16,
-                          childAspectRatio: 1.05,
+                          childAspectRatio: 0.72,
                         ),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return OfferCardGrid(offer: offers[index]);
