@@ -112,7 +112,10 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         final filePath = '${tempDir.path}/voice_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
         await _audioRecorder.start(
-          const RecordConfig(encoder: AudioEncoder.aacLc),
+          const RecordConfig(
+            encoder: AudioEncoder.aacLc,
+            numChannels: 1,
+          ),
           path: filePath,
         );
 
@@ -148,7 +151,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         final file = File(path);
         final bytes = await file.readAsBytes();
         final filename = path.split('/').last;
-        _uploadAndSendMessage(bytes, filename, 'audio/m4a', 'audio');
+        _uploadAndSendMessage(bytes, filename, 'audio/mp4', 'audio');
       }
     } catch (e) {
       _showErrorSnackBar('Error al detener grabación: $e');

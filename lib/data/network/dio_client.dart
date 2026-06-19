@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +17,9 @@ class DioClient {
   DioClient(this._storage, {Ref? ref}) : _ref = ref {
     dio = Dio(
       BaseOptions(
-        // emulador Android: 10.0.2.2
-        // emulador iOS: 127.0.0.1
-        baseUrl: 'http://localhost:4000/api',
+        baseUrl: Platform.isAndroid
+            ? 'http://10.0.2.2:4000/api'
+            : 'http://localhost:4000/api',
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         headers: {'Content-Type': 'application/json'},
