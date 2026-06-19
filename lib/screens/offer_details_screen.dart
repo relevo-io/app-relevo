@@ -11,6 +11,7 @@ import '../data/providers/solicitud_provider.dart';
 import '../data/services/solicitud_service.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
+import '../data/providers/offers_provider.dart';
 
 class OfferDetailsScreen extends ConsumerWidget {
   final Offer offer;
@@ -36,24 +37,47 @@ class OfferDetailsScreen extends ConsumerWidget {
     final existingRequestList = sentRequests.where((r) => r.opportunity.id == offer.id);
     final existingRequest = existingRequestList.isNotEmpty ? existingRequestList.first : null;
 
+    final isLoggedIn = user != null;
+    final favoriteIdsAsync = isLoggedIn ? ref.watch(favoriteOfferIdsProvider) : null;
+    final isFavorite = favoriteIdsAsync?.value?.contains(offer.id) ?? false;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.offerDetailsTitle),
         elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite_border),
-            tooltip: 'Favorit (Decoratiu)',
-            onPressed: () {
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Funció de favorits pròximament!'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
+          if (!isMyOffer && isLoggedIn)
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? theme.colorScheme.primary : null,
+              ),
+              tooltip: 'Favorit',
+              onPressed: () async {
+                try {
+                  await ref.read(favoriteOfferIdsProvider.notifier).toggleFavorite(offer.id);
+                  if (context.mounted) {
+                    final nowFav = ref.read(favoriteOfferIdsProvider).value?.contains(offer.id) ?? false;
+                    final msg = nowFav
+                        ? (localeCode == 'ca' ? 'Oferta afegida a preferits' : localeCode == 'es' ? 'Oferta agregada a favoritos' : 'Offer added to favorites')
+                        : (localeCode == 'ca' ? 'Oferta eliminada de preferits' : localeCode == 'es' ? 'Oferta eliminada de favoritos' : 'Offer removed from favorites');
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(msg),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: $e')),
+                    );
+                  }
+                }
+              },
+            ),
           const SizedBox(width: 8),
         ],
       ),

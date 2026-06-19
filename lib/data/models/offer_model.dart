@@ -10,6 +10,7 @@ class Offer {
   final String? extendedDescription;
   final DateTime? publishedAt;
   final DateTime? createdAt;
+  final int favoriteCount;
 
   Offer({
     required this.id,
@@ -23,6 +24,7 @@ class Offer {
     this.extendedDescription,
     this.publishedAt,
     this.createdAt,
+    this.favoriteCount = 0,
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class Offer {
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
           : null,
+      favoriteCount: json['favoriteCount'] ?? 0,
     );
   }
 
@@ -63,6 +66,7 @@ class Offer {
       'extendedDescription': extendedDescription,
       'publishedAt': publishedAt?.toIso8601String(),
       'createdAt': createdAt?.toIso8601String(),
+      'favoriteCount': favoriteCount,
     };
   }
 

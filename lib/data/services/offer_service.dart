@@ -122,4 +122,53 @@ class OfferService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<List<Offer>> getFavoriteOffers() async {
+    try {
+      final response = await _dio.get('/ofertas/favorites');
+      if (response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> data = response.data;
+        final List<dynamic> itemsJson = data['items'] ?? [];
+        return itemsJson.map((json) => Offer.fromJson(json)).toList();
+      } else {
+        final List<dynamic> data = response.data;
+        return data.map((json) => Offer.fromJson(json)).toList();
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener favoritos',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<int> addFavorite(String offerId) async {
+    try {
+      final response = await _dio.post('/ofertas/$offerId/favorite');
+      return response.data['favoriteCount'] ?? 0;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al añadir a favoritos',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<int> removeFavorite(String offerId) async {
+    try {
+      final response = await _dio.delete('/ofertas/$offerId/favorite');
+      return response.data['favoriteCount'] ?? 0;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al eliminar de favoritos',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

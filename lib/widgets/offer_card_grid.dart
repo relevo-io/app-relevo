@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../data/models/offer_model.dart';
 import '../data/providers/auth_provider.dart';
 import '../data/providers/solicitud_provider.dart';
+import '../data/providers/offers_provider.dart';
 import '../screens/offer_details_screen.dart';
 import 'request_status_badge.dart';
 import 'restricted_dialog.dart';
@@ -78,16 +79,23 @@ class OfferCardGrid extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      if (!isMyOffer)
-                        Icon(
-                          isLoggedIn
-                              ? Icons.favorite_border
-                              : Icons.lock_outline_rounded,
-                          size: 16,
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: isLoggedIn ? 0.5 : 0.3,
-                          ),
-                        ),
+                      if (!isMyOffer) ...[
+                        () {
+                          final favoriteIdsAsync = isLoggedIn ? ref.watch(favoriteOfferIdsProvider) : null;
+                          final isFavorite = favoriteIdsAsync?.value?.contains(offer.id) ?? false;
+                          return Icon(
+                            isLoggedIn
+                                ? (isFavorite ? Icons.favorite : Icons.favorite_border)
+                                : Icons.lock_outline_rounded,
+                            size: 16,
+                            color: isFavorite
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurface.withValues(
+                                    alpha: isLoggedIn ? 0.5 : 0.3,
+                                  ),
+                          );
+                        }(),
+                      ],
                     ],
                   ),
                   const SizedBox(height: 8),

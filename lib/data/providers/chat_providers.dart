@@ -181,7 +181,9 @@ class ChatRoomMessages extends _$ChatRoomMessages {
     _hasMore = messages.length >= 30;
 
     // Conectarse a la sala de chat
-    socketService.joinChat(chatId);
+    socketService.joinChat(chatId, onJoinAck: (isOnline) {
+      ref.read(chatRoomPresenceProvider(chatId).notifier).setPresence(isOnline);
+    });
     
     // Marcar como leído
     socketService.markRead(chatId);
@@ -313,6 +315,10 @@ class ChatRoomPresence extends _$ChatRoomPresence {
     });
 
     return false;
+  }
+
+  void setPresence(bool isOnline) {
+    state = isOnline;
   }
 }
 

@@ -11,6 +11,7 @@ import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
 import 'notifications_inbox_screen.dart';
 import 'chat_list_screen.dart';
+import 'favorites_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -330,6 +331,20 @@ class ProfileScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const ChatListScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
+                      Icons.favorite_border,
+                      locale == 'ca' ? 'Els meus preferits' : locale == 'es' ? 'Mis favoritos' : 'My Favorites',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FavoritesScreen(),
                           ),
                         );
                       },

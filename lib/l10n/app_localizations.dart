@@ -1647,6 +1647,90 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Traspaso de poderes'**
   String get mentoring_buyer_m7_i1_title;
+
+  /// No description provided for @solicitudAiCvAvailableTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Análisis de CV con Inteligencia Artificial disponible'**
+  String get solicitudAiCvAvailableTitle;
+
+  /// No description provided for @solicitudAiCvAvailableSub.
+  ///
+  /// In es, this message translates to:
+  /// **'Analiza el currículum de este candidato para evaluar compatibilidad y experiencia.'**
+  String get solicitudAiCvAvailableSub;
+
+  /// No description provided for @solicitudAnalyzeAi.
+  ///
+  /// In es, this message translates to:
+  /// **'Analizar con IA'**
+  String get solicitudAnalyzeAi;
+
+  /// No description provided for @solicitudAnalyzingAiTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Analizando currículum con IA...'**
+  String get solicitudAnalyzingAiTitle;
+
+  /// No description provided for @solicitudAnalyzingAiSub.
+  ///
+  /// In es, this message translates to:
+  /// **'Evaluando perfil y experiencia, ¡falta muy poco!'**
+  String get solicitudAnalyzingAiSub;
+
+  /// No description provided for @solicitudAiErrorTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Error en el análisis de IA'**
+  String get solicitudAiErrorTitle;
+
+  /// No description provided for @solicitudAiErrorSub.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo completar el análisis automático del documento PDF.'**
+  String get solicitudAiErrorSub;
+
+  /// No description provided for @solicitudRetry.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get solicitudRetry;
+
+  /// No description provided for @solicitudAiCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Análisis de CV con IA Completado'**
+  String get solicitudAiCompleted;
+
+  /// No description provided for @solicitudSuitability.
+  ///
+  /// In es, this message translates to:
+  /// **'Idoneidad:'**
+  String get solicitudSuitability;
+
+  /// No description provided for @solicitudCandidateSummary.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen del Candidato'**
+  String get solicitudCandidateSummary;
+
+  /// No description provided for @solicitudDetectedStrengths.
+  ///
+  /// In es, this message translates to:
+  /// **'Fortalezas Detectadas'**
+  String get solicitudDetectedStrengths;
+
+  /// No description provided for @solicitudExperienceMilestones.
+  ///
+  /// In es, this message translates to:
+  /// **'Hitos de Experiencia'**
+  String get solicitudExperienceMilestones;
+
+  /// No description provided for @solicitudSuitabilityFeedback.
+  ///
+  /// In es, this message translates to:
+  /// **'Feedback de Idoneidad'**
+  String get solicitudSuitabilityFeedback;
 }
 
 class _AppLocalizationsDelegate

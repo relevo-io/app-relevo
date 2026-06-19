@@ -23,6 +23,13 @@ class ReceivedRequests extends _$ReceivedRequests {
     await service.updateRequestStatus(id, 'REJECTED');
     ref.invalidateSelf();
   }
+
+  Future<Solicitud> analizarCv(String id) async {
+    final service = ref.read(solicitudServiceProvider);
+    final updated = await service.analizarCvConIa(id);
+    ref.invalidateSelf();
+    return updated;
+  }
 }
 
 @riverpod

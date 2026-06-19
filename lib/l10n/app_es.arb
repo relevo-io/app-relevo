@@ -269,5 +269,19 @@
     "mentoring_buyer_m6_i1_title": "Contratos y cierre",
     "mentoring_buyer_m7_title": "Gestionar la empresa después de la compra",
     "mentoring_buyer_m7_description": "Planificar la transición, mantener la confianza del equipo y de los clientes, y establecer las bases para el futuro crecimiento del negocio.",
-    "mentoring_buyer_m7_i1_title": "Traspaso de poderes"
+    "mentoring_buyer_m7_i1_title": "Traspaso de poderes",
+    "solicitudAiCvAvailableTitle": "Análisis de CV con Inteligencia Artificial disponible",
+    "solicitudAiCvAvailableSub": "Analiza el currículum de este candidato para evaluar compatibilidad y experiencia.",
+    "solicitudAnalyzeAi": "Analizar con IA",
+    "solicitudAnalyzingAiTitle": "Analizando currículum con IA...",
+    "solicitudAnalyzingAiSub": "Evaluando perfil y experiencia, ¡falta muy poco!",
+    "solicitudAiErrorTitle": "Error en el análisis de IA",
+    "solicitudAiErrorSub": "No se pudo completar el análisis automático del documento PDF.",
+    "solicitudRetry": "Reintentar",
+    "solicitudAiCompleted": "Análisis de CV con IA Completado",
+    "solicitudSuitability": "Idoneidad:",
+    "solicitudCandidateSummary": "Resumen del Candidato",
+    "solicitudDetectedStrengths": "Fortalezas Detectadas",
+    "solicitudExperienceMilestones": "Hitos de Experiencia",
+    "solicitudSuitabilityFeedback": "Feedback de Idoneidad"
 }

@@ -117,9 +117,21 @@ class SocketService {
 
   // --- Emisión de Eventos ---
 
-  void joinChat(String chatId) {
+  void joinChat(String chatId, {Function(bool isOnline)? onJoinAck}) {
     if (_socket != null && _socket!.connected) {
-      _socket!.emit('join_chat', {'chatId': chatId});
+      if (onJoinAck != null) {
+        _socket!.emitWithAck('join_chat', {'chatId': chatId}, ack: (data) {
+          if (data is Map) {
+            final ok = data['ok'] ?? false;
+            final isOnline = data['isOnline'] ?? false;
+            if (ok) {
+              onJoinAck(isOnline);
+            }
+          }
+        });
+      } else {
+        _socket!.emit('join_chat', {'chatId': chatId});
+      }
     }
   }
 

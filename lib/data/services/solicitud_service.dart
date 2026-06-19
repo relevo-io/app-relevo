@@ -145,4 +145,37 @@ class SolicitudService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<String> getViewUrl(String id) async {
+    try {
+      final response = await _dio.get('/solicitudes/$id/ver-cv');
+      return response.data['viewUrl'] as String;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener la URL del CV',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<Solicitud> analizarCvConIa(String id) async {
+    try {
+      final response = await _dio.post(
+        '/solicitudes/$id/analizar-cv',
+        options: Options(
+          receiveTimeout: const Duration(seconds: 60),
+        ),
+      );
+      return Solicitud.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al analizar el CV con IA',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

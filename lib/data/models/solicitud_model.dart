@@ -1,6 +1,46 @@
 import 'user_model.dart';
 import 'offer_model.dart';
 
+class ResultadoIa {
+  final String resumen;
+  final double nota;
+  final String comentarioNota;
+  final List<String> puntosFuertes;
+  final List<String> experienciaDestacada;
+
+  ResultadoIa({
+    required this.resumen,
+    required this.nota,
+    required this.comentarioNota,
+    required this.puntosFuertes,
+    required this.experienciaDestacada,
+  });
+
+  factory ResultadoIa.fromJson(Map<String, dynamic> json) {
+    return ResultadoIa(
+      resumen: json['resumen'] ?? '',
+      nota: json['nota'] != null ? (json['nota'] as num).toDouble() : 0.0,
+      comentarioNota: json['comentarioNota'] ?? '',
+      puntosFuertes: json['puntosFuertes'] != null
+          ? List<String>.from(json['puntosFuertes'])
+          : [],
+      experienciaDestacada: json['experienciaDestacada'] != null
+          ? List<String>.from(json['experienciaDestacada'])
+          : [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'resumen': resumen,
+      'nota': nota,
+      'comentarioNota': comentarioNota,
+      'puntosFuertes': puntosFuertes,
+      'experienciaDestacada': experienciaDestacada,
+    };
+  }
+}
+
 class Solicitud {
   final String id;
   final User owner;
@@ -16,6 +56,7 @@ class Solicitud {
   final bool? ndaAccepted;
   final String? cvKey;
   final String? estadoAnalisis;
+  final ResultadoIa? resultadoIa;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -34,6 +75,7 @@ class Solicitud {
     this.ndaAccepted,
     this.cvKey,
     this.estadoAnalisis,
+    this.resultadoIa,
     this.createdAt,
     this.updatedAt,
   });
@@ -59,6 +101,11 @@ class Solicitud {
         ? rawRegions.map((e) => e.toString()).toList()
         : null;
 
+    final dynamic rawIa = json['resultadoIa'];
+    final ResultadoIa? parsedIa = rawIa is Map<String, dynamic>
+        ? ResultadoIa.fromJson(rawIa)
+        : null;
+
     return Solicitud(
       id: json['_id'] ?? '',
       owner: parsedOwner,
@@ -76,6 +123,7 @@ class Solicitud {
       ndaAccepted: json['ndaAccepted'],
       cvKey: json['cvKey'],
       estadoAnalisis: json['estadoAnalisis'],
+      resultadoIa: parsedIa,
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
           : null,
@@ -101,6 +149,7 @@ class Solicitud {
       'ndaAccepted': ndaAccepted,
       'cvKey': cvKey,
       'estadoAnalisis': estadoAnalisis,
+      'resultadoIa': resultadoIa?.toJson(),
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };

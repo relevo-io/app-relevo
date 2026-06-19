@@ -136,7 +136,7 @@ final class ChatRoomMessagesProvider
   }
 }
 
-String _$chatRoomMessagesHash() => r'5bf2680d76bfd941f69f2e12986e6669c8bc41b9';
+String _$chatRoomMessagesHash() => r'98a8fcfadd3a799efc3a5a57eefd8c3e2bba604c';
 
 final class ChatRoomMessagesFamily extends $Family
     with
@@ -323,7 +323,7 @@ final class ChatRoomPresenceProvider
   }
 }
 
-String _$chatRoomPresenceHash() => r'43c48222c0f7a49aa15148bc859151a7bf29e5c6';
+String _$chatRoomPresenceHash() => r'a8449580533351ccf8060c865b683ac41fcaa7c4';
 
 final class ChatRoomPresenceFamily extends $Family
     with $ClassFamilyOverride<ChatRoomPresence, bool, bool, bool, String> {
@@ -364,8 +364,6 @@ abstract class _$ChatRoomPresence extends $Notifier<bool> {
   }
 }
 
-String _$notificationManagerHash() => r'89e530ab7d3ab7db3d928a6fcf7cc923f538561d2';
-
 @ProviderFor(notificationManager)
 final notificationManagerProvider = NotificationManagerProvider._();
 
@@ -405,4 +403,5 @@ final class NotificationManagerProvider
   }
 }
 
-typedef NotificationManagerRef = Ref;
+String _$notificationManagerHash() =>
+    r'c6f0e714c4d29897e4142dc896cc4746779797d1';

@@ -257,5 +257,19 @@
     "mentoring_buyer_m6_i1_title": "Contracts and closing",
     "mentoring_buyer_m7_title": "Managing the company after purchase",
     "mentoring_buyer_m7_description": "Plan the transition, maintain the trust of the team and clients, and lay the foundation for future business growth.",
-    "mentoring_buyer_m7_i1_title": "Transfer of powers"
+    "mentoring_buyer_m7_i1_title": "Transfer of powers",
+    "solicitudAiCvAvailableTitle": "AI CV Analysis Available",
+    "solicitudAiCvAvailableSub": "Analyze this candidate's resume to evaluate compatibility and experience.",
+    "solicitudAnalyzeAi": "Analyze with AI",
+    "solicitudAnalyzingAiTitle": "Analyzing resume with AI...",
+    "solicitudAnalyzingAiSub": "Evaluating profile and experience, almost ready!",
+    "solicitudAiErrorTitle": "AI Analysis Error",
+    "solicitudAiErrorSub": "Could not complete the automatic PDF analysis.",
+    "solicitudRetry": "Retry",
+    "solicitudAiCompleted": "AI CV Analysis Completed",
+    "solicitudSuitability": "Suitability:",
+    "solicitudCandidateSummary": "Candidate Summary",
+    "solicitudDetectedStrengths": "Detected Strengths",
+    "solicitudExperienceMilestones": "Experience Milestones",
+    "solicitudSuitabilityFeedback": "Suitability Feedback"
 }

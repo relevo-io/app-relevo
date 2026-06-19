@@ -257,5 +257,19 @@
     "mentoring_buyer_m6_i1_title": "Contractes i tancament",
     "mentoring_buyer_m7_title": "Gestionar l’empresa després de la compra",
     "mentoring_buyer_m7_description": "Planificar la transició, mantenir la confiança de l’equip i dels clients, i establir les bases per al futur creixement del negoci.",
-    "mentoring_buyer_m7_i1_title": "Traspàs de poders"
+    "mentoring_buyer_m7_i1_title": "Traspàs de poders",
+    "solicitudAiCvAvailableTitle": "Anàlisi de CV amb Intel·ligència Artificial disponible",
+    "solicitudAiCvAvailableSub": "Analitza el currículum d'aquest candidat per avaluar compatibilitat i experiència.",
+    "solicitudAnalyzeAi": "Analitzar amb IA",
+    "solicitudAnalyzingAiTitle": "Analitzant currículum amb IA...",
+    "solicitudAnalyzingAiSub": "Avaluant perfil i experiència, falta molt poc!",
+    "solicitudAiErrorTitle": "Error en l'anàlisi d'IA",
+    "solicitudAiErrorSub": "No s'ha pogut completar l'anàlisi automàtic del document PDF.",
+    "solicitudRetry": "Reintentar",
+    "solicitudAiCompleted": "Anàlisi de CV amb IA Completat",
+    "solicitudSuitability": "Idoneïtat:",
+    "solicitudCandidateSummary": "Resum del Candidat",
+    "solicitudDetectedStrengths": "Fortaleses Detectades",
+    "solicitudExperienceMilestones": "Hitos d'Experiència",
+    "solicitudSuitabilityFeedback": "Feedback d'Idoneïtat"
 }

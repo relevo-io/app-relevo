@@ -834,4 +834,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mentoring_buyer_m7_i1_title => 'Transfer of powers';
+
+  @override
+  String get solicitudAiCvAvailableTitle => 'AI CV Analysis Available';
+
+  @override
+  String get solicitudAiCvAvailableSub =>
+      'Analyze this candidate\'s resume to evaluate compatibility and experience.';
+
+  @override
+  String get solicitudAnalyzeAi => 'Analyze with AI';
+
+  @override
+  String get solicitudAnalyzingAiTitle => 'Analyzing resume with AI...';
+
+  @override
+  String get solicitudAnalyzingAiSub =>
+      'Evaluating profile and experience, almost ready!';
+
+  @override
+  String get solicitudAiErrorTitle => 'AI Analysis Error';
+
+  @override
+  String get solicitudAiErrorSub =>
+      'Could not complete the automatic PDF analysis.';
+
+  @override
+  String get solicitudRetry => 'Retry';
+
+  @override
+  String get solicitudAiCompleted => 'AI CV Analysis Completed';
+
+  @override
+  String get solicitudSuitability => 'Suitability:';
+
+  @override
+  String get solicitudCandidateSummary => 'Candidate Summary';
+
+  @override
+  String get solicitudDetectedStrengths => 'Detected Strengths';
+
+  @override
+  String get solicitudExperienceMilestones => 'Experience Milestones';
+
+  @override
+  String get solicitudSuitabilityFeedback => 'Suitability Feedback';
 }

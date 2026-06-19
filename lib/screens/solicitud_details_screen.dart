@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../data/models/solicitud_model.dart';
+import '../data/models/user_model.dart';
 import '../data/providers/solicitud_provider.dart';
+import '../data/providers/auth_provider.dart';
+import '../data/services/solicitud_service.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/request_status_badge.dart';
 
@@ -17,6 +21,9 @@ class SolicitudDetailsScreen extends ConsumerStatefulWidget {
 
 class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen> {
   bool _isProcessing = false;
+  bool _isViewingCv = false;
+  bool _isAnalyzingCv = false;
+  bool _isAiExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,9 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
     final isDark = theme.brightness == Brightness.dark;
     final req = widget.solicitud;
     final offer = req.opportunity;
+
+    // Retrieve current logged in user to check ownership
+    final currentUser = ref.watch(authProvider).value;
 
     // Use current updated request from provider if it has refreshed
     final receivedRequestsAsync = ref.watch(receivedRequestsProvider);
@@ -290,28 +300,52 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
                               ],
                             ),
                           ),
-                          TextButton.icon(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).clearSnackBars();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.solicitudCvPreviewComingSoon),
-                                  duration: const Duration(seconds: 2),
+                          _isViewingCv
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : TextButton.icon(
+                                  onPressed: () async {
+                                    setState(() => _isViewingCv = true);
+                                    try {
+                                      final service = ref.read(solicitudServiceProvider);
+                                      final viewUrl = await service.getViewUrl(req.id);
+                                      final uri = Uri.parse(viewUrl);
+                                      if (await canLaunchUrl(uri)) {
+                                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                                      } else {
+                                        throw 'Could not launch URL';
+                                      }
+                                    } catch (err) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Error: ${err.toString()}'),
+                                            backgroundColor: Colors.redAccent,
+                                          ),
+                                        );
+                                      }
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() => _isViewingCv = false);
+                                      }
+                                    }
+                                  },
+                                  icon: const Icon(Icons.visibility_outlined, size: 16),
+                                  label: Text(l10n.solicitudCvView),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: primaryColor,
+                                  ),
                                 ),
-                              );
-                            },
-                            icon: const Icon(Icons.visibility_outlined, size: 16),
-                            label: Text(l10n.solicitudCvView),
-                            style: TextButton.styleFrom(
-                              foregroundColor: primaryColor,
-                            ),
-                          ),
                         ],
                       ),
                     ],
                   ],
                 ),
               ),
+              _buildAiAnalysisPanel(context, currentRequest, currentUser),
               const SizedBox(height: 120),
             ],
           ),
@@ -510,5 +544,479 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
         ),
       ],
     );
+  }
+
+  // AI Analysis Helper Widgets and Methods
+  Widget _buildAiAnalysisPanel(BuildContext context, Solicitud request, User? currentUser) {
+    if (currentUser?.id != request.owner.id) {
+      return const SizedBox.shrink();
+    }
+    if (request.cvKey == null || request.cvKey!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final estado = _isAnalyzingCv ? 'EN_PROCESO' : (request.estadoAnalisis ?? 'PENDIENTE');
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 24),
+        Text(
+          "ANÁLISIS POR IA",
+          style: GoogleFonts.inter(
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 10),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.15),
+              ),
+            ),
+            child: _buildAiPanelContent(context, estado, request),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAiPanelContent(BuildContext context, String estado, Solicitud request) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    switch (estado) {
+      case 'EN_PROCESO':
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(strokeWidth: 2.5),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      l10n.solicitudAnalyzingAiTitle,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.solicitudAnalyzingAiSub,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+
+      case 'ERROR':
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    color: Colors.redAccent,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.solicitudAiErrorTitle,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.solicitudAiErrorSub,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  onPressed: () => _triggerAiAnalysis(request.id),
+                  icon: const Icon(Icons.refresh, size: 16),
+                  label: Text(l10n.solicitudRetry),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primaryContainer,
+                    foregroundColor: theme.colorScheme.onPrimaryContainer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
+      case 'COMPLETADO':
+        final iaResult = request.resultadoIa;
+        if (iaResult == null) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "No se encontraron resultados del análisis.",
+              style: GoogleFonts.inter(color: theme.colorScheme.onSurface),
+            ),
+          );
+        }
+
+        final double score = iaResult.nota;
+        Color scoreColor;
+        if (score >= 8.0) {
+          scoreColor = const Color(0xFF10B981);
+        } else if (score >= 5.0) {
+          scoreColor = const Color(0xFFF59E0B);
+        } else {
+          scoreColor = const Color(0xFFEF4444);
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () => setState(() => _isAiExpanded = !_isAiExpanded),
+              borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      color: theme.colorScheme.primary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.solicitudAiCompleted,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: scoreColor.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: scoreColor.withValues(alpha: 0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.solicitudSuitability,
+                            style: GoogleFonts.inter(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: scoreColor,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "${score.toStringAsFixed(0)}/10",
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: scoreColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      _isAiExpanded ? Icons.expand_less : Icons.expand_more,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (_isAiExpanded) ...[
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildAiSectionHeader(
+                      context,
+                      icon: Icons.summarize_outlined,
+                      title: l10n.solicitudCandidateSummary,
+                      iconColor: Colors.deepPurple,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      iaResult.resumen,
+                      style: GoogleFonts.inter(
+                        fontSize: 13.5,
+                        height: 1.5,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildAiSectionHeader(
+                      context,
+                      icon: Icons.check_circle_outline_rounded,
+                      title: l10n.solicitudDetectedStrengths,
+                      iconColor: const Color(0xFF10B981),
+                    ),
+                    const SizedBox(height: 8),
+                    ...iaResult.puntosFuertes.map((punto) => Padding(
+                          padding: const EdgeInsets.only(bottom: 6.0, left: 4.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.check, size: 16, color: Color(0xFF10B981)),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  punto,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                    const SizedBox(height: 20),
+                    _buildAiSectionHeader(
+                      context,
+                      icon: Icons.work_outline_rounded,
+                      title: l10n.solicitudExperienceMilestones,
+                      iconColor: Colors.blue,
+                    ),
+                    const SizedBox(height: 8),
+                    ...iaResult.experienciaDestacada.map((exp) => Padding(
+                          padding: const EdgeInsets.only(bottom: 6.0, left: 4.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.trending_flat_rounded, size: 16, color: Colors.blue),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  exp,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildAiSectionHeader(
+                            context,
+                            icon: Icons.lightbulb_outline_rounded,
+                            title: l10n.solicitudSuitabilityFeedback,
+                            iconColor: Colors.orange,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            iaResult.comentarioNota,
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              height: 1.45,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        );
+
+      case 'PENDIENTE':
+      default:
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.auto_awesome,
+                    color: theme.colorScheme.primary,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.solicitudAiCvAvailableTitle,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.solicitudAiCvAvailableSub,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  onPressed: () => _triggerAiAnalysis(request.id),
+                  icon: const Icon(Icons.psychology, size: 18),
+                  label: Text(l10n.solicitudAnalyzeAi),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+    }
+  }
+
+  Widget _buildAiSectionHeader(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Color iconColor,
+  }) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: iconColor),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _triggerAiAnalysis(String id) async {
+    setState(() => _isAnalyzingCv = true);
+    try {
+      await ref.read(receivedRequestsProvider.notifier).analizarCv(id);
+      setState(() {
+        _isAiExpanded = true;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Análisis completado con éxito'),
+            backgroundColor: Color(0xFF10B981),
+          ),
+        );
+      }
+    } catch (err) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al analizar currículum: ${err.toString()}'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isAnalyzingCv = false);
+      }
+    }
   }
 }

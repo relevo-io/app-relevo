@@ -124,3 +124,52 @@ Future<List<Offer>> myOffers(Ref ref) async {
   if (user == null) return [];
   return ref.watch(offerServiceProvider).getMyOffers();
 }
+
+@riverpod
+class FavoriteOfferIds extends _$FavoriteOfferIds {
+  @override
+  FutureOr<Set<String>> build() async {
+    final user = ref.watch(authProvider).value;
+    if (user == null) return {};
+    try {
+      final result = await ref.watch(offerServiceProvider).getFavoriteOffers();
+      return result.map((o) => o.id).toSet();
+    } catch (_) {
+      return {};
+    }
+  }
+
+  Future<void> toggleFavorite(String offerId) async {
+    final current = state.value ?? {};
+    final isFav = current.contains(offerId);
+
+    // Actualización optimista de la UI
+    final updated = Set<String>.from(current);
+    if (isFav) {
+      updated.remove(offerId);
+    } else {
+      updated.add(offerId);
+    }
+    state = AsyncValue.data(updated);
+
+    try {
+      if (isFav) {
+        await ref.read(offerServiceProvider).removeFavorite(offerId);
+      } else {
+        await ref.read(offerServiceProvider).addFavorite(offerId);
+      }
+      ref.invalidate(favoriteOffersProvider);
+    } catch (e) {
+      // Revertir en caso de error
+      state = AsyncValue.data(current);
+      rethrow;
+    }
+  }
+}
+
+@riverpod
+Future<List<Offer>> favoriteOffers(Ref ref) async {
+  final user = ref.watch(authProvider).value;
+  if (user == null) return [];
+  return ref.watch(offerServiceProvider).getFavoriteOffers();
+}

@@ -90,3 +90,86 @@ final class MyOffersProvider
 }
 
 String _$myOffersHash() => r'0e9f2783326c4e855b95bbf91dc2821782e1de58';
+
+@ProviderFor(FavoriteOfferIds)
+final favoriteOfferIdsProvider = FavoriteOfferIdsProvider._();
+
+final class FavoriteOfferIdsProvider
+    extends $AsyncNotifierProvider<FavoriteOfferIds, Set<String>> {
+  FavoriteOfferIdsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'favoriteOfferIdsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$favoriteOfferIdsHash();
+
+  @$internal
+  @override
+  FavoriteOfferIds create() => FavoriteOfferIds();
+}
+
+String _$favoriteOfferIdsHash() => r'3ee5a16e6b65a42077fe83fc78867733a8e0bb18';
+
+abstract class _$FavoriteOfferIds extends $AsyncNotifier<Set<String>> {
+  FutureOr<Set<String>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<Set<String>>, Set<String>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Set<String>>, Set<String>>,
+              AsyncValue<Set<String>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(favoriteOffers)
+final favoriteOffersProvider = FavoriteOffersProvider._();
+
+final class FavoriteOffersProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Offer>>,
+          List<Offer>,
+          FutureOr<List<Offer>>
+        >
+    with $FutureModifier<List<Offer>>, $FutureProvider<List<Offer>> {
+  FavoriteOffersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'favoriteOffersProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$favoriteOffersHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Offer>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Offer>> create(Ref ref) {
+    return favoriteOffers(ref);
+  }
+}
+
+String _$favoriteOffersHash() => r'a51a7861f1a911f62fd4226e5049180e5cd860cb';
