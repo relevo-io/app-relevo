@@ -155,7 +155,9 @@ class ChatListScreen extends ConsumerWidget {
                         MaterialPageRoute(
                           builder: (context) => ChatRoomScreen(chatId: chat.id),
                         ),
-                      );
+                      ).then((_) {
+                        ref.invalidate(chatsListProvider);
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),

@@ -590,7 +590,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 left: 16.0,
                 right: 16.0,
                 top: 8.0,
-                bottom: 8.0 + MediaQuery.of(context).viewInsets.bottom + (Platform.isIOS ? 16.0 : 8.0),
+                bottom: 8.0 + (!kIsWeb && Platform.isIOS ? 16.0 : 8.0),
               ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainer,

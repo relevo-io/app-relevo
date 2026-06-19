@@ -37,6 +37,7 @@ void socketConnectionManager(Ref ref) {
 @riverpod
 class ChatsList extends _$ChatsList {
   StreamSubscription? _notificationSubscription;
+  StreamSubscription? _messageSubscription;
 
   @override
   FutureOr<List<Chat>> build() async {
@@ -52,24 +53,32 @@ class ChatsList extends _$ChatsList {
     _notificationSubscription?.cancel();
     _notificationSubscription = socketService.onChatNotification.listen((data) {
       final chatId = data['chatId'] as String?;
-      final lastMsgJson = data['lastMessage'] as Map<String, dynamic>?;
+      final lastMsgJson = data['lastMessage'] as Map<String, dynamic>? ?? data['message'] as Map<String, dynamic>?;
       final unreadCount = data['unreadCount'] as int?;
 
       if (chatId != null && lastMsgJson != null && state.hasValue) {
         final currentChats = List<Chat>.from(state.value!);
         final index = currentChats.indexWhere((c) => c.id == chatId);
 
+        final senderJson = lastMsgJson['sender'];
+        final String senderId = lastMsgJson['senderId'] ?? 
+            (senderJson is Map ? (senderJson['_id'] ?? senderJson['id'] ?? '') : (senderJson ?? ''));
+
         final lastMessage = ChatLastMessage(
           content: lastMsgJson['content'] ?? '',
-          senderId: lastMsgJson['senderId'] ?? '',
+          senderId: senderId,
           sentAt: lastMsgJson['sentAt'] != null
               ? DateTime.parse(lastMsgJson['sentAt'])
-              : DateTime.now(),
+              : (lastMsgJson['createdAt'] != null ? DateTime.parse(lastMsgJson['createdAt']) : DateTime.now()),
         );
 
         if (index != -1) {
           final existingChat = currentChats[index];
           final isOwner = currentUser?.id == existingChat.owner.id;
+
+          final isMe = senderId == currentUser?.id;
+          final newUnreadOwner = isOwner && !isMe ? (unreadCount ?? (existingChat.unreadOwner + 1)) : existingChat.unreadOwner;
+          final newUnreadInterested = !isOwner && !isMe ? (unreadCount ?? (existingChat.unreadInterested + 1)) : existingChat.unreadInterested;
 
           final updatedChat = Chat(
             id: existingChat.id,
@@ -77,8 +86,56 @@ class ChatsList extends _$ChatsList {
             owner: existingChat.owner,
             interested: existingChat.interested,
             lastMessage: lastMessage,
-            unreadOwner: isOwner ? (unreadCount ?? existingChat.unreadOwner) : existingChat.unreadOwner,
-            unreadInterested: !isOwner ? (unreadCount ?? existingChat.unreadInterested) : existingChat.unreadInterested,
+            unreadOwner: newUnreadOwner,
+            unreadInterested: newUnreadInterested,
+            isReadOnly: existingChat.isReadOnly,
+            status: existingChat.status,
+            closedByOwner: existingChat.closedByOwner,
+            closedByInterested: existingChat.closedByInterested,
+            closedAt: existingChat.closedAt,
+            createdAt: existingChat.createdAt,
+            updatedAt: lastMessage.sentAt,
+          );
+
+          currentChats.removeAt(index);
+          currentChats.insert(0, updatedChat);
+          state = AsyncValue.data(currentChats);
+        } else {
+          // Si no está en el listado, recargamos la lista completa para traer el nuevo chat
+          ref.invalidateSelf();
+        }
+      }
+    });
+
+    _messageSubscription?.cancel();
+    _messageSubscription = socketService.onMessageReceived.listen((message) {
+      if (state.hasValue) {
+        final currentChats = List<Chat>.from(state.value!);
+        final index = currentChats.indexWhere((c) => c.id == message.chatId);
+
+        final lastMessage = ChatLastMessage(
+          content: message.content.isNotEmpty ? message.content : (message.messageType == 'image' ? '[Imatge]' : message.messageType == 'audio' ? '[Nota de veu]' : '[Fitxer]'),
+          senderId: message.sender.id,
+          sentAt: message.createdAt ?? DateTime.now(),
+        );
+
+        if (index != -1) {
+          final existingChat = currentChats[index];
+          final isOwner = currentUser?.id == existingChat.owner.id;
+
+          // Si el remitente del mensaje no soy yo, incrementamos el contador de no leídos correspondientes
+          final isMe = message.sender.id == currentUser?.id;
+          final newUnreadOwner = isOwner && !isMe ? existingChat.unreadOwner + 1 : existingChat.unreadOwner;
+          final newUnreadInterested = !isOwner && !isMe ? existingChat.unreadInterested + 1 : existingChat.unreadInterested;
+
+          final updatedChat = Chat(
+            id: existingChat.id,
+            oferta: existingChat.oferta,
+            owner: existingChat.owner,
+            interested: existingChat.interested,
+            lastMessage: lastMessage,
+            unreadOwner: newUnreadOwner,
+            unreadInterested: newUnreadInterested,
             isReadOnly: existingChat.isReadOnly,
             status: existingChat.status,
             closedByOwner: existingChat.closedByOwner,
@@ -100,6 +157,7 @@ class ChatsList extends _$ChatsList {
 
     ref.onDispose(() {
       _notificationSubscription?.cancel();
+      _messageSubscription?.cancel();
     });
 
     // Ordenamos por fecha del último mensaje o updatedAt
@@ -157,6 +215,57 @@ class ChatsList extends _$ChatsList {
       state = AsyncValue.data(currentChats);
     }
   }
+
+  void updateLastMessageInList(Message message) {
+    if (!state.hasValue) return;
+    final currentUser = ref.read(authProvider).value;
+    final currentChats = List<Chat>.from(state.value!);
+    final index = currentChats.indexWhere((c) => c.id == message.chatId);
+
+    final lastMessage = ChatLastMessage(
+      content: message.content.isNotEmpty
+          ? message.content
+          : (message.messageType == 'image'
+              ? '[Imatge]'
+              : message.messageType == 'audio'
+                  ? '[Nota de veu]'
+                  : '[Fitxer]'),
+      senderId: message.sender.id,
+      sentAt: message.createdAt ?? DateTime.now(),
+    );
+
+    if (index != -1) {
+      final existingChat = currentChats[index];
+      final isOwner = currentUser?.id == existingChat.owner.id;
+
+      final isMe = message.sender.id == currentUser?.id;
+      final newUnreadOwner = isOwner && !isMe ? existingChat.unreadOwner + 1 : existingChat.unreadOwner;
+      final newUnreadInterested = !isOwner && !isMe ? existingChat.unreadInterested + 1 : existingChat.unreadInterested;
+
+      final updatedChat = Chat(
+        id: existingChat.id,
+        oferta: existingChat.oferta,
+        owner: existingChat.owner,
+        interested: existingChat.interested,
+        lastMessage: lastMessage,
+        unreadOwner: newUnreadOwner,
+        unreadInterested: newUnreadInterested,
+        isReadOnly: existingChat.isReadOnly,
+        status: existingChat.status,
+        closedByOwner: existingChat.closedByOwner,
+        closedByInterested: existingChat.closedByInterested,
+        closedAt: existingChat.closedAt,
+        createdAt: existingChat.createdAt,
+        updatedAt: lastMessage.sentAt,
+      );
+
+      currentChats.removeAt(index);
+      currentChats.insert(0, updatedChat);
+      state = AsyncValue.data(currentChats);
+    } else {
+      ref.invalidateSelf();
+    }
+  }
 }
 
 @riverpod
@@ -202,6 +311,7 @@ class ChatRoomMessages extends _$ChatRoomMessages {
           // Le indicamos al servidor que lo hemos leído
           socketService.markRead(chatId);
           // Actualizamos la lista de chats en segundo plano
+          ref.read(chatsListProvider.notifier).updateLastMessageInList(message);
           ref.read(chatsListProvider.notifier).markChatAsReadLocally(chatId);
         }
       }
@@ -247,6 +357,8 @@ class ChatRoomMessages extends _$ChatRoomMessages {
       if (!current.any((m) => m.id == message.id)) {
         current.insert(0, message);
         state = AsyncValue.data(current);
+        // Actualizamos la lista de chats en segundo plano
+        ref.read(chatsListProvider.notifier).updateLastMessageInList(message);
       }
     }
   }
@@ -337,5 +449,24 @@ void notificationManager(Ref ref) {
     },
     error: (_, __) => pushService.cleanup(),
     loading: () {},
+  );
+}
+
+@riverpod
+int unreadChatsCount(Ref ref) {
+  final chatsAsync = ref.watch(chatsListProvider);
+  final currentUser = ref.watch(authProvider).value;
+
+  if (currentUser == null) return 0;
+
+  return chatsAsync.maybeWhen(
+    data: (chats) {
+      return chats.fold<int>(0, (sum, chat) {
+        final isOwner = currentUser.id == chat.owner.id;
+        final unreadCount = isOwner ? chat.unreadOwner : chat.unreadInterested;
+        return sum + unreadCount;
+      });
+    },
+    orElse: () => 0,
   );
 }

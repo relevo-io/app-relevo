@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/auth_provider.dart';
 import '../data/providers/notification_provider.dart';
+import '../data/providers/chat_providers.dart';
 import '../l10n/app_localizations.dart';
 import 'edit_profile_screen.dart';
 import 'login_screen.dart';
@@ -326,6 +327,11 @@ class ProfileScreen extends ConsumerWidget {
                       context,
                       Icons.chat_bubble_outline_rounded,
                       l10n.profileFeatureChatTitle,
+                      trailing: ref.watch(unreadChatsCountProvider) > 0
+                          ? Badge.count(
+                              count: ref.watch(unreadChatsCountProvider),
+                            )
+                          : null,
                       onTap: () {
                         Navigator.push(
                           context,

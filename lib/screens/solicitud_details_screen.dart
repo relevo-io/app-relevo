@@ -9,6 +9,8 @@ import '../data/providers/auth_provider.dart';
 import '../data/services/solicitud_service.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/request_status_badge.dart';
+import 'chat_room_screen.dart';
+import '../data/services/chat_service.dart';
 
 class SolicitudDetailsScreen extends ConsumerStatefulWidget {
   final Solicitud solicitud;
@@ -461,7 +463,81 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
                 ),
               ),
             )
-          : null,
+          : (status == 'ACCEPTED'
+              ? SafeArea(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: theme.scaffoldBackgroundColor,
+                      border: Border(
+                        top: BorderSide(
+                          color: theme.colorScheme.outline.withValues(alpha: 0.25),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                        try {
+                          final chat = await ref.read(chatServiceProvider).getOrCreateChat(
+                                offer.id,
+                                interestedId: req.interestedUser.id,
+                              );
+                          if (context.mounted) {
+                            Navigator.pop(context); // Close loading dialog
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatRoomScreen(chatId: chat.id),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            Navigator.pop(context); // Close loading dialog
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  Localizations.localeOf(context).languageCode == 'ca'
+                                      ? 'Error al obrir el xat: $e'
+                                      : Localizations.localeOf(context).languageCode == 'es'
+                                          ? 'Error al abrir el chat: $e'
+                                          : 'Error opening chat: $e',
+                                ),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.chat_bubble_outline_rounded),
+                      label: Text(
+                        Localizations.localeOf(context).languageCode == 'ca'
+                            ? 'Xatejar amb el candidat'
+                            : Localizations.localeOf(context).languageCode == 'es'
+                                ? 'Chatear con el candidato'
+                                : 'Chat with candidate',
+                        style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(54),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : null),
     );
   }
 

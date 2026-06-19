@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'l10n/app_localizations.dart';
 
@@ -24,11 +25,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await Firebase.initializeApp();
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  } catch (e) {
-    print('*** Error al inicializar Firebase en main(): $e');
+  if (!kIsWeb) {
+    try {
+      await Firebase.initializeApp();
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    } catch (e) {
+      print('*** Error al inicializar Firebase en main(): $e');
+    }
   }
 
   timeago.setLocaleMessages('es', timeago.EsMessages());
@@ -44,7 +47,9 @@ class MainApp extends ConsumerWidget {
     // Inicializar y mantener viva la conexión WebSocket de chat si el usuario está autenticado
     ref.watch(socketConnectionManagerProvider);
     // Inicializar y mantener vivo el gestor de notificaciones push
-    ref.watch(notificationManagerProvider);
+    if (!kIsWeb) {
+      ref.watch(notificationManagerProvider);
+    }
 
     final themeMode = ref.watch(themeStateProvider);
     final currentLocale = ref.watch(languageStateProvider);

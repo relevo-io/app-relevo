@@ -13,6 +13,8 @@ import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
 import '../data/providers/offers_provider.dart';
 import '../widgets/offer_map_widget.dart';
+import 'chat_room_screen.dart';
+import '../data/services/chat_service.dart';
 
 class OfferDetailsScreen extends ConsumerWidget {
   final Offer offer;
@@ -284,10 +286,76 @@ class OfferDetailsScreen extends ConsumerWidget {
                   ),
                 ),
                 child: existingRequest != null
-                    ? _buildStatusBanner(
-                        context,
-                        existingRequest.status,
-                        localeCode,
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildStatusBanner(
+                            context,
+                            existingRequest.status,
+                            localeCode,
+                          ),
+                          if (existingRequest.status == 'ACCEPTED') ...[
+                            const SizedBox(height: 12),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                                try {
+                                  final chat = await ref
+                                      .read(chatServiceProvider)
+                                      .getOrCreateChat(offer.id);
+                                  if (context.mounted) {
+                                    Navigator.pop(context); // Close loading dialog
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ChatRoomScreen(chatId: chat.id),
+                                      ),
+                                    );
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    Navigator.pop(context); // Close loading dialog
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          localeCode == 'ca'
+                                              ? 'Error al obrir el xat: $e'
+                                              : localeCode == 'es'
+                                                  ? 'Error al abrir el chat: $e'
+                                                  : 'Error opening chat: $e',
+                                        ),
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              icon: const Icon(Icons.chat_bubble_outline_rounded),
+                              label: Text(
+                                localeCode == 'ca'
+                                    ? 'Xatejar amb el propietari'
+                                    : localeCode == 'es'
+                                        ? 'Chatear con el propietario'
+                                        : 'Chat with owner',
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50),
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       )
                     : ElevatedButton(
                         onPressed: () {

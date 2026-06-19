@@ -50,6 +50,7 @@ class SocketService {
           .setTransports(['websocket'])
           .disableAutoConnect()
           .setAuth({'token': 'Bearer $token'})
+          .enableForceNew()
           .build(),
     );
 

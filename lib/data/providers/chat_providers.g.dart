@@ -75,7 +75,7 @@ final class ChatsListProvider
   ChatsList create() => ChatsList();
 }
 
-String _$chatsListHash() => r'a2905db18494e6503ff631fba2f9854afad9dad6';
+String _$chatsListHash() => r'a1f16e3de88797f1b6b6025fdf3de3a322d8d31a';
 
 abstract class _$ChatsList extends $AsyncNotifier<List<Chat>> {
   FutureOr<List<Chat>> build();
@@ -136,7 +136,7 @@ final class ChatRoomMessagesProvider
   }
 }
 
-String _$chatRoomMessagesHash() => r'98a8fcfadd3a799efc3a5a57eefd8c3e2bba604c';
+String _$chatRoomMessagesHash() => r'6dd63404a329d92ea79cb982898e64140964454e';
 
 final class ChatRoomMessagesFamily extends $Family
     with
@@ -405,3 +405,43 @@ final class NotificationManagerProvider
 
 String _$notificationManagerHash() =>
     r'c6f0e714c4d29897e4142dc896cc4746779797d1';
+
+@ProviderFor(unreadChatsCount)
+final unreadChatsCountProvider = UnreadChatsCountProvider._();
+
+final class UnreadChatsCountProvider extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  UnreadChatsCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'unreadChatsCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$unreadChatsCountHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return unreadChatsCount(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$unreadChatsCountHash() => r'4c6da48cdf1eda78538b54c78fff0e5cb899e88d';
