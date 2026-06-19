@@ -176,6 +176,13 @@ class OfferCardHorizontal extends ConsumerWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      if (isLoggedIn && existingRequest != null) ...[
+                        const SizedBox(height: 4),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: RequestStatusBadge(status: existingRequest.status, isMini: true),
+                        ),
+                      ],
                       const Divider(height: 6, thickness: 0.5),
                       if (isLoggedIn)
                         Row(
@@ -190,8 +197,6 @@ class OfferCardHorizontal extends ConsumerWidget {
                                 color: priceColor,
                               ),
                             ),
-                            if (existingRequest != null)
-                              RequestStatusBadge(status: existingRequest.status, isMini: true),
                           ],
                         )
                       else

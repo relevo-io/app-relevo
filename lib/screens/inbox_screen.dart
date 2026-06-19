@@ -380,87 +380,71 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: RelevoCard(
-        color: theme.colorScheme.surfaceContainer,
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 1. Header: Avatar + User Info + Stars Rating Row (Matches screenshot)
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 26,
-                  backgroundColor: theme.colorScheme.primary,
-                  child: Text(
-                    initials,
-                    style: GoogleFonts.outfit(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SolicitudDetailsScreen(solicitud: request),
+            ),
+          );
+        },
+        child: RelevoCard(
+          color: theme.colorScheme.surfaceContainer,
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Header: Avatar + User Info + Stars Rating Row (Matches screenshot)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 26,
+                    backgroundColor: theme.colorScheme.primary,
+                    child: Text(
+                      initials,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        fullName,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900,
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          fullName,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        position,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontSize: 12,
+                        const SizedBox(height: 2),
+                        Text(
+                          position,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      // Rating Row
-                      Row(
-                        children: [
-                          Row(
-                            children: List.generate(
-                              5,
-                              (i) => const Icon(
-                                Icons.star_rounded,
-                                color: Color(0xFF00B286), // Green stars
-                                size: 14,
-                              ),
-                            ),
+                        // Time text
+                        Text(
+                          'Hace 2 horas',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            '4.8 / 5.0 Rating',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: theme.colorScheme.onSurface.withOpacity(0.7),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '•  Hace 2 horas',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: theme.colorScheme.onSurface.withOpacity(0.4),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
+                ],
+              ),
+              const SizedBox(height: 16),
 
             // 2. Main introductory bio block
             Text(
@@ -473,7 +457,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
             ),
             const SizedBox(height: 16),
 
-            // 3. Action Buttons Row (For Received Pending)
+             // 3. Action Buttons Row (For Received Pending)
             if (isReceived && status == 'PENDING') ...[
               Row(
                 children: [
@@ -507,9 +491,9 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      icon: const Icon(Icons.chat_bubble_outline, size: 16),
+                      icon: const Icon(Icons.check_rounded, size: 16),
                       label: Text(
-                        locale == 'ca' ? 'Iniciar Contacte' : 'Iniciar Contacto',
+                        locale == 'ca' ? 'Acceptar' : 'Aceptar',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                       ),
                     ),
@@ -564,19 +548,23 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                     decoration: BoxDecoration(
                       color: status == 'APPROVED' || status == 'ACCEPTED'
                           ? const Color(0xFF00B286).withOpacity(0.12)
-                          : Colors.redAccent.withOpacity(0.12),
+                          : (status == 'PENDING'
+                              ? Colors.orange.withOpacity(0.12)
+                              : Colors.redAccent.withOpacity(0.12)),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       status == 'APPROVED' || status == 'ACCEPTED'
                           ? (locale == 'ca' ? 'CONTACTE INICIAT' : 'CONTACTO INICIADO')
-                          : (locale == 'ca' ? 'DECLINADA' : 'DECLINADA'),
-                      style: GoogleFonts.inter(
+                          : (status == 'PENDING'
+                              ? (locale == 'ca' ? 'PENDENT' : 'PENDIENTE')
+                              : (locale == 'ca' ? 'DECLINADA' : 'DECLINADA')),
+                      style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: status == 'APPROVED' || status == 'ACCEPTED'
                             ? const Color(0xFF00B286)
-                            : Colors.redAccent,
+                            : (status == 'PENDING' ? Colors.orange : Colors.redAccent),
                       ),
                     ),
                   ),
@@ -852,6 +840,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
           ],
         ),
       ),
+     ),
     );
   }
 

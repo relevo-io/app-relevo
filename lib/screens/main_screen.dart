@@ -48,9 +48,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     final List<Widget> screens = [
       const HomeScreen(), // Inicio
-      isLoggedIn ? SellScreen() : GuestCTAScreen(tabName: 'Vender'),
-      isLoggedIn ? InboxScreen() : GuestCTAScreen(tabName: 'Solicitudes'),
-      isLoggedIn ? ChatListScreen() : GuestCTAScreen(tabName: 'Chats'),
+      if (isLoggedIn) SellScreen(),
+      if (isLoggedIn) InboxScreen(),
+      if (isLoggedIn) ChatListScreen(),
       const ProfileScreen(),
     ];
 
@@ -68,7 +68,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         centerTitle: true,
         title: Text(
           'Relevo',
-          style: GoogleFonts.outfit(
+          style: TextStyle(
             color: theme.colorScheme.primary,
             fontSize: 22,
             fontWeight: FontWeight.w900,
@@ -137,7 +137,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 children: [
                   Text(
                     'Relevo',
-                    style: GoogleFonts.outfit(
+                    style: TextStyle(
                       color: theme.colorScheme.primary,
                       fontSize: 28,
                       fontWeight: FontWeight.w900,
@@ -189,43 +189,45 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.add_circle_outline_rounded),
-              title: Text(localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Sell'),
-              selected: _currentIndex == 1,
-              selectedColor: theme.colorScheme.primary,
-              onTap: () {
-                setState(() => _currentIndex = 1);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.description_outlined),
-              title: Text(l10n.bottomNavInbox),
-              selected: _currentIndex == 2,
-              selectedColor: theme.colorScheme.primary,
-              onTap: () {
-                setState(() => _currentIndex = 2);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.chat_bubble_outline_rounded),
-              title: Text(localeCode == 'ca' ? 'Xats' : localeCode == 'es' ? 'Chats' : 'Chats'),
-              selected: _currentIndex == 3,
-              selectedColor: theme.colorScheme.primary,
-              onTap: () {
-                setState(() => _currentIndex = 3);
-                Navigator.pop(context);
-              },
-            ),
+            if (isLoggedIn) ...[
+              ListTile(
+                leading: const Icon(Icons.add_circle_outline_rounded),
+                title: Text(localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Sell'),
+                selected: _currentIndex == 1,
+                selectedColor: theme.colorScheme.primary,
+                onTap: () {
+                  setState(() => _currentIndex = 1);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined),
+                title: Text(l10n.bottomNavInbox),
+                selected: _currentIndex == 2,
+                selectedColor: theme.colorScheme.primary,
+                onTap: () {
+                  setState(() => _currentIndex = 2);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat_bubble_outline_rounded),
+                title: Text(localeCode == 'ca' ? 'Xats' : localeCode == 'es' ? 'Chats' : 'Chats'),
+                selected: _currentIndex == 3,
+                selectedColor: theme.colorScheme.primary,
+                onTap: () {
+                  setState(() => _currentIndex = 3);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
             ListTile(
               leading: const Icon(Icons.person_outline_rounded),
               title: Text(l10n.bottomNavYou),
-              selected: _currentIndex == 4,
+              selected: _currentIndex == (isLoggedIn ? 4 : 1),
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 4);
+                setState(() => _currentIndex = isLoggedIn ? 4 : 1);
                 Navigator.pop(context);
               },
             ),
@@ -366,53 +368,49 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Inici' : localeCode == 'es' ? 'Inicio' : 'Inicio',
+            label: localeCode == 'ca' ? 'Inici' : localeCode == 'es' ? 'Inicio' : 'Home',
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.add_circle_outline_rounded),
-            selectedIcon: Icon(Icons.add_circle, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Vender',
-          ),
-          NavigationDestination(
-            icon: Stack(
-              children: [
-                const Icon(Icons.description_outlined),
-                if (isLoggedIn && _currentIndex != 2) // could put count or red dot
-                  const SizedBox.shrink(),
-              ],
+          if (isLoggedIn) ...[
+            NavigationDestination(
+              icon: const Icon(Icons.add_circle_outline_rounded),
+              selectedIcon: Icon(Icons.add_circle, color: theme.colorScheme.primary),
+              label: localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Sell',
             ),
-            selectedIcon: Icon(Icons.description, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Sol·licituds' : localeCode == 'es' ? 'Solicitudes' : 'Solicitudes',
-          ),
-          NavigationDestination(
-            icon: Stack(
-              children: [
-                const Icon(Icons.chat_bubble_outline_rounded),
-                if (isLoggedIn && unreadChats > 0)
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                        color: Colors.redAccent,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 8,
-                        minHeight: 8,
+            NavigationDestination(
+              icon: const Icon(Icons.description_outlined),
+              selectedIcon: Icon(Icons.description, color: theme.colorScheme.primary),
+              label: localeCode == 'ca' ? 'Sol·licituds' : localeCode == 'es' ? 'Solicitudes' : 'Requests',
+            ),
+            NavigationDestination(
+              icon: Stack(
+                children: [
+                  const Icon(Icons.chat_bubble_outline_rounded),
+                  if (unreadChats > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: const BoxDecoration(
+                          color: Colors.redAccent,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 8,
+                          minHeight: 8,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
+              selectedIcon: Icon(Icons.chat_bubble, color: theme.colorScheme.primary),
+              label: 'Chats',
             ),
-            selectedIcon: Icon(Icons.chat_bubble, color: theme.colorScheme.primary),
-            label: 'Chats',
-          ),
+          ],
           NavigationDestination(
             icon: const Icon(Icons.person_outline_rounded),
             selectedIcon: Icon(Icons.person, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Perfil' : localeCode == 'es' ? 'Perfil' : 'Perfil',
+            label: localeCode == 'ca' ? 'Perfil' : localeCode == 'es' ? 'Perfil' : 'Profile',
           ),
         ],
       ),

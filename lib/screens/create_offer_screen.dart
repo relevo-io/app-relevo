@@ -16,12 +16,12 @@ class CreateOfferScreen extends ConsumerStatefulWidget {
 
 class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _sectorController = TextEditingController();
   final _regionController = TextEditingController();
   final _yearController = TextEditingController();
   final _companyDescController = TextEditingController();
   final _extendedDescController = TextEditingController();
 
+  String? _selectedSector;
   String? _selectedRevenueRange;
   String? _selectedEmployeeRange;
   bool _isLoading = false;
@@ -29,7 +29,6 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
 
   @override
   void dispose() {
-    _sectorController.dispose();
     _regionController.dispose();
     _yearController.dispose();
     _companyDescController.dispose();
@@ -46,7 +45,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
     });
 
     try {
-      final sector = _sectorController.text.trim();
+      final sector = _selectedSector ?? '';
       final region = _regionController.text.trim();
       final companyDesc = _companyDescController.text.trim();
       final extendedDesc = _extendedDescController.text.trim();
@@ -113,6 +112,25 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         ? theme.colorScheme.surface
         : theme.colorScheme.onSurface.withValues(alpha: 0.05);
 
+    String getLocalizedSectorName(String sectorKey) {
+      final String locale = Localizations.localeOf(context).languageCode;
+      switch (sectorKey) {
+        case 'tecnologia':
+          return locale == 'ca' ? 'Tecnologia' : locale == 'en' ? 'Technology' : 'Tecnología';
+        case 'hostaleria':
+          return locale == 'ca' ? 'Hostaleria' : locale == 'en' ? 'Hospitality' : 'Hostelería';
+        case 'servicios':
+          return locale == 'ca' ? 'Serveis' : locale == 'en' ? 'Services' : 'Servicios';
+        case 'industria':
+          return locale == 'ca' ? 'Indústria' : locale == 'en' ? 'Industry' : 'Industria';
+        case 'comercio':
+          return locale == 'ca' ? 'Comerç' : locale == 'en' ? 'Commerce' : 'Comercio';
+        default:
+          return sectorKey;
+      }
+    }
+    final List<String> sectorOptions = ['tecnologia', 'hostaleria', 'servicios', 'industria', 'comercio'];
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.offerCreateTitle), elevation: 0),
       body: SafeArea(
@@ -148,11 +166,24 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      CustomTextField(
-                        controller: _sectorController,
+                      _buildDropdown(
                         label: l10n.offerSectorLabel,
                         hint: l10n.offerSectorHint,
-                        icon: Icons.business_outlined,
+                        value: _selectedSector,
+                        items: sectorOptions.map((opt) {
+                          return DropdownMenuItem<String>(
+                            value: opt,
+                            child: Text(
+                              getLocalizedSectorName(opt),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: _isLoading
+                            ? null
+                            : (val) => setState(() => _selectedSector = val),
+                        theme: theme,
+                        fillColor: fillColor,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return l10n.errorRequiredField;
@@ -181,7 +212,10 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                         items: Offer.revenueOptions.map((opt) {
                           return DropdownMenuItem<String>(
                             value: opt,
-                            child: Text(Offer.formatRevenueRange(opt)),
+                            child: Text(
+                              Offer.formatRevenueRange(opt),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           );
                         }).toList(),
                         onChanged: _isLoading
@@ -199,7 +233,10 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                         items: Offer.employeeOptions.map((opt) {
                           return DropdownMenuItem<String>(
                             value: opt,
-                            child: Text(Offer.formatEmployeeRange(opt)),
+                            child: Text(
+                              Offer.formatEmployeeRange(opt),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           );
                         }).toList(),
                         onChanged: _isLoading
@@ -290,6 +327,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
     required ValueChanged<String?>? onChanged,
     required ThemeData theme,
     required Color fillColor,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,19 +342,28 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: value,
+          value: value,
+          isExpanded: true,
+          hint: Text(
+            hint,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+              fontSize: 16,
+            ),
+          ),
           onChanged: onChanged,
-          style: TextStyle(color: theme.colorScheme.onSurface),
+          validator: validator,
+          style: TextStyle(
+            color: theme.colorScheme.onSurface,
+            fontSize: 16,
+          ),
           dropdownColor: theme.colorScheme.surfaceContainerHigh,
           icon: Icon(
             Icons.arrow_drop_down,
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
-            ),
             prefixIcon: Icon(
               Icons.list_outlined,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.5),

@@ -1019,11 +1019,11 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                             ref.invalidate(sentRequestsProvider);
 
                             if (!context.mounted) return;
-                            navigator.pop();
 
                             showDialog(
                               context: context,
-                              builder: (context) => AlertDialog(
+                              barrierDismissible: false,
+                              builder: (dialogContext) => AlertDialog(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -1054,7 +1054,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                       const SizedBox(height: 20),
                                       Text(
                                         l10n.offerApplySuccessTitle,
-                                        style: GoogleFonts.inter(
+                                        style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w800,
                                           color: theme.colorScheme.onSurface,
@@ -1064,7 +1064,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                       Text(
                                         l10n.offerApplySuccessMessage,
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.inter(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           color: theme.colorScheme.onSurface
                                               .withValues(alpha: 0.7),
@@ -1073,7 +1073,10 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                       ),
                                       const SizedBox(height: 24),
                                       ElevatedButton(
-                                        onPressed: () => Navigator.pop(context),
+                                        onPressed: () {
+                                          Navigator.pop(dialogContext); // Close dialog
+                                          navigator.pop(); // Close bottom sheet
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           minimumSize: const Size.fromHeight(
                                             48,

@@ -178,6 +178,13 @@ class OfferCardGrid extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    if (isLoggedIn && existingRequest != null) ...[
+                      const SizedBox(height: 6),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RequestStatusBadge(status: existingRequest.status, isMini: true),
+                      ),
+                    ],
                     const SizedBox(height: 4),
                     const Divider(height: 8, thickness: 0.5),
                     if (isLoggedIn) ...[
@@ -192,7 +199,7 @@ class OfferCardGrid extends ConsumerWidget {
                                   (localeCode == 'ca' ? 'Facturació' : localeCode == 'en' ? 'Revenue' : 'Facturación').toUpperCase(),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontSize: 8,
-                                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                                   ),
                                 ),
                                 const SizedBox(height: 2),
@@ -215,7 +222,7 @@ class OfferCardGrid extends ConsumerWidget {
                                   (localeCode == 'ca' ? 'Antiguitat' : localeCode == 'en' ? 'Age' : 'Antigüedad').toUpperCase(),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontSize: 8,
-                                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                                   ),
                                 ),
                                 const SizedBox(height: 2),
@@ -231,13 +238,6 @@ class OfferCardGrid extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      if (existingRequest != null) ...[
-                        const SizedBox(height: 4),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: RequestStatusBadge(status: existingRequest.status, isMini: true),
-                        ),
-                      ],
                     ] else
                       // Guest View placeholder
                       Center(

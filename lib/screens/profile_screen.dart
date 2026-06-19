@@ -13,6 +13,7 @@ import 'register_screen.dart';
 import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
 import 'notifications_inbox_screen.dart';
+import '../data/providers/mentoring_provider.dart';
 import 'favorites_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -54,7 +55,7 @@ class ProfileScreen extends ConsumerWidget {
                             user.fullName.isNotEmpty
                                 ? user.fullName.split(' ').map((e) => e.isEmpty ? '' : e[0]).take(2).join().toUpperCase()
                                 : '?',
-                            style: GoogleFonts.outfit(
+                            style: const TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
@@ -120,66 +121,93 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
 
-              // 2. Mentoring Readiness Card (Matches 2nd screenshot)
-              RelevoCard(
-                color: theme.colorScheme.surfaceContainer,
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.school_outlined,
-                              color: theme.colorScheme.primary,
-                              size: 22,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              locale == 'ca' ? 'Mentoring Readiness' : 'Mentoring Readiness',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
+              // 2. Mentoring Progress Card
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MentoringScreen(),
+                    ),
+                  );
+                },
+                child: RelevoCard(
+                  color: theme.colorScheme.surfaceContainer,
+                  padding: const EdgeInsets.all(20.0),
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final mentoringProgressAsync = ref.watch(mentoringProgressStateProvider);
+                      final progressVal = mentoringProgressAsync.value?.progressPercentage ?? 0;
+
+                      final String cardTitle = locale == 'ca'
+                          ? 'Progrés del Mentoring'
+                          : locale == 'es'
+                              ? 'Progreso del Mentoring'
+                              : 'Mentoring Progress';
+
+                      final String cardDesc = locale == 'ca'
+                          ? 'Completa els mòduls de mentoring per millorar les teves habilitats d\'adquisició i traspàs de negocis.'
+                          : locale == 'es'
+                              ? 'Completa los módulos de mentoring para mejorar tus habilidades de adquisición y traspaso de negocios.'
+                              : 'Complete the mentoring modules to improve your business acquisition and transfer skills.';
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.school_outlined,
+                                    color: theme.colorScheme.primary,
+                                    size: 22,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    cardTitle,
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '75 %',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 14,
-                            color: const Color(0xFF00B286),
+                              Text(
+                                '$progressVal %',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                  color: Color(0xFF00B286),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    // Green Progress bar
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: const LinearProgressIndicator(
-                        value: 0.75,
-                        minHeight: 8,
-                        backgroundColor: Color(0xFFECEEF0),
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      locale == 'ca'
-                          ? 'Completa la teva documentació legal per desbloquejar el matching premium de compradors.'
-                          : 'Complete your legal documentation to unlock premium buyer matching.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 13,
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        height: 1.4,
-                      ),
-                    ),
-                  ],
+                          const SizedBox(height: 16),
+                          // Green Progress bar
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: LinearProgressIndicator(
+                              value: progressVal / 100.0,
+                              minHeight: 8,
+                              backgroundColor: const Color(0xFFECEEF0),
+                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            cardDesc,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontSize: 13,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -241,6 +269,20 @@ class ProfileScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const NotificationsInboxScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
+                      Icons.school_outlined,
+                      locale == 'ca' ? 'Programa de mentoring' : 'Programa de mentoring',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MentoringScreen(),
                           ),
                         );
                       },

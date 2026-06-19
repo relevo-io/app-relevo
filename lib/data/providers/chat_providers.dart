@@ -47,6 +47,7 @@ class ChatsList extends _$ChatsList {
     final service = ref.read(chatServiceProvider);
     final socketService = ref.read(socketServiceProvider);
     final currentUser = ref.watch(authProvider).value;
+    if (currentUser == null) return [];
 
     final chats = await service.getMyChats();
 

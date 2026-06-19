@@ -44,7 +44,7 @@ class RelevoTheme {
         backgroundColor: lightBg,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.outfit(
+        titleTextStyle: const TextStyle(
           color: lightTextPrimary,
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -62,7 +62,7 @@ class RelevoTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -76,7 +76,7 @@ class RelevoTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -124,7 +124,7 @@ class RelevoTheme {
         backgroundColor: darkBg,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.outfit(
+        titleTextStyle: const TextStyle(
           color: darkTextPrimary,
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -147,7 +147,7 @@ class RelevoTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -161,7 +161,7 @@ class RelevoTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -193,23 +193,23 @@ class RelevoTheme {
     final Color textColor = brightness == Brightness.dark ? darkTextPrimary : lightTextPrimary;
     final Color secondaryTextColor = brightness == Brightness.dark ? darkTextSecondary : lightTextSecondary;
 
-    return GoogleFonts.outfitTextTheme(base).copyWith(
-      displayLarge: GoogleFonts.outfit(fontWeight: FontWeight.w800, color: textColor),
-      displayMedium: GoogleFonts.outfit(fontWeight: FontWeight.w800, color: textColor),
-      displaySmall: GoogleFonts.outfit(fontWeight: FontWeight.w800, color: textColor),
-      headlineLarge: GoogleFonts.outfit(fontWeight: FontWeight.w700, color: textColor),
-      headlineMedium: GoogleFonts.outfit(fontWeight: FontWeight.w700, color: textColor),
-      headlineSmall: GoogleFonts.outfit(fontWeight: FontWeight.w700, color: textColor),
-      titleLarge: GoogleFonts.outfit(fontWeight: FontWeight.w700, color: textColor),
-      titleMedium: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: textColor),
-      titleSmall: GoogleFonts.outfit(fontWeight: FontWeight.w600, color: textColor),
+    return base.copyWith(
+      displayLarge: TextStyle(fontWeight: FontWeight.w800, color: textColor),
+      displayMedium: TextStyle(fontWeight: FontWeight.w800, color: textColor),
+      displaySmall: TextStyle(fontWeight: FontWeight.w800, color: textColor),
+      headlineLarge: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+      headlineMedium: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+      headlineSmall: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+      titleLarge: TextStyle(fontWeight: FontWeight.w700, color: textColor),
+      titleMedium: TextStyle(fontWeight: FontWeight.w600, color: textColor),
+      titleSmall: TextStyle(fontWeight: FontWeight.w600, color: textColor),
       
-      bodyLarge: GoogleFonts.inter(fontWeight: FontWeight.normal, color: textColor),
-      bodyMedium: GoogleFonts.inter(fontWeight: FontWeight.normal, color: secondaryTextColor),
-      bodySmall: GoogleFonts.inter(fontWeight: FontWeight.normal, color: secondaryTextColor),
-      labelLarge: GoogleFonts.inter(fontWeight: FontWeight.w600, color: textColor),
-      labelMedium: GoogleFonts.inter(fontWeight: FontWeight.w500, color: secondaryTextColor),
-      labelSmall: GoogleFonts.inter(fontWeight: FontWeight.w500, color: secondaryTextColor),
+      bodyLarge: TextStyle(fontWeight: FontWeight.normal, color: textColor),
+      bodyMedium: TextStyle(fontWeight: FontWeight.normal, color: secondaryTextColor),
+      bodySmall: TextStyle(fontWeight: FontWeight.normal, color: secondaryTextColor),
+      labelLarge: TextStyle(fontWeight: FontWeight.w600, color: textColor),
+      labelMedium: TextStyle(fontWeight: FontWeight.w500, color: secondaryTextColor),
+      labelSmall: TextStyle(fontWeight: FontWeight.w500, color: secondaryTextColor),
     );
   }
 }

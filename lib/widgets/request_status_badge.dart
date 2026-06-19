@@ -81,7 +81,7 @@ class RequestStatusBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: GoogleFonts.inter(
+        style: TextStyle(
           fontSize: isMini ? 10 : 11,
           fontWeight: isMini ? FontWeight.w800 : FontWeight.bold,
           color: textColor,

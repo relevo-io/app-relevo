@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/notification_model.dart';
 import '../services/notification_service.dart';
+import 'auth_provider.dart';
 
 part 'notification_provider.g.dart';
 
@@ -8,6 +9,9 @@ part 'notification_provider.g.dart';
 class NotificationsState extends _$NotificationsState {
   @override
   FutureOr<List<NotificationModel>> build() async {
+    final currentUser = ref.watch(authProvider).value;
+    if (currentUser == null) return [];
+
     final service = ref.watch(notificationServiceProvider);
     return await service.getNotifications();
   }
