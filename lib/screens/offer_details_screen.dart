@@ -11,6 +11,7 @@ import '../data/providers/solicitud_provider.dart';
 import '../data/services/solicitud_service.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
+import '../widgets/offer_map_widget.dart';
 
 class OfferDetailsScreen extends ConsumerWidget {
   final Offer offer;
@@ -33,8 +34,12 @@ class OfferDetailsScreen extends ConsumerWidget {
 
     final sentRequestsAsync = ref.watch(sentRequestsProvider);
     final sentRequests = sentRequestsAsync.value ?? [];
-    final existingRequestList = sentRequests.where((r) => r.opportunity.id == offer.id);
-    final existingRequest = existingRequestList.isNotEmpty ? existingRequestList.first : null;
+    final existingRequestList = sentRequests.where(
+      (r) => r.opportunity.id == offer.id,
+    );
+    final existingRequest = existingRequestList.isNotEmpty
+        ? existingRequestList.first
+        : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +90,9 @@ class OfferDetailsScreen extends ConsumerWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary.withValues(alpha: 0.15),
+                      color: theme.colorScheme.secondary.withValues(
+                        alpha: 0.15,
+                      ),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Row(
@@ -158,6 +165,11 @@ class OfferDetailsScreen extends ConsumerWidget {
                     label: l10n.offerDetailsLocation,
                     value: offer.region,
                   ),
+                  if (user != null) ...[
+                    const SizedBox(height: 12),
+                    OfferMapWidget(region: offer.region),
+                    const SizedBox(height: 12),
+                  ],
                   _buildDetailDivider(theme),
                   _buildDetailRow(
                     context: context,
@@ -215,7 +227,9 @@ class OfferDetailsScreen extends ConsumerWidget {
                       offer.extendedDescription!,
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.8,
+                        ),
                         height: 1.5,
                       ),
                     ),
@@ -232,7 +246,10 @@ class OfferDetailsScreen extends ConsumerWidget {
           ? null
           : SafeArea(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: theme.scaffoldBackgroundColor,
                   border: Border(
@@ -243,14 +260,19 @@ class OfferDetailsScreen extends ConsumerWidget {
                   ),
                 ),
                 child: existingRequest != null
-                    ? _buildStatusBanner(context, existingRequest.status, localeCode)
+                    ? _buildStatusBanner(
+                        context,
+                        existingRequest.status,
+                        localeCode,
+                      )
                     : ElevatedButton(
                         onPressed: () {
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => ApplyFormBottomSheet(offer: offer),
+                            builder: (context) =>
+                                ApplyFormBottomSheet(offer: offer),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -266,7 +288,11 @@ class OfferDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatusBanner(BuildContext context, String status, String localeCode) {
+  Widget _buildStatusBanner(
+    BuildContext context,
+    String status,
+    String localeCode,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -319,26 +345,19 @@ class OfferDetailsScreen extends ConsumerWidget {
     final String label = status == 'PENDING'
         ? l10n.inboxStatusPending
         : status == 'ACCEPTED'
-            ? l10n.inboxStatusAccepted
-            : l10n.inboxStatusRejected;
+        ? l10n.inboxStatusAccepted
+        : l10n.inboxStatusRejected;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: textColor.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: textColor.withValues(alpha: 0.3), width: 1),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: textColor,
-            size: 28,
-          ),
+          Icon(icon, color: textColor, size: 28),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -379,7 +398,9 @@ class OfferDetailsScreen extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final iconColor = isDark ? const Color(0xFF10B981) : theme.colorScheme.primary;
+    final iconColor = isDark
+        ? const Color(0xFF10B981)
+        : theme.colorScheme.primary;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -391,11 +412,7 @@ class OfferDetailsScreen extends ConsumerWidget {
               color: iconColor.withValues(alpha: isDark ? 0.15 : 0.05),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
-              icon,
-              size: 22,
-              color: iconColor,
-            ),
+            child: Icon(icon, size: 22, color: iconColor),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -444,7 +461,8 @@ class ApplyFormBottomSheet extends ConsumerStatefulWidget {
   const ApplyFormBottomSheet({super.key, required this.offer});
 
   @override
-  ConsumerState<ApplyFormBottomSheet> createState() => _ApplyFormBottomSheetState();
+  ConsumerState<ApplyFormBottomSheet> createState() =>
+      _ApplyFormBottomSheetState();
 }
 
 class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
@@ -470,9 +488,13 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
     final hasBackground = background.length >= 10;
     final hasRegions = regions.isNotEmpty;
     final hasBio = bio.length >= 10;
-    final hasCapital = capitalStr.isNotEmpty && (double.tryParse(capitalStr) != null && double.tryParse(capitalStr)! >= 0);
+    final hasCapital =
+        capitalStr.isNotEmpty &&
+        (double.tryParse(capitalStr) != null &&
+            double.tryParse(capitalStr)! >= 0);
 
-    final isValid = hasBackground && hasRegions && hasBio && hasCapital && _ndaAccepted;
+    final isValid =
+        hasBackground && hasRegions && hasBio && hasCapital && _ndaAccepted;
 
     if (_isFormValid != isValid) {
       setState(() {
@@ -641,7 +663,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                 icon: Icons.euro_outlined,
                 maxLines: 1,
                 fillColor: inputFillColor,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                 ],
@@ -681,7 +705,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
               InkWell(
                 onTap: () async {
                   try {
-                    final result = await FilePicker.platform.pickFiles(
+                    FilePickerResult? result = await FilePicker.platform.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: ['pdf'],
                     );
@@ -703,12 +727,19 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                 child: _cvFileName == null
                     ? Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 24,
+                          horizontal: 16,
+                        ),
                         decoration: BoxDecoration(
-                          color: isDark ? theme.colorScheme.surfaceContainer : theme.colorScheme.surface,
+                          color: isDark
+                              ? theme.colorScheme.surfaceContainer
+                              : theme.colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: theme.colorScheme.outline.withValues(alpha: 0.25),
+                            color: theme.colorScheme.outline.withValues(
+                              alpha: 0.25,
+                            ),
                             width: 1.5,
                           ),
                         ),
@@ -717,7 +748,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                             Icon(
                               Icons.cloud_upload_outlined,
                               size: 32,
-                              color: isDark ? const Color(0xFF10B981) : theme.colorScheme.secondary,
+                              color: isDark
+                                  ? const Color(0xFF10B981)
+                                  : theme.colorScheme.secondary,
                             ),
                             const SizedBox(height: 8),
                             Text(
@@ -726,7 +759,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                               style: GoogleFonts.inter(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                color: theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.6,
+                                ),
                               ),
                             ),
                           ],
@@ -734,12 +769,19 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                       )
                     : Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0x2210B981) : const Color(0xFFE8F5E9),
+                          color: isDark
+                              ? const Color(0x2210B981)
+                              : const Color(0xFFE8F5E9),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isDark ? const Color(0xFF10B981) : const Color(0xFF81C784),
+                            color: isDark
+                                ? const Color(0xFF10B981)
+                                : const Color(0xFF81C784),
                             width: 1.5,
                           ),
                         ),
@@ -747,7 +789,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                           children: [
                             Icon(
                               Icons.picture_as_pdf_outlined,
-                              color: isDark ? const Color(0xFF10B981) : const Color(0xFF2E7D32),
+                              color: isDark
+                                  ? const Color(0xFF10B981)
+                                  : const Color(0xFF2E7D32),
                               size: 28,
                             ),
                             const SizedBox(width: 12),
@@ -757,12 +801,17 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: isDark ? const Color(0xFF34D399) : const Color(0xFF2E7D32),
+                                  color: isDark
+                                      ? const Color(0xFF34D399)
+                                      : const Color(0xFF2E7D32),
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent),
+                              icon: const Icon(
+                                Icons.delete_outline_rounded,
+                                color: Colors.redAccent,
+                              ),
                               onPressed: () {
                                 setState(() {
                                   _pickedCvFile = null;
@@ -828,32 +877,51 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                 .where((v) => v.isNotEmpty)
                                 .toList();
 
-                            final capital = double.tryParse(_capitalController.text.trim()) ?? 0.0;
+                            final capital =
+                                double.tryParse(
+                                  _capitalController.text.trim(),
+                                ) ??
+                                0.0;
 
-                            final solicitudService = ref.read(solicitudServiceProvider);
+                            final solicitudService = ref.read(
+                              solicitudServiceProvider,
+                            );
 
                             // Crear la sol·licitud amb totes les dades (sense actualitzar perfil)
-                            final solicitud = await solicitudService.createSolicitud(
-                              opportunityId: widget.offer.id,
-                              bio: _bioController.text.trim(),
-                              professionalBackground: _backgroundController.text.trim(),
-                              preferredRegions: regions,
-                              availableCapital: capital,
-                              financingNeeded: _financingNeeded,
-                              ndaAccepted: _ndaAccepted,
-                            );
+                            final solicitud = await solicitudService
+                                .createSolicitud(
+                                  opportunityId: widget.offer.id,
+                                  bio: _bioController.text.trim(),
+                                  professionalBackground: _backgroundController
+                                      .text
+                                      .trim(),
+                                  preferredRegions: regions,
+                                  availableCapital: capital,
+                                  financingNeeded: _financingNeeded,
+                                  ndaAccepted: _ndaAccepted,
+                                );
 
                             if (_cvFileName != null && _pickedCvFile != null) {
                               // Pujar el CV a S3 (només si l'ha seleccionat)
-                              final presignedData = await solicitudService.getPresignedUploadUrl(_cvFileName!);
-                              final String uploadUrl = presignedData['uploadUrl'];
+                              final presignedData = await solicitudService
+                                  .getPresignedUploadUrl(_cvFileName!);
+                              final String uploadUrl =
+                                  presignedData['uploadUrl'];
                               final String s3Key = presignedData['s3Key'];
 
-                              final List<int> fileBytes = _pickedCvFile!.bytes ?? File(_pickedCvFile!.path!).readAsBytesSync();
-                              await solicitudService.uploadCvToS3(uploadUrl, fileBytes);
+                              final List<int> fileBytes =
+                                  _pickedCvFile!.bytes ??
+                                  File(_pickedCvFile!.path!).readAsBytesSync();
+                              await solicitudService.uploadCvToS3(
+                                uploadUrl,
+                                fileBytes,
+                              );
 
                               // Guardar la clau S3 a la sol·licitud
-                              await solicitudService.guardarCvKey(solicitud.id, s3Key);
+                              await solicitudService.guardarCvKey(
+                                solicitud.id,
+                                s3Key,
+                              );
                             }
 
                             ref.invalidate(sentRequestsProvider);
@@ -869,7 +937,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                 ),
                                 backgroundColor: theme.colorScheme.surface,
                                 content: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16.0,
+                                  ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -904,7 +974,8 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.inter(
                                           fontSize: 14,
-                                          color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                                          color: theme.colorScheme.onSurface
+                                              .withValues(alpha: 0.7),
                                           height: 1.4,
                                         ),
                                       ),
@@ -912,9 +983,13 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                       ElevatedButton(
                                         onPressed: () => Navigator.pop(context),
                                         style: ElevatedButton.styleFrom(
-                                          minimumSize: const Size.fromHeight(48),
+                                          minimumSize: const Size.fromHeight(
+                                            48,
+                                          ),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                           ),
                                         ),
                                         child: Text(l10n.offerApplySuccessOk),
@@ -932,7 +1007,14 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                             ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(l10n.offerApplyErrorPrefix(err.toString().replaceAll('Exception: ', ''))),
+                                content: Text(
+                                  l10n.offerApplyErrorPrefix(
+                                    err.toString().replaceAll(
+                                      'Exception: ',
+                                      '',
+                                    ),
+                                  ),
+                                ),
                                 backgroundColor: Colors.redAccent,
                               ),
                             );
@@ -1001,10 +1083,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
               ),
             ),
           ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-          ),
+          Switch(value: value, onChanged: onChanged),
         ],
       ),
     );
@@ -1025,8 +1104,8 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
           color: _ndaAccepted
               ? (isDark ? const Color(0x2210B981) : const Color(0xFFE8F5E9))
               : (isDark
-                  ? theme.colorScheme.surfaceContainerHighest
-                  : theme.colorScheme.surfaceContainerLowest),
+                    ? theme.colorScheme.surfaceContainerHighest
+                    : theme.colorScheme.surfaceContainerLowest),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: _ndaAccepted
@@ -1038,7 +1117,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
         child: Row(
           children: [
             Icon(
-              _ndaAccepted ? Icons.lock_outline_rounded : Icons.lock_open_outlined,
+              _ndaAccepted
+                  ? Icons.lock_outline_rounded
+                  : Icons.lock_open_outlined,
               size: 20,
               color: _ndaAccepted
                   ? (isDark ? const Color(0xFF10B981) : const Color(0xFF2E7D32))
@@ -1051,7 +1132,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                 style: GoogleFonts.inter(
                   fontSize: 13,
                   color: _ndaAccepted
-                      ? (isDark ? const Color(0xFF34D399) : const Color(0xFF2E7D32))
+                      ? (isDark
+                            ? const Color(0xFF34D399)
+                            : const Color(0xFF2E7D32))
                       : theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.4,
                 ),
@@ -1063,7 +1146,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                 setState(() => _ndaAccepted = v ?? false);
                 _validateForm();
               },
-              activeColor: isDark ? const Color(0xFF10B981) : theme.colorScheme.primary,
+              activeColor: isDark
+                  ? const Color(0xFF10B981)
+                  : theme.colorScheme.primary,
             ),
           ],
         ),
