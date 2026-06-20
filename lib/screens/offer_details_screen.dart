@@ -45,7 +45,9 @@ class OfferDetailsScreen extends ConsumerWidget {
         : null;
 
     final isLoggedIn = user != null;
-    final favoriteIdsAsync = isLoggedIn ? ref.watch(favoriteOfferIdsProvider) : null;
+    final favoriteIdsAsync = isLoggedIn
+        ? ref.watch(favoriteOfferIdsProvider)
+        : null;
     final isFavorite = favoriteIdsAsync?.value?.contains(offer.id) ?? false;
 
     return Scaffold(
@@ -62,12 +64,27 @@ class OfferDetailsScreen extends ConsumerWidget {
               tooltip: 'Favorit',
               onPressed: () async {
                 try {
-                  await ref.read(favoriteOfferIdsProvider.notifier).toggleFavorite(offer.id);
+                  await ref
+                      .read(favoriteOfferIdsProvider.notifier)
+                      .toggleFavorite(offer.id);
                   if (context.mounted) {
-                    final nowFav = ref.read(favoriteOfferIdsProvider).value?.contains(offer.id) ?? false;
+                    final nowFav =
+                        ref
+                            .read(favoriteOfferIdsProvider)
+                            .value
+                            ?.contains(offer.id) ??
+                        false;
                     final msg = nowFav
-                        ? (localeCode == 'ca' ? 'Oferta afegida a preferits' : localeCode == 'es' ? 'Oferta agregada a favoritos' : 'Offer added to favorites')
-                        : (localeCode == 'ca' ? 'Oferta eliminada de preferits' : localeCode == 'es' ? 'Oferta eliminada de favoritos' : 'Offer removed from favorites');
+                        ? (localeCode == 'ca'
+                              ? 'Oferta afegida a preferits'
+                              : localeCode == 'es'
+                              ? 'Oferta agregada a favoritos'
+                              : 'Offer added to favorites')
+                        : (localeCode == 'ca'
+                              ? 'Oferta eliminada de preferits'
+                              : localeCode == 'es'
+                              ? 'Oferta eliminada de favoritos'
+                              : 'Offer removed from favorites');
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -78,9 +95,9 @@ class OfferDetailsScreen extends ConsumerWidget {
                   }
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Error: $e')));
                   }
                 }
               },
@@ -310,7 +327,9 @@ class OfferDetailsScreen extends ConsumerWidget {
                                       .read(chatServiceProvider)
                                       .getOrCreateChat(offer.id);
                                   if (context.mounted) {
-                                    Navigator.pop(context); // Close loading dialog
+                                    Navigator.pop(
+                                      context,
+                                    ); // Close loading dialog
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -321,15 +340,17 @@ class OfferDetailsScreen extends ConsumerWidget {
                                   }
                                 } catch (e) {
                                   if (context.mounted) {
-                                    Navigator.pop(context); // Close loading dialog
+                                    Navigator.pop(
+                                      context,
+                                    ); // Close loading dialog
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
                                           localeCode == 'ca'
                                               ? 'Error al obrir el xat: $e'
                                               : localeCode == 'es'
-                                                  ? 'Error al abrir el chat: $e'
-                                                  : 'Error opening chat: $e',
+                                              ? 'Error al abrir el chat: $e'
+                                              : 'Error opening chat: $e',
                                         ),
                                         backgroundColor: Colors.redAccent,
                                       ),
@@ -337,13 +358,15 @@ class OfferDetailsScreen extends ConsumerWidget {
                                   }
                                 }
                               },
-                              icon: const Icon(Icons.chat_bubble_outline_rounded),
+                              icon: const Icon(
+                                Icons.chat_bubble_outline_rounded,
+                              ),
                               label: Text(
                                 localeCode == 'ca'
                                     ? 'Xatejar amb el propietari'
                                     : localeCode == 'es'
-                                        ? 'Chatear con el propietario'
-                                        : 'Chat with owner',
+                                    ? 'Chatear con el propietario'
+                                    : 'Chat with owner',
                               ),
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50),
@@ -797,10 +820,11 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
               InkWell(
                 onTap: () async {
                   try {
-                    FilePickerResult? result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['pdf'],
-                    );
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['pdf'],
+                        );
 
                     if (result != null && result.files.isNotEmpty) {
                       setState(() {
@@ -1074,7 +1098,9 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                       const SizedBox(height: 24),
                                       ElevatedButton(
                                         onPressed: () {
-                                          Navigator.pop(dialogContext); // Close dialog
+                                          Navigator.pop(
+                                            dialogContext,
+                                          ); // Close dialog
                                           navigator.pop(); // Close bottom sheet
                                         },
                                         style: ElevatedButton.styleFrom(

@@ -27,6 +27,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  Future<void> _hacerLoginGoogle() async {
+    setState(() => _backendError = null);
+    try {
+      await ref.read(authProvider.notifier).loginWithGoogle();
+      if (mounted) {
+        final authState = ref.read(authProvider);
+        if (authState.hasValue && authState.value != null) {
+          final userLanguage = authState.value!.language;
+          if (userLanguage != null) {
+            ref
+                .read(languageStateProvider.notifier)
+                .setLanguageWithoutSync(userLanguage);
+          }
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _backendError = e.toString().replaceAll('Exception: ', '');
+        });
+      }
+    }
+  }
+
   Future<void> _hacerLogin() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -202,6 +227,78 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                 )
                               : Text(l10n.loginButton),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.15,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                              ),
+                              child: Text(
+                                Localizations.localeOf(context).languageCode ==
+                                        'ca'
+                                    ? 'o'
+                                    : Localizations.localeOf(
+                                            context,
+                                          ).languageCode ==
+                                          'es'
+                                    ? 'o'
+                                    : 'or',
+                                style: TextStyle(
+                                  color: theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.4,
+                                  ),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton.icon(
+                          onPressed: authState.isLoading
+                              ? null
+                              : _hacerLoginGoogle,
+                          icon: Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png',
+                            height: 20,
+                            width: 20,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.g_mobiledata, size: 20),
+                          ),
+                          label: Text(
+                            Localizations.localeOf(context).languageCode == 'ca'
+                                ? 'Iniciar sessió amb Google'
+                                : Localizations.localeOf(
+                                        context,
+                                      ).languageCode ==
+                                      'es'
+                                ? 'Iniciar sesión con Google'
+                                : 'Sign in with Google',
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            side: BorderSide(
+                              color: theme.colorScheme.outline.withValues(
+                                alpha: 0.2,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

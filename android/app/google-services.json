@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "889003247844-npgd6ulnjcc0l44nmeu2lcqrsr919tfb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.relevo",
+            "certificate_hash": "3438e2020521a6b4cf838a5c0d0d2534a6e3c7f8"
+          }
+        },
+        {
           "client_id": "889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -34,6 +34,14 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<dynamic>>(authProvider, (previous, next) {
+      if (previous?.value == null && next.value != null) {
+        setState(() {
+          _currentIndex = 0;
+        });
+      }
+    });
+
     final authState = ref.watch(authProvider);
     final isLoggedIn = authState.value != null;
     final user = authState.value;
@@ -48,9 +56,33 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     final List<Widget> screens = [
       const HomeScreen(), // Inicio
-      if (isLoggedIn) SellScreen(),
-      if (isLoggedIn) InboxScreen(),
-      if (isLoggedIn) ChatListScreen(),
+      isLoggedIn
+          ? SellScreen()
+          : GuestCTAScreen(
+              tabName: localeCode == 'ca'
+                  ? 'ofertes de venda'
+                  : localeCode == 'es'
+                  ? 'ofertas de venta'
+                  : 'sales/offers',
+            ),
+      isLoggedIn
+          ? InboxScreen()
+          : GuestCTAScreen(
+              tabName: localeCode == 'ca'
+                  ? 'sol·licituds'
+                  : localeCode == 'es'
+                  ? 'solicitudes'
+                  : 'requests',
+            ),
+      isLoggedIn
+          ? ChatListScreen()
+          : GuestCTAScreen(
+              tabName: localeCode == 'ca'
+                  ? 'converses'
+                  : localeCode == 'es'
+                  ? 'conversaciones'
+                  : 'chats',
+            ),
       const ProfileScreen(),
     ];
 
@@ -166,8 +198,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       localeCode == 'ca'
                           ? 'Menú de navegació'
                           : localeCode == 'es'
-                              ? 'Menú de navegación'
-                              : 'Navigation Menu',
+                          ? 'Menú de navegación'
+                          : 'Navigation Menu',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
@@ -181,7 +213,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             // Navigation Links
             ListTile(
               leading: const Icon(Icons.home_outlined),
-              title: Text(localeCode == 'ca' ? 'Inici' : localeCode == 'es' ? 'Inicio' : 'Home'),
+              title: Text(
+                localeCode == 'ca'
+                    ? 'Inici'
+                    : localeCode == 'es'
+                    ? 'Inicio'
+                    : 'Home',
+              ),
               selected: _currentIndex == 0,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
@@ -189,45 +227,55 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 Navigator.pop(context);
               },
             ),
-            if (isLoggedIn) ...[
-              ListTile(
-                leading: const Icon(Icons.add_circle_outline_rounded),
-                title: Text(localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Sell'),
-                selected: _currentIndex == 1,
-                selectedColor: theme.colorScheme.primary,
-                onTap: () {
-                  setState(() => _currentIndex = 1);
-                  Navigator.pop(context);
-                },
+            ListTile(
+              leading: const Icon(Icons.add_circle_outline_rounded),
+              title: Text(
+                localeCode == 'ca'
+                    ? 'Vendre'
+                    : localeCode == 'es'
+                    ? 'Vender'
+                    : 'Sell',
               ),
-              ListTile(
-                leading: const Icon(Icons.description_outlined),
-                title: Text(l10n.bottomNavInbox),
-                selected: _currentIndex == 2,
-                selectedColor: theme.colorScheme.primary,
-                onTap: () {
-                  setState(() => _currentIndex = 2);
-                  Navigator.pop(context);
-                },
+              selected: _currentIndex == 1,
+              selectedColor: theme.colorScheme.primary,
+              onTap: () {
+                setState(() => _currentIndex = 1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.description_outlined),
+              title: Text(l10n.bottomNavInbox),
+              selected: _currentIndex == 2,
+              selectedColor: theme.colorScheme.primary,
+              onTap: () {
+                setState(() => _currentIndex = 2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.chat_bubble_outline_rounded),
+              title: Text(
+                localeCode == 'ca'
+                    ? 'Xats'
+                    : localeCode == 'es'
+                    ? 'Chats'
+                    : 'Chats',
               ),
-              ListTile(
-                leading: const Icon(Icons.chat_bubble_outline_rounded),
-                title: Text(localeCode == 'ca' ? 'Xats' : localeCode == 'es' ? 'Chats' : 'Chats'),
-                selected: _currentIndex == 3,
-                selectedColor: theme.colorScheme.primary,
-                onTap: () {
-                  setState(() => _currentIndex = 3);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+              selected: _currentIndex == 3,
+              selectedColor: theme.colorScheme.primary,
+              onTap: () {
+                setState(() => _currentIndex = 3);
+                Navigator.pop(context);
+              },
+            ),
             ListTile(
               leading: const Icon(Icons.person_outline_rounded),
               title: Text(l10n.bottomNavYou),
-              selected: _currentIndex == (isLoggedIn ? 4 : 1),
+              selected: _currentIndex == 4,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = isLoggedIn ? 4 : 1);
+                setState(() => _currentIndex = 4);
                 Navigator.pop(context);
               },
             ),
@@ -239,9 +287,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               leading: Icon(
                 isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
               ),
-              title: Text(
-                isDark ? l10n.themeLightMode : l10n.themeDarkMode,
-              ),
+              title: Text(isDark ? l10n.themeLightMode : l10n.themeDarkMode),
               onTap: () {
                 ref.read(themeStateProvider.notifier).toggleTheme();
               },
@@ -254,8 +300,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 localeCode == 'ca'
                     ? 'Idioma'
                     : localeCode == 'es'
-                        ? 'Idioma'
-                        : 'Language',
+                    ? 'Idioma'
+                    : 'Language',
               ),
               children: [
                 ListTile(
@@ -297,7 +343,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             if (isLoggedIn) ...[
               ListTile(
                 leading: const Icon(Icons.favorite_border_rounded),
-                title: Text(localeCode == 'ca' ? 'Preferits' : localeCode == 'es' ? 'Favoritos' : 'Favorites'),
+                title: Text(
+                  localeCode == 'ca'
+                      ? 'Preferits'
+                      : localeCode == 'es'
+                      ? 'Favoritos'
+                      : 'Favorites',
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -322,7 +374,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.logout_rounded, color: Colors.redAccent),
+                leading: const Icon(
+                  Icons.logout_rounded,
+                  color: Colors.redAccent,
+                ),
                 title: Text(
                   l10n.profileLogout,
                   style: const TextStyle(color: Colors.redAccent),
@@ -338,13 +393,18 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 leading: const Icon(Icons.login_rounded, color: Colors.green),
                 title: Text(
                   l10n.profileLoginButton,
-                  style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
                   );
                 },
               ),
@@ -352,10 +412,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           ],
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
@@ -368,49 +425,72 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Inici' : localeCode == 'es' ? 'Inicio' : 'Home',
+            label: localeCode == 'ca'
+                ? 'Inici'
+                : localeCode == 'es'
+                ? 'Inicio'
+                : 'Home',
           ),
-          if (isLoggedIn) ...[
-            NavigationDestination(
-              icon: const Icon(Icons.add_circle_outline_rounded),
-              selectedIcon: Icon(Icons.add_circle, color: theme.colorScheme.primary),
-              label: localeCode == 'ca' ? 'Vendre' : localeCode == 'es' ? 'Vender' : 'Sell',
+          NavigationDestination(
+            icon: const Icon(Icons.add_circle_outline_rounded),
+            selectedIcon: Icon(
+              Icons.add_circle,
+              color: theme.colorScheme.primary,
             ),
-            NavigationDestination(
-              icon: const Icon(Icons.description_outlined),
-              selectedIcon: Icon(Icons.description, color: theme.colorScheme.primary),
-              label: localeCode == 'ca' ? 'Sol·licituds' : localeCode == 'es' ? 'Solicitudes' : 'Requests',
+            label: localeCode == 'ca'
+                ? 'Vendre'
+                : localeCode == 'es'
+                ? 'Vender'
+                : 'Sell',
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.description_outlined),
+            selectedIcon: Icon(
+              Icons.description,
+              color: theme.colorScheme.primary,
             ),
-            NavigationDestination(
-              icon: Stack(
-                children: [
-                  const Icon(Icons.chat_bubble_outline_rounded),
-                  if (unreadChats > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                          color: Colors.redAccent,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 8,
-                          minHeight: 8,
-                        ),
+            label: localeCode == 'ca'
+                ? 'Sol·licituds'
+                : localeCode == 'es'
+                ? 'Solicitudes'
+                : 'Requests',
+          ),
+          NavigationDestination(
+            icon: Stack(
+              children: [
+                const Icon(Icons.chat_bubble_outline_rounded),
+                if (isLoggedIn && unreadChats > 0)
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 8,
+                        minHeight: 8,
                       ),
                     ),
-                ],
-              ),
-              selectedIcon: Icon(Icons.chat_bubble, color: theme.colorScheme.primary),
-              label: 'Chats',
+                  ),
+              ],
             ),
-          ],
+            selectedIcon: Icon(
+              Icons.chat_bubble,
+              color: theme.colorScheme.primary,
+            ),
+            label: 'Chats',
+          ),
           NavigationDestination(
             icon: const Icon(Icons.person_outline_rounded),
             selectedIcon: Icon(Icons.person, color: theme.colorScheme.primary),
-            label: localeCode == 'ca' ? 'Perfil' : localeCode == 'es' ? 'Perfil' : 'Profile',
+            label: localeCode == 'ca'
+                ? 'Perfil'
+                : localeCode == 'es'
+                ? 'Perfil'
+                : 'Profile',
           ),
         ],
       ),
@@ -432,17 +512,25 @@ class GuestCTAScreen extends StatelessWidget {
     final String title = localeCode == 'ca'
         ? 'Accés Restringit'
         : localeCode == 'es'
-            ? 'Acceso Restringido'
-            : 'Access Restricted';
+        ? 'Acceso Restringido'
+        : 'Access Restricted';
 
     final String description = localeCode == 'ca'
         ? 'Necessites iniciar la teva sessió o registrar-te per gestionar les teves $tabName, xats i connectar amb els fundadors directament.'
         : localeCode == 'es'
-            ? 'Necesitas iniciar sesión o registrarte para gestionar tus $tabName, conversaciones y conectar con los fundadores directamente.'
-            : 'You need to log in or register to manage your $tabName, messages, and contact founders directly.';
+        ? 'Necesitas iniciar sesión o registrarte para gestionar tus $tabName, conversaciones y conectar con los fundadores directamente.'
+        : 'You need to log in or register to manage your $tabName, messages, and contact founders directly.';
 
-    final String loginText = localeCode == 'ca' ? 'Iniciar sessió' : localeCode == 'es' ? 'Iniciar sesión' : 'Log In';
-    final String registerText = localeCode == 'ca' ? 'Registra\'t' : localeCode == 'es' ? 'Registrarse' : 'Register';
+    final String loginText = localeCode == 'ca'
+        ? 'Iniciar sessió'
+        : localeCode == 'es'
+        ? 'Iniciar sesión'
+        : 'Log In';
+    final String registerText = localeCode == 'ca'
+        ? 'Registra\'t'
+        : localeCode == 'es'
+        ? 'Registrarse'
+        : 'Register';
 
     return Center(
       child: SingleChildScrollView(
@@ -490,7 +578,9 @@ class GuestCTAScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -503,7 +593,9 @@ class GuestCTAScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
                     );
                   },
                   style: OutlinedButton.styleFrom(

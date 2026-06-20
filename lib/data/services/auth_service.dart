@@ -28,6 +28,23 @@ class UserService {
     }
   }
 
+  Future<AuthResponse> loginWithFirebase(String idToken) async {
+    try {
+      final response = await _dio.post(
+        '/auth/firebase',
+        data: {'idToken': idToken},
+      );
+      return AuthResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error de login con Firebase',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
   Future<void> register({
     required String fullName,
     required String email,

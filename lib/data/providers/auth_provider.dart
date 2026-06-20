@@ -1,5 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 
@@ -105,8 +107,60 @@ class Auth extends _$Auth {
     }
   }
 
+  Future<void> loginWithGoogle() async {
+    state = const AsyncValue.loading();
+    try {
+      final googleSignIn = GoogleSignIn(
+        serverClientId: '889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com',
+      );
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // User cancelled the sign-in
+        state = const AsyncValue.data(null);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final fb_auth.AuthCredential credential = fb_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final fb_auth.UserCredential userCredential =
+          await fb_auth.FirebaseAuth.instance.signInWithCredential(credential);
+      final String? firebaseIdToken = await userCredential.user?.getIdToken(true);
+
+      if (firebaseIdToken == null) {
+        throw Exception('No se pudo obtener el token de Firebase');
+      }
+
+      final userService = ref.read(authServiceProvider);
+      final response = await userService.loginWithFirebase(firebaseIdToken);
+
+      await _storage.write(key: 'access_token', value: response.accessToken);
+      if (response.refreshToken != null) {
+        await _storage.write(
+          key: 'refresh_token',
+          value: response.refreshToken!,
+        );
+      }
+
+      final fullUser = await userService.getMe();
+      state = AsyncValue.data(fullUser);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     state = const AsyncValue.loading();
+    try {
+      await fb_auth.FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+    } catch (_) {
+      // Ignore errors signing out from Firebase/Google if they weren't logged in with them
+    }
     await _storage.deleteAll();
     state = const AsyncValue.data(null);
   }
