@@ -23,17 +23,20 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final ScrollController _scrollController;
+  late final PageController _pageController;
   int _selectedCategoryIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_onScroll);
+    _pageController = PageController(initialPage: _selectedCategoryIndex);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -85,7 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             SliverToBoxAdapter(
               child: Container(
                 color: theme.scaffoldBackgroundColor,
-                padding: const EdgeInsets.only(top: 16, bottom: 8),
+                padding: const EdgeInsets.only(top: 80, bottom: 8),
                 child: Column(
                   children: [
                     // Search bar + Filter slider button row
@@ -147,15 +150,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: ChoiceChip(
                               label: Text(cat),
                               selected: isSelected,
+                              checkmarkColor: Colors.white,
                               onSelected: (selected) {
                                 setState(() {
                                   _selectedCategoryIndex = selected ? index : 0;
                                 });
+                                _pageController.animateToPage(
+                                  selected ? index : 0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
                               },
                               labelStyle: theme.textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: isSelected
-                                    ? (isDark ? const Color(0xFF003824) : Colors.white)
+                                    ? Colors.white
                                     : theme.colorScheme.onSurface,
                               ),
                               selectedColor: theme.colorScheme.primary,
@@ -178,105 +187,95 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
 
-            // Offers Grid
-            offersState.when(
-              data: (stateData) {
-                final offers = stateData.items;
-                final filtered = isLoggedIn
-                    ? offers.where((o) => o.owner != user.id).toList()
-                    : offers;
+            // Offers Grid (Refactored to PageView for sliding page transitions)
+            SliverFillRemaining(
+              hasScrollBody: true,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: categories.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedCategoryIndex = index;
+                  });
+                },
+                itemBuilder: (context, catIndex) {
+                  return offersState.when(
+                    data: (stateData) {
+                      final offers = stateData.items;
+                      final filtered = isLoggedIn
+                          ? offers.where((o) => o.owner != user.id).toList()
+                          : offers;
 
-                final List<String> categoryKeys = ['', 'hostaleria', 'comercio', 'industria', 'salud', 'servicios'];
-                final displayed = _selectedCategoryIndex == 0
-                    ? filtered
-                    : filtered
-                        .where((o) => o.sector.toLowerCase().trim() == categoryKeys[_selectedCategoryIndex])
-                        .toList();
+                      final List<String> categoryKeys = ['', 'hostaleria', 'comercio', 'industria', 'salud', 'servicios'];
+                      final displayed = catIndex == 0
+                          ? filtered
+                          : filtered
+                              .where((o) => o.sector.toLowerCase().trim() == categoryKeys[catIndex])
+                              .toList();
 
-                final displayedOffers = isLoggedIn
-                    ? displayed
-                    : displayed.take(4).toList();
+                      final displayedOffers = isLoggedIn
+                          ? displayed
+                          : displayed.take(4).toList();
 
-                if (displayedOffers.isEmpty) {
-                  return SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Text(
-                          noOffersText,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      if (displayedOffers.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(32.0),
+                            child: Text(
+                              noOffersText,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  sliver: SliverGrid(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 0.72,
-                    ),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      Widget card = OfferCardGrid(
-                        offer: displayedOffers[index],
-                      );
-                      if (!isLoggedIn && (index == 2 || index == 3)) {
-                        card = ShaderMask(
-                          shaderCallback: (rect) {
-                            return LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.white,
-                                Colors.white.withOpacity(0.0),
-                              ],
-                              stops: const [0.1, 0.9],
-                            ).createShader(rect);
-                          },
-                          blendMode: BlendMode.dstIn,
-                          child: card,
                         );
                       }
-                      return card;
-                    }, childCount: displayedOffers.length),
-                  ),
-                );
-              },
-              loading: () => const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  child: OffersShimmer(),
-                ),
-              ),
-              error: (err, st) =>
-                  SliverToBoxAdapter(child: Center(child: Text('Error: $err'))),
-            ),
 
-            // Loading more indicator
-            if (offersState.value?.isLoadingMore ?? false)
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24.0),
-                  child: Center(
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                      ),
+                      return GridView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.72,
+                        ),
+                        itemCount: displayedOffers.length,
+                        itemBuilder: (context, index) {
+                          Widget card = OfferCardGrid(
+                            offer: displayedOffers[index],
+                          );
+                          if (!isLoggedIn && (index == 2 || index == 3)) {
+                            card = ShaderMask(
+                              shaderCallback: (rect) {
+                                return LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.white,
+                                    Colors.white.withOpacity(0.0),
+                                  ],
+                                  stops: const [0.1, 0.9],
+                                ).createShader(rect);
+                              },
+                              blendMode: BlendMode.dstIn,
+                              child: card,
+                            );
+                          }
+                          return card;
+                        },
+                      );
+                    },
+                    loading: () => const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                      child: OffersShimmer(),
                     ),
-                  ),
-                ),
+                    error: (err, st) => Center(child: Text('Error: $err')),
+                  );
+                },
               ),
+            ),
 
             const SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],

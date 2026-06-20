@@ -338,5 +338,26 @@
     "premiumPaymentDialogCancel": "Cancelar",
     "premiumPaymentDialogConfirm": "Confirmar y Activar",
     "premiumSuccessMessage": "¡Plan Premium activado correctamente!",
-    "premiumErrorMessage": "Error al activar el plan Premium. Por favor, inténtalo de nuevo."
+    "premiumErrorMessage": "Error al activar el plan Premium. Por favor, inténtalo de nuevo.",
+    "profileOptionEditProfile": "Editar perfil",
+    "profileOptionMyFavorites": "Mis favoritos",
+    "profileOptionSearchAlerts": "Alertas de búsqueda",
+    "profileOptionNotificationSettings": "Configuración de notificaciones",
+    "profileOptionMentoringProgram": "Programa de mentoring",
+    "profileOptionLogout": "Cerrar sesión",
+    "drawerNavigationMenu": "Menú de navegación",
+    "bottomNavChats": "Chats",
+    "drawerLanguageSelector": "Idioma",
+    "drawerFavorites": "Favoritos",
+    "guestAccessRestricted": "Acceso Restringido",
+    "guestAccessDesc": "Necesitas iniciar sesión o registrarte para gestionar tus {tabName}, conversaciones y conectar con los fundadores directamente.",
+    "@guestAccessDesc": {
+      "placeholders": {
+        "tabName": {
+          "type": "String"
+        }
+      }
+    },
+    "guestLoginButton": "Iniciar sesión",
+    "guestRegisterButton": "Registrarse"
 }

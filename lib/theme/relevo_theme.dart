@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class RelevoTheme {
   // Brand color tokens from the Stitch designs (Dark mode first, with premium accents)
-  static const Color primaryGreen = Color(0xFF4EDE83); // Accent emerald green
-  static const Color primaryGreenLight = Color(0xFF006C49); // Darker green for light primary
+  static const Color primaryGreen = Color(0xFF1B8A5A); // Classy Pine Green for dark mode contrast (readable on dark navy)
+  static const Color primaryGreenLight = Color(0xFF0C462C); // Deep Pine Green for light mode
   
   static const Color secondaryBlue = Color(0xFFB9C7E0); // Secondary cool grey/blue
   static const Color secondaryBlueLight = Color(0xFF565E74); // Muted secondary for light
@@ -110,7 +110,7 @@ class RelevoTheme {
       scaffoldBackgroundColor: darkBg,
       colorScheme: const ColorScheme.dark(
         primary: primaryGreen,
-        onPrimary: Color(0xFF003824),
+        onPrimary: Colors.black,
         secondary: secondaryBlue,
         onSecondary: Color(0xFF233144),
         surface: darkSurface,
@@ -142,7 +142,7 @@ class RelevoTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryGreen,
-          foregroundColor: const Color(0xFF003824),
+          foregroundColor: Colors.black,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

@@ -49,15 +49,11 @@ class ChatListScreen extends ConsumerWidget {
     final String rejectButtonText = locale == 'ca' ? 'Rebutjar' : locale == 'es' ? 'Rechazar' : 'Reject';
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          titleText,
-          style: GoogleFonts.inter(fontWeight: FontWeight.w700),
-        ),
-        elevation: 0,
-      ),
-      body: chatsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+      appBar: null,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 80.0),
+        child: chatsAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
@@ -325,6 +321,7 @@ class ChatListScreen extends ConsumerWidget {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 }

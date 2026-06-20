@@ -326,5 +326,26 @@
     "premiumPaymentDialogCancel": "Cancel",
     "premiumPaymentDialogConfirm": "Confirm & Activate",
     "premiumSuccessMessage": "Premium plan activated successfully!",
-    "premiumErrorMessage": "Error activating Premium plan. Please try again."
+    "premiumErrorMessage": "Error activating Premium plan. Please try again.",
+    "profileOptionEditProfile": "Edit profile",
+    "profileOptionMyFavorites": "My favorites",
+    "profileOptionSearchAlerts": "Search alerts",
+    "profileOptionNotificationSettings": "Notification settings",
+    "profileOptionMentoringProgram": "Mentoring program",
+    "profileOptionLogout": "Log out",
+    "drawerNavigationMenu": "Navigation Menu",
+    "bottomNavChats": "Chats",
+    "drawerLanguageSelector": "Language",
+    "drawerFavorites": "Favorites",
+    "guestAccessRestricted": "Access Restricted",
+    "guestAccessDesc": "You need to log in or register to manage your {tabName}, messages, and contact founders directly.",
+    "@guestAccessDesc": {
+      "placeholders": {
+        "tabName": {
+          "type": "String"
+        }
+      }
+    },
+    "guestLoginButton": "Log In",
+    "guestRegisterButton": "Register"
 }

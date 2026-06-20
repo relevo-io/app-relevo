@@ -1069,4 +1069,49 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get premiumErrorMessage =>
       'Error al activar el pla Premium. Si us plau, torna-ho a intentar.';
+
+  @override
+  String get profileOptionEditProfile => 'Editar perfil';
+
+  @override
+  String get profileOptionMyFavorites => 'Els meus preferits';
+
+  @override
+  String get profileOptionSearchAlerts => 'Alertes de cerca';
+
+  @override
+  String get profileOptionNotificationSettings =>
+      'Configuració de notificacions';
+
+  @override
+  String get profileOptionMentoringProgram => 'Programa de mentoring';
+
+  @override
+  String get profileOptionLogout => 'Tancar sessió';
+
+  @override
+  String get drawerNavigationMenu => 'Menú de navegació';
+
+  @override
+  String get bottomNavChats => 'Xats';
+
+  @override
+  String get drawerLanguageSelector => 'Idioma';
+
+  @override
+  String get drawerFavorites => 'Preferits';
+
+  @override
+  String get guestAccessRestricted => 'Accés Restringit';
+
+  @override
+  String guestAccessDesc(String tabName) {
+    return 'Necessites iniciar la teva sessió o registrar-te per gestionar les teves $tabName, xats i connectar amb els fundadors directament.';
+  }
+
+  @override
+  String get guestLoginButton => 'Iniciar sessió';
+
+  @override
+  String get guestRegisterButton => 'Registra\'t';
 }

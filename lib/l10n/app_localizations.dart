@@ -2061,6 +2061,90 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Error al activar el plan Premium. Por favor, inténtalo de nuevo.'**
   String get premiumErrorMessage;
+
+  /// No description provided for @profileOptionEditProfile.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar perfil'**
+  String get profileOptionEditProfile;
+
+  /// No description provided for @profileOptionMyFavorites.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis favoritos'**
+  String get profileOptionMyFavorites;
+
+  /// No description provided for @profileOptionSearchAlerts.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas de búsqueda'**
+  String get profileOptionSearchAlerts;
+
+  /// No description provided for @profileOptionNotificationSettings.
+  ///
+  /// In es, this message translates to:
+  /// **'Configuración de notificaciones'**
+  String get profileOptionNotificationSettings;
+
+  /// No description provided for @profileOptionMentoringProgram.
+  ///
+  /// In es, this message translates to:
+  /// **'Programa de mentoring'**
+  String get profileOptionMentoringProgram;
+
+  /// No description provided for @profileOptionLogout.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get profileOptionLogout;
+
+  /// No description provided for @drawerNavigationMenu.
+  ///
+  /// In es, this message translates to:
+  /// **'Menú de navegación'**
+  String get drawerNavigationMenu;
+
+  /// No description provided for @bottomNavChats.
+  ///
+  /// In es, this message translates to:
+  /// **'Chats'**
+  String get bottomNavChats;
+
+  /// No description provided for @drawerLanguageSelector.
+  ///
+  /// In es, this message translates to:
+  /// **'Idioma'**
+  String get drawerLanguageSelector;
+
+  /// No description provided for @drawerFavorites.
+  ///
+  /// In es, this message translates to:
+  /// **'Favoritos'**
+  String get drawerFavorites;
+
+  /// No description provided for @guestAccessRestricted.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso Restringido'**
+  String get guestAccessRestricted;
+
+  /// No description provided for @guestAccessDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitas iniciar sesión o registrarte para gestionar tus {tabName}, conversaciones y conectar con los fundadores directamente.'**
+  String guestAccessDesc(String tabName);
+
+  /// No description provided for @guestLoginButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar sesión'**
+  String get guestLoginButton;
+
+  /// No description provided for @guestRegisterButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrarse'**
+  String get guestRegisterButton;
 }
 
 class _AppLocalizationsDelegate

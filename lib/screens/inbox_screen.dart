@@ -39,7 +39,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
           children: [
             // Screen Title inside the body (Since AppBar has 'Relevo')
             Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 16.0),
+              padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 16.0),
               child: Text(
                 locale == 'ca' ? 'Sol·licituds d\'Interès' : 'Solicitudes de Interés',
                 style: theme.textTheme.headlineMedium?.copyWith(

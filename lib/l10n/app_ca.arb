@@ -326,5 +326,26 @@
     "premiumPaymentDialogCancel": "Cancel·lar",
     "premiumPaymentDialogConfirm": "Confirmar i Activar",
     "premiumSuccessMessage": "Pla Premium activat correctament!",
-    "premiumErrorMessage": "Error al activar el pla Premium. Si us plau, torna-ho a intentar."
+    "premiumErrorMessage": "Error al activar el pla Premium. Si us plau, torna-ho a intentar.",
+    "profileOptionEditProfile": "Editar perfil",
+    "profileOptionMyFavorites": "Els meus preferits",
+    "profileOptionSearchAlerts": "Alertes de cerca",
+    "profileOptionNotificationSettings": "Configuració de notificacions",
+    "profileOptionMentoringProgram": "Programa de mentoring",
+    "profileOptionLogout": "Tancar sessió",
+    "drawerNavigationMenu": "Menú de navegació",
+    "bottomNavChats": "Xats",
+    "drawerLanguageSelector": "Idioma",
+    "drawerFavorites": "Preferits",
+    "guestAccessRestricted": "Accés Restringit",
+    "guestAccessDesc": "Necessites iniciar la teva sessió o registrar-te per gestionar les teves {tabName}, xats i connectar amb els fundadors directament.",
+    "@guestAccessDesc": {
+      "placeholders": {
+        "tabName": {
+          "type": "String"
+        }
+      }
+    },
+    "guestLoginButton": "Iniciar sessió",
+    "guestRegisterButton": "Registra't"
 }

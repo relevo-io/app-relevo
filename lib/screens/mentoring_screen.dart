@@ -152,6 +152,7 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                             ),
                             child: TabBar(
                               controller: _tabController,
+                              dividerColor: Colors.transparent,
                               indicator: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: theme.colorScheme.primary,

@@ -1071,4 +1071,49 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get premiumErrorMessage =>
       'Error al activar el plan Premium. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get profileOptionEditProfile => 'Editar perfil';
+
+  @override
+  String get profileOptionMyFavorites => 'Mis favoritos';
+
+  @override
+  String get profileOptionSearchAlerts => 'Alertas de búsqueda';
+
+  @override
+  String get profileOptionNotificationSettings =>
+      'Configuración de notificaciones';
+
+  @override
+  String get profileOptionMentoringProgram => 'Programa de mentoring';
+
+  @override
+  String get profileOptionLogout => 'Cerrar sesión';
+
+  @override
+  String get drawerNavigationMenu => 'Menú de navegación';
+
+  @override
+  String get bottomNavChats => 'Chats';
+
+  @override
+  String get drawerLanguageSelector => 'Idioma';
+
+  @override
+  String get drawerFavorites => 'Favoritos';
+
+  @override
+  String get guestAccessRestricted => 'Acceso Restringido';
+
+  @override
+  String guestAccessDesc(String tabName) {
+    return 'Necesitas iniciar sesión o registrarte para gestionar tus $tabName, conversaciones y conectar con los fundadores directamente.';
+  }
+
+  @override
+  String get guestLoginButton => 'Iniciar sesión';
+
+  @override
+  String get guestRegisterButton => 'Registrarse';
 }

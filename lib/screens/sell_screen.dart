@@ -31,7 +31,7 @@ class SellScreen extends ConsumerWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 12.0),
+                padding: const EdgeInsets.fromLTRB(16.0, 80.0, 16.0, 12.0),
                 child: Container(
                   padding: const EdgeInsets.all(24.0),
                   decoration: BoxDecoration(

@@ -37,7 +37,7 @@ class ProfileScreen extends ConsumerWidget {
         appBar: null,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -176,36 +176,38 @@ class ProfileScreen extends ConsumerWidget {
                                   ),
                                 ],
                               ),
-                              Text(
-                                '$progressVal %',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 14,
-                                  color: Color(0xFF00B286),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          // Green Progress bar with boundary outline border to stand out from card background
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: theme.colorScheme.outline.withValues(alpha: 0.35),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.5),
-                              child: LinearProgressIndicator(
-                                value: progressVal / 100.0,
-                                minHeight: 8,
-                                backgroundColor: const Color(0xFFECEEF0),
-                                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
-                              ),
-                            ),
-                          ),
+                               Text(
+                                 '$progressVal %',
+                                 style: TextStyle(
+                                   fontWeight: FontWeight.w800,
+                                   fontSize: 14,
+                                   color: theme.colorScheme.primary,
+                                 ),
+                               ),
+                             ],
+                           ),
+                           const SizedBox(height: 16),
+                           // Green Progress bar with boundary outline border to stand out from card background
+                           Container(
+                             decoration: BoxDecoration(
+                               borderRadius: BorderRadius.circular(6),
+                               border: Border.all(
+                                 color: theme.colorScheme.outline.withValues(alpha: 0.35),
+                                 width: 1.5,
+                               ),
+                             ),
+                             child: ClipRRect(
+                               borderRadius: BorderRadius.circular(4.5),
+                               child: LinearProgressIndicator(
+                                 value: progressVal / 100.0,
+                                 minHeight: 8,
+                                 backgroundColor: theme.brightness == Brightness.dark
+                                     ? theme.colorScheme.surfaceContainer
+                                     : const Color(0xFFECEEF0),
+                                 valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                               ),
+                             ),
+                           ),
                           const SizedBox(height: 16),
                           Text(
                             cardDesc,
@@ -224,107 +226,99 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
 
-              // 3. Options List Card (Matches 2nd screenshot)
-              RelevoCard(
-                child: Column(
-                  children: [
-                    _buildProfileOption(
-                      context,
-                      Icons.person_outline_rounded,
-                      locale == 'ca' ? 'Editar perfil' : 'Editar perfil',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditProfileScreen(),
-                          ),
-                        );
-                      },
+              // 3. Options List Cards (separated individual rounded boxes with borders)
+              _buildProfileOptionCard(
+                context,
+                Icons.person_outline_rounded,
+                l10n.profileOptionEditProfile,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.bookmark_border_outlined,
-                      locale == 'ca' ? 'Els meus preferits' : 'Mis favoritos',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FavoritesScreen(),
-                          ),
-                        );
-                      },
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.bookmark_border_outlined,
+                l10n.profileOptionMyFavorites,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoritesScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.notifications_none_outlined,
-                      locale == 'ca' ? 'Alertes de cerca' : 'Alertas de búsqueda',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ManageAlertsScreen(),
-                          ),
-                        );
-                      },
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.notifications_none_outlined,
+                l10n.profileOptionSearchAlerts,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ManageAlertsScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.settings_outlined,
-                      locale == 'ca'
-                          ? 'Configuració de notificacions'
-                          : 'Configuración de notificaciones',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NotificationPreferencesScreen(),
-                          ),
-                        );
-                      },
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.settings_outlined,
+                l10n.profileOptionNotificationSettings,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NotificationPreferencesScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.school_outlined,
-                      locale == 'ca' ? 'Programa de mentoring' : 'Programa de mentoring',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MentoringScreen(),
-                          ),
-                        );
-                      },
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.school_outlined,
+                l10n.profileOptionMentoringProgram,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MentoringScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      user.proActive == true ? Icons.workspace_premium : Icons.workspace_premium_outlined,
-                      user.proActive == true
-                          ? l10n.profileYouArePremiumActive
-                          : l10n.profileBecomePremium,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PremiumScreen(),
-                          ),
-                        );
-                      },
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                user.proActive == true ? Icons.workspace_premium : Icons.workspace_premium_outlined,
+                user.proActive == true
+                    ? l10n.profileYouArePremiumActive
+                    : l10n.profileBecomePremium,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PremiumScreen(),
                     ),
-                    const Divider(height: 1, indent: 56, endIndent: 16),
-                    _buildProfileOption(
-                      context,
-                      Icons.logout_rounded,
-                      locale == 'ca' ? 'Tancar sessió' : 'Cerrar sesión',
-                      isDestructive: true,
-                      onTap: () => ref.read(authProvider.notifier).logout(),
-                    ),
-                  ],
-                ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.logout_rounded,
+                l10n.profileOptionLogout,
+                isDestructive: true,
+                onTap: () => ref.read(authProvider.notifier).logout(),
               ),
             ],
           ),
@@ -369,14 +363,11 @@ class ProfileScreen extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 16.0,
-            ),
+            padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 32),
+                const SizedBox(height: 8),
                 Center(
                   child: Container(
                     height: 100,
@@ -561,6 +552,26 @@ class ProfileScreen extends ConsumerWidget {
             : theme.colorScheme.onSurface.withOpacity(0.4),
       ),
       onTap: onTap ?? () {},
+    );
+  }
+
+  Widget _buildProfileOptionCard(
+    BuildContext context,
+    IconData icon,
+    String title, {
+    bool isDestructive = false,
+    Color? iconColor,
+    VoidCallback? onTap,
+  }) {
+    return RelevoCard(
+      child: _buildProfileOption(
+        context,
+        icon,
+        title,
+        isDestructive: isDestructive,
+        iconColor: iconColor,
+        onTap: onTap,
+      ),
     );
   }
 }
