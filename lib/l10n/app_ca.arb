@@ -365,5 +365,6 @@
     "paymentCheckoutCheckNow": "Comprovar ara",
     "paymentCheckoutOpenError": "No hem pogut obrir Stripe. Torna-ho a provar.",
     "paymentCheckoutStatusError": "Encara no hem pogut confirmar l'estat del pagament.",
-    "paymentCheckoutCanceled": "Has cancel·lat el procés de pagament."
+    "paymentCheckoutCanceled": "Has cancel·lat el procés de pagament.",
+    "loadMoreOffers": "Carregar més ofertes"
 }

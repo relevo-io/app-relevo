@@ -1178,4 +1178,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get paymentCheckoutCanceled => 'Has cancelado el proceso de pago.';
+
+  @override
+  String get loadMoreOffers => 'Cargar más ofertas';
 }

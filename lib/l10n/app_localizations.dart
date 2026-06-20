@@ -2253,6 +2253,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Has cancelado el proceso de pago.'**
   String get paymentCheckoutCanceled;
+
+  /// No description provided for @loadMoreOffers.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más ofertas'**
+  String get loadMoreOffers;
 }
 
 class _AppLocalizationsDelegate

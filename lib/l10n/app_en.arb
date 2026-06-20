@@ -365,5 +365,6 @@
     "paymentCheckoutCheckNow": "Check now",
     "paymentCheckoutOpenError": "We could not open Stripe. Please try again.",
     "paymentCheckoutStatusError": "We could not confirm the payment status yet.",
-    "paymentCheckoutCanceled": "You canceled the payment process."
+    "paymentCheckoutCanceled": "You canceled the payment process.",
+    "loadMoreOffers": "Load more offers"
 }

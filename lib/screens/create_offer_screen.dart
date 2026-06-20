@@ -187,15 +187,20 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
     final String labelDescription = l10n.offerDescLabel;
 
     String getLocalizedSectorName(String sectorKey) {
-      switch (sectorKey) {
+      switch (sectorKey.toLowerCase()) {
+        case 'technology':
         case 'tecnologia':
           return l10n.categoryTechnology;
+        case 'hospitality':
         case 'hostaleria':
           return l10n.categoryHospitality;
+        case 'services':
         case 'servicios':
           return l10n.categoryServices;
+        case 'industrial':
         case 'industria':
           return l10n.categoryIndustrial;
+        case 'retail':
         case 'comercio':
           return l10n.categoryRetail;
         default:
@@ -498,15 +503,20 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         : theme.colorScheme.onSurface.withValues(alpha: 0.05);
 
     String getLocalizedSectorName(String sectorKey) {
-      switch (sectorKey) {
+      switch (sectorKey.toLowerCase()) {
+        case 'technology':
         case 'tecnologia':
           return l10n.categoryTechnology;
+        case 'hospitality':
         case 'hostaleria':
           return l10n.categoryHospitality;
+        case 'services':
         case 'servicios':
           return l10n.categoryServices;
+        case 'industrial':
         case 'industria':
           return l10n.categoryIndustrial;
+        case 'retail':
         case 'comercio':
           return l10n.categoryRetail;
         default:
@@ -515,11 +525,11 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
     }
 
     final List<String> sectorOptions = [
-      'tecnologia',
-      'hostaleria',
-      'servicios',
-      'industria',
-      'comercio',
+      'Technology',
+      'Hospitality',
+      'Services',
+      'Industrial',
+      'Retail',
     ];
 
     return Scaffold(

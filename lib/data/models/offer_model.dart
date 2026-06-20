@@ -75,10 +75,12 @@ class Offer {
     switch (cleanSector) {
       case 'tecnologia':
       case 'tecnología':
+      case 'technology':
         return locale == 'ca' ? 'Tecnologia' : locale == 'en' ? 'Technology' : 'Tecnología';
       case 'hostaleria':
       case 'hostelería':
       case 'hosteleria':
+      case 'hospitality':
         return locale == 'ca' ? 'Hostaleria' : locale == 'en' ? 'Hospitality' : 'Hostelería';
       case 'servicios':
       case 'serveis':
@@ -87,11 +89,27 @@ class Offer {
       case 'industria':
       case 'indústria':
       case 'industry':
+      case 'industrial':
         return locale == 'ca' ? 'Indústria' : locale == 'en' ? 'Industry' : 'Industria';
       case 'comercio':
       case 'comerç':
       case 'commerce':
+      case 'retail':
         return locale == 'ca' ? 'Comerç' : locale == 'en' ? 'Commerce' : 'Comercio';
+      case 'salud':
+      case 'salut':
+      case 'health':
+      case 'healthcare':
+        return locale == 'ca' ? 'Salut' : locale == 'en' ? 'Healthcare' : 'Salud';
+      case 'logistica':
+      case 'logística':
+      case 'logistics':
+        return locale == 'ca' ? 'Logística' : locale == 'en' ? 'Logistics' : 'Logística';
+      case 'educacion':
+      case 'educación':
+      case 'educació':
+      case 'education':
+        return locale == 'ca' ? 'Educació' : locale == 'en' ? 'Education' : 'Educación';
       default:
         return sector;
     }

@@ -18,6 +18,12 @@ class OfferService {
     int limit = 12,
     String? search,
     String? excludeOwnerId,
+    String? sector,
+    String? region,
+    String? employeeRange,
+    String? revenueRange,
+    int? creationYearFrom,
+    int? creationYearTo,
   }) async {
     try {
       final response = await _dio.get(
@@ -28,6 +34,14 @@ class OfferService {
           if (search != null && search.isNotEmpty) 'search': search,
           if (excludeOwnerId != null && excludeOwnerId.isNotEmpty)
             'excludeOwnerId': excludeOwnerId,
+          if (sector != null && sector.isNotEmpty) 'sector': sector,
+          if (region != null && region.isNotEmpty) 'region': region,
+          if (employeeRange != null && employeeRange.isNotEmpty)
+            'employeeRange': employeeRange,
+          if (revenueRange != null && revenueRange.isNotEmpty)
+            'revenueRange': revenueRange,
+          if (creationYearFrom != null) 'creationYearFrom': creationYearFrom,
+          if (creationYearTo != null) 'creationYearTo': creationYearTo,
         },
       );
       if (response.data is Map<String, dynamic>) {

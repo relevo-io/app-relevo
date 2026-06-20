@@ -377,5 +377,6 @@
     "paymentCheckoutCheckNow": "Comprobar ahora",
     "paymentCheckoutOpenError": "No hemos podido abrir Stripe. Inténtalo de nuevo.",
     "paymentCheckoutStatusError": "No hemos podido confirmar el estado del pago todavía.",
-    "paymentCheckoutCanceled": "Has cancelado el proceso de pago."
+    "paymentCheckoutCanceled": "Has cancelado el proceso de pago.",
+    "loadMoreOffers": "Cargar más ofertas"
 }

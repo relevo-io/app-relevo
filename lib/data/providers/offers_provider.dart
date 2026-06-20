@@ -11,12 +11,24 @@ class OffersState {
   final PaginationMetadata? pagination;
   final String searchQuery;
   final bool isLoadingMore;
+  final String? sector;
+  final String? region;
+  final String? employeeRange;
+  final String? revenueRange;
+  final int? creationYearFrom;
+  final int? creationYearTo;
 
   OffersState({
     required this.items,
     this.pagination,
     required this.searchQuery,
     this.isLoadingMore = false,
+    this.sector,
+    this.region,
+    this.employeeRange,
+    this.revenueRange,
+    this.creationYearFrom,
+    this.creationYearTo,
   });
 
   OffersState copyWith({
@@ -24,12 +36,30 @@ class OffersState {
     PaginationMetadata? pagination,
     String? searchQuery,
     bool? isLoadingMore,
+    String? sector,
+    String? region,
+    String? employeeRange,
+    String? revenueRange,
+    int? creationYearFrom,
+    int? creationYearTo,
+    bool clearSector = false,
+    bool clearRegion = false,
+    bool clearEmployeeRange = false,
+    bool clearRevenueRange = false,
+    bool clearCreationYearFrom = false,
+    bool clearCreationYearTo = false,
   }) {
     return OffersState(
       items: items ?? this.items,
       pagination: pagination ?? this.pagination,
       searchQuery: searchQuery ?? this.searchQuery,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      sector: clearSector ? null : (sector ?? this.sector),
+      region: clearRegion ? null : (region ?? this.region),
+      employeeRange: clearEmployeeRange ? null : (employeeRange ?? this.employeeRange),
+      revenueRange: clearRevenueRange ? null : (revenueRange ?? this.revenueRange),
+      creationYearFrom: clearCreationYearFrom ? null : (creationYearFrom ?? this.creationYearFrom),
+      creationYearTo: clearCreationYearTo ? null : (creationYearTo ?? this.creationYearTo),
     );
   }
 }
@@ -73,6 +103,12 @@ class Offers extends _$Offers {
         limit: 12,
         search: currentState.searchQuery,
         excludeOwnerId: excludeOwnerId,
+        sector: currentState.sector,
+        region: currentState.region,
+        employeeRange: currentState.employeeRange,
+        revenueRange: currentState.revenueRange,
+        creationYearFrom: currentState.creationYearFrom,
+        creationYearTo: currentState.creationYearTo,
       );
 
       state = AsyncValue.data(
@@ -81,11 +117,16 @@ class Offers extends _$Offers {
           pagination: result.pagination,
           searchQuery: currentState.searchQuery,
           isLoadingMore: false,
+          sector: currentState.sector,
+          region: currentState.region,
+          employeeRange: currentState.employeeRange,
+          revenueRange: currentState.revenueRange,
+          creationYearFrom: currentState.creationYearFrom,
+          creationYearTo: currentState.creationYearTo,
         ),
       );
     } catch (e, st) {
       state = AsyncValue.data(currentState.copyWith(isLoadingMore: false));
-      // Mantener el estado anterior pero sin loading
     }
   }
 
@@ -103,6 +144,12 @@ class Offers extends _$Offers {
         limit: 12,
         search: query,
         excludeOwnerId: excludeOwnerId,
+        sector: currentState?.sector,
+        region: currentState?.region,
+        employeeRange: currentState?.employeeRange,
+        revenueRange: currentState?.revenueRange,
+        creationYearFrom: currentState?.creationYearFrom,
+        creationYearTo: currentState?.creationYearTo,
       );
 
       state = AsyncValue.data(
@@ -110,6 +157,87 @@ class Offers extends _$Offers {
           items: result.items,
           pagination: result.pagination,
           searchQuery: query,
+          sector: currentState?.sector,
+          region: currentState?.region,
+          employeeRange: currentState?.employeeRange,
+          revenueRange: currentState?.revenueRange,
+          creationYearFrom: currentState?.creationYearFrom,
+          creationYearTo: currentState?.creationYearTo,
+        ),
+      );
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> updateFilters({
+    String? sector,
+    String? region,
+    String? employeeRange,
+    String? revenueRange,
+    int? creationYearFrom,
+    int? creationYearTo,
+  }) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = const AsyncValue.loading();
+    try {
+      final user = ref.read(authProvider).value;
+      final excludeOwnerId = user?.id;
+
+      final result = await ref.read(offerServiceProvider).getOffers(
+        page: 1,
+        limit: 12,
+        search: currentState.searchQuery,
+        excludeOwnerId: excludeOwnerId,
+        sector: sector,
+        region: region,
+        employeeRange: employeeRange,
+        revenueRange: revenueRange,
+        creationYearFrom: creationYearFrom,
+        creationYearTo: creationYearTo,
+      );
+
+      state = AsyncValue.data(
+        OffersState(
+          items: result.items,
+          pagination: result.pagination,
+          searchQuery: currentState.searchQuery,
+          sector: sector,
+          region: region,
+          employeeRange: employeeRange,
+          revenueRange: revenueRange,
+          creationYearFrom: creationYearFrom,
+          creationYearTo: creationYearTo,
+        ),
+      );
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> clearFilters() async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = const AsyncValue.loading();
+    try {
+      final user = ref.read(authProvider).value;
+      final excludeOwnerId = user?.id;
+
+      final result = await ref.read(offerServiceProvider).getOffers(
+        page: 1,
+        limit: 12,
+        search: currentState.searchQuery,
+        excludeOwnerId: excludeOwnerId,
+      );
+
+      state = AsyncValue.data(
+        OffersState(
+          items: result.items,
+          pagination: result.pagination,
+          searchQuery: currentState.searchQuery,
         ),
       );
     } catch (e, st) {

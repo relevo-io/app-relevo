@@ -1176,4 +1176,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get paymentCheckoutCanceled => 'Has cancel·lat el procés de pagament.';
+
+  @override
+  String get loadMoreOffers => 'Carregar més ofertes';
 }
