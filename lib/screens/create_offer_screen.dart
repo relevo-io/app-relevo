@@ -113,57 +113,33 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
 
   void _showPaymentConfirmationDialog() {
     final theme = Theme.of(context);
-    final String locale = Localizations.localeOf(context).languageCode;
+    final l10n = AppLocalizations.of(context)!;
 
-    final String title = locale == 'ca'
-        ? "Confirmar pagament i publicar"
-        : locale == 'en'
-            ? "Confirm payment and publish"
-            : "Confirmar pago y publicar";
+    final String title = l10n.offerPaymentConfirmTitle;
+    final String message = l10n.offerPaymentConfirmDesc;
+    final String summaryHeader = l10n.offerPaymentSummaryHeader;
+    final String cancelText = l10n.notificationsCancel;
+    final String confirmText = l10n.offerPaymentConfirmButton;
 
-    final String message = locale == 'ca'
-        ? "Per publicar aquesta oferta, has de confirmar el pagament (simulat)."
-        : locale == 'en'
-            ? "To publish this offer, you need to confirm the payment (simulated)."
-            : "Para publicar esta oferta, debes confirmar el pago (simulado).";
-
-    final String summaryHeader = locale == 'ca'
-        ? "Resum de l'oferta:"
-        : locale == 'en'
-            ? "Offer Summary:"
-            : "Resumen de la oferta:";
-
-    final String cancelText = locale == 'ca'
-        ? "Cancel·lar"
-        : locale == 'en'
-            ? "Cancel"
-            : "Cancelar";
-
-    final String confirmText = locale == 'ca'
-        ? "Confirmar i publicar"
-        : locale == 'en'
-            ? "Confirm & publish"
-            : "Confirmar y publicar";
-
-    final String labelSector = locale == 'ca' ? "Sector" : locale == 'en' ? "Sector" : "Sector";
-    final String labelRegion = locale == 'ca' ? "Ubicació / Regió" : locale == 'en' ? "Location / Region" : "Ubicación / Región";
-    final String labelRevenue = locale == 'ca' ? "Facturació" : locale == 'en' ? "Revenue" : "Facturación";
-    final String labelEmployees = locale == 'ca' ? "Empleats" : locale == 'en' ? "Employees" : "Empleados";
-    final String labelYear = locale == 'ca' ? "Any de creació" : locale == 'en' ? "Creation Year" : "Año de creación";
-    final String labelDescription = locale == 'ca' ? "Descripció" : locale == 'en' ? "Description" : "Descripción";
+    final String labelSector = l10n.offerSectorLabel;
+    final String labelRegion = l10n.offerRegionLabel;
+    final String labelRevenue = l10n.offerRevenueLabel;
+    final String labelEmployees = l10n.offerEmployeesLabel;
+    final String labelYear = l10n.offerYearLabel;
+    final String labelDescription = l10n.offerDescLabel;
 
     String getLocalizedSectorName(String sectorKey) {
       switch (sectorKey) {
         case 'tecnologia':
-          return locale == 'ca' ? 'Tecnologia' : locale == 'en' ? 'Technology' : 'Tecnología';
+          return l10n.categoryTechnology;
         case 'hostaleria':
-          return locale == 'ca' ? 'Hostaleria' : locale == 'en' ? 'Hospitality' : 'Hostelería';
+          return l10n.categoryHospitality;
         case 'servicios':
-          return locale == 'ca' ? 'Serveis' : locale == 'en' ? 'Services' : 'Servicios';
+          return l10n.categoryServices;
         case 'industria':
-          return locale == 'ca' ? 'Indústria' : locale == 'en' ? 'Industry' : 'Industria';
+          return l10n.categoryIndustrial;
         case 'comercio':
-          return locale == 'ca' ? 'Comerç' : locale == 'en' ? 'Commerce' : 'Comercio';
+          return l10n.categoryRetail;
         default:
           return sectorKey;
       }
@@ -381,18 +357,17 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         : theme.colorScheme.onSurface.withValues(alpha: 0.05);
 
     String getLocalizedSectorName(String sectorKey) {
-      final String locale = Localizations.localeOf(context).languageCode;
       switch (sectorKey) {
         case 'tecnologia':
-          return locale == 'ca' ? 'Tecnologia' : locale == 'en' ? 'Technology' : 'Tecnología';
+          return l10n.categoryTechnology;
         case 'hostaleria':
-          return locale == 'ca' ? 'Hostaleria' : locale == 'en' ? 'Hospitality' : 'Hostelería';
+          return l10n.categoryHospitality;
         case 'servicios':
-          return locale == 'ca' ? 'Serveis' : locale == 'en' ? 'Services' : 'Servicios';
+          return l10n.categoryServices;
         case 'industria':
-          return locale == 'ca' ? 'Indústria' : locale == 'en' ? 'Industry' : 'Industria';
+          return l10n.categoryIndustrial;
         case 'comercio':
-          return locale == 'ca' ? 'Comerç' : locale == 'en' ? 'Commerce' : 'Comercio';
+          return l10n.categoryRetail;
         default:
           return sectorKey;
       }
@@ -574,13 +549,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : Text(
-                                Localizations.localeOf(context).languageCode == 'ca'
-                                    ? "Seguir amb el pagament"
-                                    : Localizations.localeOf(context).languageCode == 'en'
-                                        ? "Continue with payment"
-                                        : "Seguir con el pago",
-                              ),
+                            : Text(l10n.offerPaymentContinueButton),
                       ),
                     ],
                   ),

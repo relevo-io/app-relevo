@@ -158,4 +158,18 @@ class UserService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<User> activateProPlan() async {
+    try {
+      final response = await _dio.post('/usuarios/me/pro/activate');
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al activar el plan Pro',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

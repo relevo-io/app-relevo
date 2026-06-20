@@ -47,15 +47,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  List<String> _getCategories(String locale) {
-    if (locale == 'ca') {
-      return ['Tots', 'Hosteleria', 'Comerç', 'Indústria', 'Salut', 'Serveis'];
-    } else if (locale == 'en') {
-      return ['All', 'Hospitality', 'Retail', 'Industrial', 'Health', 'Services'];
-    }
-    return ['Todos', 'Hostelería', 'Comercio', 'Industria', 'Salud', 'Servicios'];
-  }
-
   @override
   Widget build(BuildContext context) {
     final offersState = ref.watch(offersProvider);
@@ -66,13 +57,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final localeCode = Localizations.localeOf(context).languageCode;
     final isDark = theme.brightness == Brightness.dark;
 
-    final noOffersText = localeCode == 'ca'
-        ? 'No s\'han trobat ofertes'
-        : localeCode == 'en'
-            ? 'No offers found'
-            : 'No se encontraron ofertas';
+    final noOffersText = l10n.noOffersFound;
 
-    final categories = _getCategories(localeCode);
+    final categories = [
+      l10n.categoryAll,
+      l10n.categoryHospitality,
+      l10n.categoryRetail,
+      l10n.categoryIndustrial,
+      l10n.categoryHealth,
+      l10n.categoryServices,
+    ];
 
     return Scaffold(
       body: RefreshIndicator(

@@ -16,6 +16,7 @@ import 'notifications_inbox_screen.dart';
 import 'notification_preferences_screen.dart';
 import '../data/providers/mentoring_provider.dart';
 import 'favorites_screen.dart';
+import 'premium_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -186,14 +187,23 @@ class ProfileScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          // Green Progress bar
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: LinearProgressIndicator(
-                              value: progressVal / 100.0,
-                              minHeight: 8,
-                              backgroundColor: const Color(0xFFECEEF0),
-                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
+                          // Green Progress bar with boundary outline border to stand out from card background
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: theme.colorScheme.outline.withValues(alpha: 0.35),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4.5),
+                              child: LinearProgressIndicator(
+                                value: progressVal / 100.0,
+                                minHeight: 8,
+                                backgroundColor: const Color(0xFFECEEF0),
+                                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00B286)),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -205,6 +215,7 @@ class ProfileScreen extends ConsumerWidget {
                               height: 1.4,
                             ),
                           ),
+                          const SizedBox(height: 4), // Extra bottom padding inside card to avoid corner clip
                         ],
                       );
                     },
@@ -284,6 +295,22 @@ class ProfileScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MentoringScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, indent: 56, endIndent: 16),
+                    _buildProfileOption(
+                      context,
+                      user.proActive == true ? Icons.workspace_premium : Icons.workspace_premium_outlined,
+                      user.proActive == true
+                          ? l10n.profileYouArePremiumActive
+                          : l10n.profileBecomePremium,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PremiumScreen(),
                           ),
                         );
                       },
@@ -500,10 +527,13 @@ class ProfileScreen extends ConsumerWidget {
     IconData icon,
     String title, {
     bool isDestructive = false,
+    Color? iconColor,
     VoidCallback? onTap,
   }) {
     final theme = Theme.of(context);
-    final color = isDestructive ? theme.colorScheme.error : theme.colorScheme.primary;
+    final color = isDestructive 
+        ? theme.colorScheme.error 
+        : (iconColor ?? theme.colorScheme.primary);
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

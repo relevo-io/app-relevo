@@ -168,6 +168,21 @@ class Auth extends _$Auth {
     }
   }
 
+  Future<void> activateProPlan() async {
+    final currentUser = state.value;
+    if (currentUser == null) return;
+
+    state = const AsyncValue.loading();
+    try {
+      final userService = ref.read(authServiceProvider);
+      final updatedUser = await userService.activateProPlan();
+      state = AsyncValue.data(updatedUser);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     state = const AsyncValue.loading();
     try {

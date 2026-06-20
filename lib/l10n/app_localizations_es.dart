@@ -950,4 +950,125 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notificationsCancel => 'Cancelar';
+
+  @override
+  String get categoryAll => 'Todos';
+
+  @override
+  String get categoryHospitality => 'Hostelería';
+
+  @override
+  String get categoryRetail => 'Comercio';
+
+  @override
+  String get categoryIndustrial => 'Industria';
+
+  @override
+  String get categoryHealth => 'Salud';
+
+  @override
+  String get categoryServices => 'Servicios';
+
+  @override
+  String get categoryTechnology => 'Tecnología';
+
+  @override
+  String get noOffersFound => 'No se encontraron ofertas';
+
+  @override
+  String get offerPaymentContinueButton => 'Seguir con el pago';
+
+  @override
+  String get offerPaymentConfirmTitle => 'Confirmar pago y publicar';
+
+  @override
+  String get offerPaymentConfirmDesc =>
+      'Para publicar esta oferta, debes confirmar el pago (simulado).';
+
+  @override
+  String get offerPaymentSummaryHeader => 'Resumen de la oferta:';
+
+  @override
+  String get offerPaymentConfirmButton => 'Confirmar y publicar';
+
+  @override
+  String get profileBecomePremium => 'Hazte Premium';
+
+  @override
+  String get profileYouArePremiumActive => 'Eres Premium (Activo)';
+
+  @override
+  String get premiumScreenTitle => 'Relevo Premium';
+
+  @override
+  String get premiumHeroSubtitle =>
+      'La herramienta definitiva para profesionales de la compraventa de negocios';
+
+  @override
+  String get premiumStatusActive => 'SUSCRIPCIÓN ACTIVA';
+
+  @override
+  String get premiumStatusActiveDesc =>
+      'Ya eres miembro Premium. Disfruta de todas las ventajas.';
+
+  @override
+  String get premiumPriceLabel => 'Solo €9.99/mes';
+
+  @override
+  String get premiumSimulateIndicator =>
+      '* Activación completamente gratuita en modo de pruebas';
+
+  @override
+  String get premiumCtaText => 'Hazte Premium (Simulado)';
+
+  @override
+  String get premiumIncludesTitle => '¿Qué incluye Relevo Premium?';
+
+  @override
+  String get premiumBenefit1Title => 'Detalles Ilimitados';
+
+  @override
+  String get premiumBenefit1Desc =>
+      'Acceso completo a toda la información confidencial, datos financieros y documentos de las ofertas publicadas.';
+
+  @override
+  String get premiumBenefit2Title => 'Filtros Avanzados';
+
+  @override
+  String get premiumBenefit2Desc =>
+      'Filtra oportunidades por sector, facturación, volumen de empleados, región exacta y edad del negocio.';
+
+  @override
+  String get premiumBenefit3Title => 'Chat Prioritario Directo';
+
+  @override
+  String get premiumBenefit3Desc =>
+      'Contacta directamente con los propietarios y vendedores de negocios con prioridad de respuesta sin esperas.';
+
+  @override
+  String get premiumBenefit4Title => 'Soporte Personalizado';
+
+  @override
+  String get premiumBenefit4Desc =>
+      'Asistencia personalizada y asesoramiento especializado durante el proceso de compraventa.';
+
+  @override
+  String get premiumPaymentDialogTitle => 'Confirmar Pago Simulado';
+
+  @override
+  String get premiumPaymentDialogMessage =>
+      'Estás a punto de activar el plan Premium. Este es un pago simulado para fines de prueba.\n\nSuscripción: Relevo Pro\nDuración: 30 días\nPrecio: €0.00';
+
+  @override
+  String get premiumPaymentDialogCancel => 'Cancelar';
+
+  @override
+  String get premiumPaymentDialogConfirm => 'Confirmar y Activar';
+
+  @override
+  String get premiumSuccessMessage => '¡Plan Premium activado correctamente!';
+
+  @override
+  String get premiumErrorMessage =>
+      'Error al activar el plan Premium. Por favor, inténtalo de nuevo.';
 }

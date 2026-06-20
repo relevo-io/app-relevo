@@ -941,4 +941,125 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsCancel => 'Cancel';
+
+  @override
+  String get categoryAll => 'All';
+
+  @override
+  String get categoryHospitality => 'Hospitality';
+
+  @override
+  String get categoryRetail => 'Retail';
+
+  @override
+  String get categoryIndustrial => 'Industrial';
+
+  @override
+  String get categoryHealth => 'Health';
+
+  @override
+  String get categoryServices => 'Services';
+
+  @override
+  String get categoryTechnology => 'Technology';
+
+  @override
+  String get noOffersFound => 'No offers found';
+
+  @override
+  String get offerPaymentContinueButton => 'Continue with payment';
+
+  @override
+  String get offerPaymentConfirmTitle => 'Confirm payment and publish';
+
+  @override
+  String get offerPaymentConfirmDesc =>
+      'To publish this offer, you need to confirm the payment (simulated).';
+
+  @override
+  String get offerPaymentSummaryHeader => 'Offer Summary:';
+
+  @override
+  String get offerPaymentConfirmButton => 'Confirm & publish';
+
+  @override
+  String get profileBecomePremium => 'Become Premium';
+
+  @override
+  String get profileYouArePremiumActive => 'You are Premium (Active)';
+
+  @override
+  String get premiumScreenTitle => 'Relevo Premium';
+
+  @override
+  String get premiumHeroSubtitle =>
+      'The ultimate tool for business acquisition professionals';
+
+  @override
+  String get premiumStatusActive => 'ACTIVE SUBSCRIPTION';
+
+  @override
+  String get premiumStatusActiveDesc =>
+      'You are a Premium member. Enjoy all the benefits.';
+
+  @override
+  String get premiumPriceLabel => 'Only €9.99/month';
+
+  @override
+  String get premiumSimulateIndicator =>
+      '* Activation is completely free in testing mode';
+
+  @override
+  String get premiumCtaText => 'Become Premium (Simulated)';
+
+  @override
+  String get premiumIncludesTitle => 'What is included in Relevo Premium?';
+
+  @override
+  String get premiumBenefit1Title => 'Unlimited Details';
+
+  @override
+  String get premiumBenefit1Desc =>
+      'Complete access to all confidential information, financial data, and documents of published offers.';
+
+  @override
+  String get premiumBenefit2Title => 'Advanced Filters';
+
+  @override
+  String get premiumBenefit2Desc =>
+      'Filter opportunities by sector, revenue, employee count, exact region, and business age.';
+
+  @override
+  String get premiumBenefit3Title => 'Direct Priority Chat';
+
+  @override
+  String get premiumBenefit3Desc =>
+      'Contact owners and business sellers directly with response priority without waiting.';
+
+  @override
+  String get premiumBenefit4Title => 'Personalized Support';
+
+  @override
+  String get premiumBenefit4Desc =>
+      'Personalized assistance and specialized advice during the buy/sell process.';
+
+  @override
+  String get premiumPaymentDialogTitle => 'Confirm Simulated Payment';
+
+  @override
+  String get premiumPaymentDialogMessage =>
+      'You are about to activate the Premium plan. This is a simulated payment for testing purposes.\n\nSubscription: Relevo Pro\nDuration: 30 days\nPrice: €0.00';
+
+  @override
+  String get premiumPaymentDialogCancel => 'Cancel';
+
+  @override
+  String get premiumPaymentDialogConfirm => 'Confirm & Activate';
+
+  @override
+  String get premiumSuccessMessage => 'Premium plan activated successfully!';
+
+  @override
+  String get premiumErrorMessage =>
+      'Error activating Premium plan. Please try again.';
 }

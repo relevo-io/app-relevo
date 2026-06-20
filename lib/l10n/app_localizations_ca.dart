@@ -948,4 +948,125 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get notificationsCancel => 'Cancel·lar';
+
+  @override
+  String get categoryAll => 'Tots';
+
+  @override
+  String get categoryHospitality => 'Hostaleria';
+
+  @override
+  String get categoryRetail => 'Comerç';
+
+  @override
+  String get categoryIndustrial => 'Indústria';
+
+  @override
+  String get categoryHealth => 'Salut';
+
+  @override
+  String get categoryServices => 'Serveis';
+
+  @override
+  String get categoryTechnology => 'Tecnologia';
+
+  @override
+  String get noOffersFound => 'No s\'han trobat ofertes';
+
+  @override
+  String get offerPaymentContinueButton => 'Seguir amb el pagament';
+
+  @override
+  String get offerPaymentConfirmTitle => 'Confirmar pagament i publicar';
+
+  @override
+  String get offerPaymentConfirmDesc =>
+      'Per publicar aquesta oferta, has de confirmar el pagament (simulat).';
+
+  @override
+  String get offerPaymentSummaryHeader => 'Resum de l\'oferta:';
+
+  @override
+  String get offerPaymentConfirmButton => 'Confirmar i publicar';
+
+  @override
+  String get profileBecomePremium => 'Fes-te Premium';
+
+  @override
+  String get profileYouArePremiumActive => 'Ets Premium (Actiu)';
+
+  @override
+  String get premiumScreenTitle => 'Relevo Premium';
+
+  @override
+  String get premiumHeroSubtitle =>
+      'L\'eina definitiva per a professionals de la compravenda de negocis';
+
+  @override
+  String get premiumStatusActive => 'SUBSRIPCIÓ ACTIVA';
+
+  @override
+  String get premiumStatusActiveDesc =>
+      'Ja ets membre Premium. Gaudeix de tots els avantatges.';
+
+  @override
+  String get premiumPriceLabel => 'Només €9.99/mes';
+
+  @override
+  String get premiumSimulateIndicator =>
+      '* Activació completament gratuïta en mode de proves';
+
+  @override
+  String get premiumCtaText => 'Fes-te Premium (Simulat)';
+
+  @override
+  String get premiumIncludesTitle => 'Què inclou Relevo Premium?';
+
+  @override
+  String get premiumBenefit1Title => 'Detalls Il·limitats';
+
+  @override
+  String get premiumBenefit1Desc =>
+      'Accés complet a tota la informació confidencial, dades financeres i documents de les ofertes publicades.';
+
+  @override
+  String get premiumBenefit2Title => 'Filtros Avançats';
+
+  @override
+  String get premiumBenefit2Desc =>
+      'Filtra oportunitats per sector, facturació, volum d\'empleats, regió exacta i edat del negoci.';
+
+  @override
+  String get premiumBenefit3Title => 'Xat Prioritari Directe';
+
+  @override
+  String get premiumBenefit3Desc =>
+      'Contacta directament amb els propietaris i venedors de negocis amb prioritat de resposta sense esperes.';
+
+  @override
+  String get premiumBenefit4Title => 'Suport Personalitzat';
+
+  @override
+  String get premiumBenefit4Desc =>
+      'Assistència personalitzada i assessorament especialitzat durant el procés de compravenda.';
+
+  @override
+  String get premiumPaymentDialogTitle => 'Confirmar Pagament Simulat';
+
+  @override
+  String get premiumPaymentDialogMessage =>
+      'Estàs a punt d\'activar el pla Premium. Aquest és un pagament simulat per a finalitats de prova.\n\nSubscripció: Relevo Pro\nDurada: 30 dies\nPreu: €0.00';
+
+  @override
+  String get premiumPaymentDialogCancel => 'Cancel·lar';
+
+  @override
+  String get premiumPaymentDialogConfirm => 'Confirmar i Activar';
+
+  @override
+  String get premiumSuccessMessage => 'Pla Premium activat correctament!';
+
+  @override
+  String get premiumErrorMessage =>
+      'Error al activar el pla Premium. Si us plau, torna-ho a intentar.';
 }

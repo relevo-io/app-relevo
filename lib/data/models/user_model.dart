@@ -64,6 +64,8 @@ class User {
   final String? language;
   final String? theme;
   final NotificationPreferences? notificationPreferences;
+  final bool? proActive;
+  final String? proExpiresAt;
 
   User({
     required this.id,
@@ -79,6 +81,8 @@ class User {
     this.language,
     this.theme,
     this.notificationPreferences,
+    this.proActive,
+    this.proExpiresAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -100,6 +104,8 @@ class User {
       notificationPreferences: json['notificationPreferences'] != null
           ? NotificationPreferences.fromJson(json['notificationPreferences'])
           : null,
+      proActive: json['proActive'],
+      proExpiresAt: json['proExpiresAt']?.toString(),
     );
   }
 
@@ -118,6 +124,8 @@ class User {
       'language': language,
       'theme': theme,
       'notificationPreferences': notificationPreferences?.toJson(),
+      'proActive': proActive,
+      'proExpiresAt': proExpiresAt,
     };
   }
 }

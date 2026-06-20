@@ -1839,6 +1839,228 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cancelar'**
   String get notificationsCancel;
+
+  /// No description provided for @categoryAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos'**
+  String get categoryAll;
+
+  /// No description provided for @categoryHospitality.
+  ///
+  /// In es, this message translates to:
+  /// **'Hostelería'**
+  String get categoryHospitality;
+
+  /// No description provided for @categoryRetail.
+  ///
+  /// In es, this message translates to:
+  /// **'Comercio'**
+  String get categoryRetail;
+
+  /// No description provided for @categoryIndustrial.
+  ///
+  /// In es, this message translates to:
+  /// **'Industria'**
+  String get categoryIndustrial;
+
+  /// No description provided for @categoryHealth.
+  ///
+  /// In es, this message translates to:
+  /// **'Salud'**
+  String get categoryHealth;
+
+  /// No description provided for @categoryServices.
+  ///
+  /// In es, this message translates to:
+  /// **'Servicios'**
+  String get categoryServices;
+
+  /// No description provided for @categoryTechnology.
+  ///
+  /// In es, this message translates to:
+  /// **'Tecnología'**
+  String get categoryTechnology;
+
+  /// No description provided for @noOffersFound.
+  ///
+  /// In es, this message translates to:
+  /// **'No se encontraron ofertas'**
+  String get noOffersFound;
+
+  /// No description provided for @offerPaymentContinueButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir con el pago'**
+  String get offerPaymentContinueButton;
+
+  /// No description provided for @offerPaymentConfirmTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar pago y publicar'**
+  String get offerPaymentConfirmTitle;
+
+  /// No description provided for @offerPaymentConfirmDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Para publicar esta oferta, debes confirmar el pago (simulado).'**
+  String get offerPaymentConfirmDesc;
+
+  /// No description provided for @offerPaymentSummaryHeader.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen de la oferta:'**
+  String get offerPaymentSummaryHeader;
+
+  /// No description provided for @offerPaymentConfirmButton.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar y publicar'**
+  String get offerPaymentConfirmButton;
+
+  /// No description provided for @profileBecomePremium.
+  ///
+  /// In es, this message translates to:
+  /// **'Hazte Premium'**
+  String get profileBecomePremium;
+
+  /// No description provided for @profileYouArePremiumActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Eres Premium (Activo)'**
+  String get profileYouArePremiumActive;
+
+  /// No description provided for @premiumScreenTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Relevo Premium'**
+  String get premiumScreenTitle;
+
+  /// No description provided for @premiumHeroSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'La herramienta definitiva para profesionales de la compraventa de negocios'**
+  String get premiumHeroSubtitle;
+
+  /// No description provided for @premiumStatusActive.
+  ///
+  /// In es, this message translates to:
+  /// **'SUSCRIPCIÓN ACTIVA'**
+  String get premiumStatusActive;
+
+  /// No description provided for @premiumStatusActiveDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya eres miembro Premium. Disfruta de todas las ventajas.'**
+  String get premiumStatusActiveDesc;
+
+  /// No description provided for @premiumPriceLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo €9.99/mes'**
+  String get premiumPriceLabel;
+
+  /// No description provided for @premiumSimulateIndicator.
+  ///
+  /// In es, this message translates to:
+  /// **'* Activación completamente gratuita en modo de pruebas'**
+  String get premiumSimulateIndicator;
+
+  /// No description provided for @premiumCtaText.
+  ///
+  /// In es, this message translates to:
+  /// **'Hazte Premium (Simulado)'**
+  String get premiumCtaText;
+
+  /// No description provided for @premiumIncludesTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué incluye Relevo Premium?'**
+  String get premiumIncludesTitle;
+
+  /// No description provided for @premiumBenefit1Title.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles Ilimitados'**
+  String get premiumBenefit1Title;
+
+  /// No description provided for @premiumBenefit1Desc.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso completo a toda la información confidencial, datos financieros y documentos de las ofertas publicadas.'**
+  String get premiumBenefit1Desc;
+
+  /// No description provided for @premiumBenefit2Title.
+  ///
+  /// In es, this message translates to:
+  /// **'Filtros Avanzados'**
+  String get premiumBenefit2Title;
+
+  /// No description provided for @premiumBenefit2Desc.
+  ///
+  /// In es, this message translates to:
+  /// **'Filtra oportunidades por sector, facturación, volumen de empleados, región exacta y edad del negocio.'**
+  String get premiumBenefit2Desc;
+
+  /// No description provided for @premiumBenefit3Title.
+  ///
+  /// In es, this message translates to:
+  /// **'Chat Prioritario Directo'**
+  String get premiumBenefit3Title;
+
+  /// No description provided for @premiumBenefit3Desc.
+  ///
+  /// In es, this message translates to:
+  /// **'Contacta directamente con los propietarios y vendedores de negocios con prioridad de respuesta sin esperas.'**
+  String get premiumBenefit3Desc;
+
+  /// No description provided for @premiumBenefit4Title.
+  ///
+  /// In es, this message translates to:
+  /// **'Soporte Personalizado'**
+  String get premiumBenefit4Title;
+
+  /// No description provided for @premiumBenefit4Desc.
+  ///
+  /// In es, this message translates to:
+  /// **'Asistencia personalizada y asesoramiento especializado durante el proceso de compraventa.'**
+  String get premiumBenefit4Desc;
+
+  /// No description provided for @premiumPaymentDialogTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar Pago Simulado'**
+  String get premiumPaymentDialogTitle;
+
+  /// No description provided for @premiumPaymentDialogMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Estás a punto de activar el plan Premium. Este es un pago simulado para fines de prueba.\n\nSuscripción: Relevo Pro\nDuración: 30 días\nPrecio: €0.00'**
+  String get premiumPaymentDialogMessage;
+
+  /// No description provided for @premiumPaymentDialogCancel.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get premiumPaymentDialogCancel;
+
+  /// No description provided for @premiumPaymentDialogConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar y Activar'**
+  String get premiumPaymentDialogConfirm;
+
+  /// No description provided for @premiumSuccessMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Plan Premium activado correctamente!'**
+  String get premiumSuccessMessage;
+
+  /// No description provided for @premiumErrorMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al activar el plan Premium. Por favor, inténtalo de nuevo.'**
+  String get premiumErrorMessage;
 }
 
 class _AppLocalizationsDelegate
