@@ -1002,7 +1002,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offerPaymentConfirmDesc =>
-      'To publish this offer, you need to confirm the payment (simulated).';
+      'To publish this offer, we will redirect you to Stripe to complete the payment in test mode.';
 
   @override
   String get offerPaymentSummaryHeader => 'Offer Summary:';
@@ -1031,14 +1031,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'You are a Premium member. Enjoy all the benefits.';
 
   @override
-  String get premiumPriceLabel => 'Only €9.99/month';
+  String get premiumPriceLabel => 'Only €19.90 / 30 days';
 
   @override
   String get premiumSimulateIndicator =>
-      '* Activation is completely free in testing mode';
+      '* Secure payment with Stripe in test mode';
 
   @override
-  String get premiumCtaText => 'Become Premium (Simulated)';
+  String get premiumCtaText => 'Become Premium';
 
   @override
   String get premiumIncludesTitle => 'What is included in Relevo Premium?';
@@ -1072,11 +1072,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Personalized assistance and specialized advice during the buy/sell process.';
 
   @override
-  String get premiumPaymentDialogTitle => 'Confirm Simulated Payment';
+  String get premiumPaymentDialogTitle => 'Confirm payment';
 
   @override
   String get premiumPaymentDialogMessage =>
-      'You are about to activate the Premium plan. This is a simulated payment for testing purposes.\n\nSubscription: Relevo Pro\nDuration: 30 days\nPrice: €0.00';
+      'You are about to activate the Premium plan. We will open Stripe Checkout in test mode so you can complete the payment.\n\nSubscription: Relevo Pro\nDuration: 30 days\nPrice: €19.90';
 
   @override
   String get premiumPaymentDialogCancel => 'Cancel';
@@ -1134,4 +1134,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get guestRegisterButton => 'Register';
+
+  @override
+  String get paymentCheckoutTitle => 'Secure payment';
+
+  @override
+  String get paymentCheckoutOpening => 'Opening Stripe Checkout...';
+
+  @override
+  String get paymentCheckoutChecking => 'Checking payment status...';
+
+  @override
+  String get paymentCheckoutExternalTitle => 'Continue the payment in Stripe';
+
+  @override
+  String get paymentCheckoutExternalDescription =>
+      'We opened Stripe in your browser. Once you complete the payment, we will automatically check the result.';
+
+  @override
+  String get paymentCheckoutOpen => 'Open Stripe';
+
+  @override
+  String get paymentCheckoutCheckNow => 'Check now';
+
+  @override
+  String get paymentCheckoutOpenError =>
+      'We could not open Stripe. Please try again.';
+
+  @override
+  String get paymentCheckoutStatusError =>
+      'We could not confirm the payment status yet.';
+
+  @override
+  String get paymentCheckoutCanceled => 'You canceled the payment process.';
 }

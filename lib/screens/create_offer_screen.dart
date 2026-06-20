@@ -1,9 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/offer_model.dart';
+import '../data/models/payment_model.dart';
 import '../data/providers/offers_provider.dart';
 import '../data/services/offer_service.dart';
+import '../data/services/payment_service.dart';
 import '../l10n/app_localizations.dart';
+import 'offer_details_screen.dart';
+import 'payment_checkout_screen.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/error_banner.dart';
 
@@ -50,27 +55,46 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
       final yearStr = _yearController.text.trim();
       final year = yearStr.isEmpty ? null : int.tryParse(yearStr);
 
-      // FIRST: Purchase publication credit (Simulate Payment in the Backend)
-      await ref.read(offerServiceProvider).purchasePublicationCredit();
-
-      // SECOND: Create offer
-      await ref
-          .read(offerServiceProvider)
-          .createOffer(
-            region: region,
-            sector: sector,
-            revenueRange: _selectedRevenueRange,
-            creationYear: year,
-            employeeRange: _selectedEmployeeRange,
-            companyDescription: companyDesc,
-            extendedDescription: extendedDesc.isEmpty ? null : extendedDesc,
+      final checkoutSession = await ref
+          .read(paymentServiceProvider)
+          .createCheckoutSession(
+            CreateCheckoutSessionPayload(
+              kind: PaymentKind.offerPublication,
+              returnUrlBase: kIsWeb ? Uri.base.origin : null,
+              offerDraft: {
+                'region': region,
+                'sector': sector,
+                'revenueRange': _selectedRevenueRange,
+                'creationYear': year,
+                'employeeRange': _selectedEmployeeRange,
+                'companyDescription': companyDesc,
+                'extendedDescription': extendedDesc.isEmpty
+                    ? null
+                    : extendedDesc,
+              },
+            ),
           );
 
-      ref.invalidate(offersProvider);
-      ref.invalidate(myOffersProvider);
+      if (!mounted) return;
 
-      if (mounted) {
-        Navigator.pop(context);
+      final status = await Navigator.of(context).push<CheckoutSessionStatus>(
+        MaterialPageRoute(
+          builder: (_) => PaymentCheckoutScreen(
+            checkoutUrl: checkoutSession.checkoutUrl,
+            paymentSessionId: checkoutSession.paymentSessionId,
+            kind: PaymentKind.offerPublication,
+          ),
+        ),
+      );
+
+      if (!mounted || status == null) return;
+
+      if (status.status == PaymentStatus.completed) {
+        ref.invalidate(offersProvider);
+        ref.invalidate(myOffersProvider);
+
+        final l10n = AppLocalizations.of(context)!;
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
@@ -84,7 +108,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context)!.offerPublishSuccess,
+                    l10n.offerPublishSuccess,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -95,7 +119,41 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
             ),
           ),
         );
+
+        if (status.createdOfferId != null &&
+            status.createdOfferId!.isNotEmpty) {
+          final createdOffer = await ref
+              .read(offerServiceProvider)
+              .getOfferById(status.createdOfferId!);
+
+          if (!mounted) return;
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => OfferDetailsScreen(offer: createdOffer),
+            ),
+          );
+          return;
+        }
+
+        if (!mounted) return;
+        Navigator.pop(context);
+        return;
       }
+
+      if (status.status == PaymentStatus.canceled) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.paymentCheckoutCanceled,
+            ),
+          ),
+        );
+        return;
+      }
+
+      throw Exception(AppLocalizations.of(context)!.paymentCheckoutStatusError);
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -145,29 +203,56 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
       }
     }
 
-    final sectorFormatted = _selectedSector != null ? getLocalizedSectorName(_selectedSector!) : '-';
+    final sectorFormatted = _selectedSector != null
+        ? getLocalizedSectorName(_selectedSector!)
+        : '-';
     final regionFormatted = _regionController.text.trim();
-    final revenueFormatted = _selectedRevenueRange != null ? Offer.formatRevenueRange(_selectedRevenueRange!) : '-';
-    final employeesFormatted = _selectedEmployeeRange != null ? Offer.formatEmployeeRange(_selectedEmployeeRange!) : '-';
-    final yearFormatted = _yearController.text.trim().isEmpty ? '-' : _yearController.text.trim();
+    final revenueFormatted = _selectedRevenueRange != null
+        ? Offer.formatRevenueRange(_selectedRevenueRange!)
+        : '-';
+    final employeesFormatted = _selectedEmployeeRange != null
+        ? Offer.formatEmployeeRange(_selectedEmployeeRange!)
+        : '-';
+    final yearFormatted = _yearController.text.trim().isEmpty
+        ? '-'
+        : _yearController.text.trim();
     final descFormatted = _companyDescController.text.trim();
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          titlePadding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          titlePadding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: 12,
+          ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-          actionsPadding: const EdgeInsets.only(left: 24, right: 24, bottom: 20, top: 16),
+          actionsPadding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: 20,
+            top: 16,
+          ),
           title: Row(
             children: [
-              Icon(Icons.payment_rounded, color: theme.colorScheme.primary, size: 26),
+              Icon(
+                Icons.payment_rounded,
+                color: theme.colorScheme.primary,
+                size: 26,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ],
@@ -198,21 +283,55 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Expanded(child: _buildSummaryBox(labelSector, sectorFormatted, Icons.category_outlined, theme)),
+                    Expanded(
+                      child: _buildSummaryBox(
+                        labelSector,
+                        sectorFormatted,
+                        Icons.category_outlined,
+                        theme,
+                      ),
+                    ),
                     const SizedBox(width: 8),
-                    Expanded(child: _buildSummaryBox(labelRegion, regionFormatted, Icons.location_on_outlined, theme)),
+                    Expanded(
+                      child: _buildSummaryBox(
+                        labelRegion,
+                        regionFormatted,
+                        Icons.location_on_outlined,
+                        theme,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Expanded(child: _buildSummaryBox(labelRevenue, revenueFormatted, Icons.monetization_on_outlined, theme)),
+                    Expanded(
+                      child: _buildSummaryBox(
+                        labelRevenue,
+                        revenueFormatted,
+                        Icons.monetization_on_outlined,
+                        theme,
+                      ),
+                    ),
                     const SizedBox(width: 8),
-                    Expanded(child: _buildSummaryBox(labelEmployees, employeesFormatted, Icons.people_outline, theme)),
+                    Expanded(
+                      child: _buildSummaryBox(
+                        labelEmployees,
+                        employeesFormatted,
+                        Icons.people_outline,
+                        theme,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                _buildSummaryBox(labelYear, yearFormatted, Icons.calendar_today_outlined, theme, isFullWidth: true),
+                _buildSummaryBox(
+                  labelYear,
+                  yearFormatted,
+                  Icons.calendar_today_outlined,
+                  theme,
+                  isFullWidth: true,
+                ),
                 const SizedBox(height: 8),
                 _buildDescriptionBox(labelDescription, descFormatted, theme),
               ],
@@ -222,8 +341,13 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
               ),
               child: Text(
                 cancelText,
@@ -244,7 +368,10 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
                 elevation: 0,
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -257,12 +384,20 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
     );
   }
 
-  Widget _buildSummaryBox(String label, String value, IconData icon, ThemeData theme, {bool isFullWidth = false}) {
+  Widget _buildSummaryBox(
+    String label,
+    String value,
+    IconData icon,
+    ThemeData theme, {
+    bool isFullWidth = false,
+  }) {
     return Container(
       width: isFullWidth ? double.infinity : null,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.65),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.65,
+        ),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.25),
@@ -275,7 +410,11 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 12, color: theme.colorScheme.primary.withValues(alpha: 0.7)),
+              Icon(
+                icon,
+                size: 12,
+                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+              ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -312,7 +451,9 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.65),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.65,
+        ),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.25),
@@ -372,7 +513,14 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
           return sectorKey;
       }
     }
-    final List<String> sectorOptions = ['tecnologia', 'hostaleria', 'servicios', 'industria', 'comercio'];
+
+    final List<String> sectorOptions = [
+      'tecnologia',
+      'hostaleria',
+      'servicios',
+      'industria',
+      'comercio',
+    ];
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.offerCreateTitle), elevation: 0),
@@ -585,7 +733,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           isExpanded: true,
           hint: Text(
             hint,
@@ -597,10 +745,7 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
           ),
           onChanged: onChanged,
           validator: validator,
-          style: TextStyle(
-            color: theme.colorScheme.onSurface,
-            fontSize: 16,
-          ),
+          style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 16),
           dropdownColor: theme.colorScheme.surfaceContainerHigh,
           icon: Icon(
             Icons.arrow_drop_down,

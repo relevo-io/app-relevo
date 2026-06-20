@@ -1010,7 +1010,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get offerPaymentConfirmDesc =>
-      'Per publicar aquesta oferta, has de confirmar el pagament (simulat).';
+      'Per publicar aquesta oferta, et redirigirem a Stripe per completar el pagament en mode de prova.';
 
   @override
   String get offerPaymentSummaryHeader => 'Resum de l\'oferta:';
@@ -1039,14 +1039,14 @@ class AppLocalizationsCa extends AppLocalizations {
       'Ja ets membre Premium. Gaudeix de tots els avantatges.';
 
   @override
-  String get premiumPriceLabel => 'Només €9.99/mes';
+  String get premiumPriceLabel => 'Només €19.90 / 30 dies';
 
   @override
   String get premiumSimulateIndicator =>
-      '* Activació completament gratuïta en mode de proves';
+      '* Pagament segur amb Stripe en mode de prova';
 
   @override
-  String get premiumCtaText => 'Fes-te Premium (Simulat)';
+  String get premiumCtaText => 'Fes-te Premium';
 
   @override
   String get premiumIncludesTitle => 'Què inclou Relevo Premium?';
@@ -1080,11 +1080,11 @@ class AppLocalizationsCa extends AppLocalizations {
       'Assistència personalitzada i assessorament especialitzat durant el procés de compravenda.';
 
   @override
-  String get premiumPaymentDialogTitle => 'Confirmar Pagament Simulat';
+  String get premiumPaymentDialogTitle => 'Confirmar pagament';
 
   @override
   String get premiumPaymentDialogMessage =>
-      'Estàs a punt d\'activar el pla Premium. Aquest és un pagament simulat per a finalitats de prova.\n\nSubscripció: Relevo Pro\nDurada: 30 dies\nPreu: €0.00';
+      'Estàs a punt d\'activar el pla Premium. Obrirem Stripe Checkout en mode de prova perquè puguis completar el pagament.\n\nSubscripció: Relevo Pro\nDurada: 30 dies\nPreu: €19.90';
 
   @override
   String get premiumPaymentDialogCancel => 'Cancel·lar';
@@ -1143,4 +1143,37 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get guestRegisterButton => 'Registra\'t';
+
+  @override
+  String get paymentCheckoutTitle => 'Pagament segur';
+
+  @override
+  String get paymentCheckoutOpening => 'Obrint Stripe Checkout...';
+
+  @override
+  String get paymentCheckoutChecking => 'Comprovant l\'estat del pagament...';
+
+  @override
+  String get paymentCheckoutExternalTitle => 'Continua el pagament a Stripe';
+
+  @override
+  String get paymentCheckoutExternalDescription =>
+      'Hem obert Stripe al teu navegador. Quan completis el pagament, comprovarem el resultat automàticament.';
+
+  @override
+  String get paymentCheckoutOpen => 'Obrir Stripe';
+
+  @override
+  String get paymentCheckoutCheckNow => 'Comprovar ara';
+
+  @override
+  String get paymentCheckoutOpenError =>
+      'No hem pogut obrir Stripe. Torna-ho a provar.';
+
+  @override
+  String get paymentCheckoutStatusError =>
+      'Encara no hem pogut confirmar l\'estat del pagament.';
+
+  @override
+  String get paymentCheckoutCanceled => 'Has cancel·lat el procés de pagament.';
 }
