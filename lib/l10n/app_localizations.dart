@@ -1903,7 +1903,7 @@ abstract class AppLocalizations {
   /// No description provided for @offerPaymentConfirmDesc.
   ///
   /// In es, this message translates to:
-  /// **'Para publicar esta oferta, debes confirmar el pago (simulado).'**
+  /// **'Para publicar esta oferta, te redirigiremos a Stripe para completar el pago en modo prueba.'**
   String get offerPaymentConfirmDesc;
 
   /// No description provided for @offerPaymentSummaryHeader.
@@ -1957,19 +1957,19 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPriceLabel.
   ///
   /// In es, this message translates to:
-  /// **'Solo €9.99/mes'**
+  /// **'Solo €19.90 / 30 días'**
   String get premiumPriceLabel;
 
   /// No description provided for @premiumSimulateIndicator.
   ///
   /// In es, this message translates to:
-  /// **'* Activación completamente gratuita en modo de pruebas'**
+  /// **'* Pago seguro con Stripe en modo prueba'**
   String get premiumSimulateIndicator;
 
   /// No description provided for @premiumCtaText.
   ///
   /// In es, this message translates to:
-  /// **'Hazte Premium (Simulado)'**
+  /// **'Hazte Premium'**
   String get premiumCtaText;
 
   /// No description provided for @premiumIncludesTitle.
@@ -2029,13 +2029,13 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPaymentDialogTitle.
   ///
   /// In es, this message translates to:
-  /// **'Confirmar Pago Simulado'**
+  /// **'Confirmar pago'**
   String get premiumPaymentDialogTitle;
 
   /// No description provided for @premiumPaymentDialogMessage.
   ///
   /// In es, this message translates to:
-  /// **'Estás a punto de activar el plan Premium. Este es un pago simulado para fines de prueba.\n\nSuscripción: Relevo Pro\nDuración: 30 días\nPrecio: €0.00'**
+  /// **'Estás a punto de activar el plan Premium. Abriremos Stripe Checkout en modo prueba para completar el pago.\n\nSuscripción: Relevo Pro\nDuración: 30 días\nPrecio: €19.90'**
   String get premiumPaymentDialogMessage;
 
   /// No description provided for @premiumPaymentDialogCancel.
@@ -2145,6 +2145,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Registrarse'**
   String get guestRegisterButton;
+
+  /// No description provided for @paymentCheckoutTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago seguro'**
+  String get paymentCheckoutTitle;
+
+  /// No description provided for @paymentCheckoutOpening.
+  ///
+  /// In es, this message translates to:
+  /// **'Abriendo Stripe Checkout...'**
+  String get paymentCheckoutOpening;
+
+  /// No description provided for @paymentCheckoutChecking.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobando el estado del pago...'**
+  String get paymentCheckoutChecking;
+
+  /// No description provided for @paymentCheckoutExternalTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Continúa el pago en Stripe'**
+  String get paymentCheckoutExternalTitle;
+
+  /// No description provided for @paymentCheckoutExternalDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Hemos abierto Stripe en tu navegador. Cuando completes el pago, volveremos a comprobar el resultado automáticamente.'**
+  String get paymentCheckoutExternalDescription;
+
+  /// No description provided for @paymentCheckoutOpen.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir Stripe'**
+  String get paymentCheckoutOpen;
+
+  /// No description provided for @paymentCheckoutCheckNow.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobar ahora'**
+  String get paymentCheckoutCheckNow;
+
+  /// No description provided for @paymentCheckoutOpenError.
+  ///
+  /// In es, this message translates to:
+  /// **'No hemos podido abrir Stripe. Inténtalo de nuevo.'**
+  String get paymentCheckoutOpenError;
+
+  /// No description provided for @paymentCheckoutStatusError.
+  ///
+  /// In es, this message translates to:
+  /// **'No hemos podido confirmar el estado del pago todavía.'**
+  String get paymentCheckoutStatusError;
+
+  /// No description provided for @paymentCheckoutCanceled.
+  ///
+  /// In es, this message translates to:
+  /// **'Has cancelado el proceso de pago.'**
+  String get paymentCheckoutCanceled;
 }
 
 class _AppLocalizationsDelegate

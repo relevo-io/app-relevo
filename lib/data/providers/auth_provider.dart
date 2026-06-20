@@ -45,7 +45,7 @@ class Auth extends _$Auth {
           value: response.refreshToken!,
         );
       }
-      
+
       final fullUser = await userService.getMe();
       state = AsyncValue.data(fullUser);
     } catch (e, st) {
@@ -111,7 +111,8 @@ class Auth extends _$Auth {
     state = const AsyncValue.loading();
     try {
       final googleSignIn = GoogleSignIn(
-        serverClientId: '889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com',
+        serverClientId:
+            '889003247844-55eusptmect6b2j1gn8gq1v1d4avam2u.apps.googleusercontent.com',
       );
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
@@ -120,15 +121,21 @@ class Auth extends _$Auth {
         return;
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final fb_auth.AuthCredential credential = fb_auth.GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final fb_auth.AuthCredential credential =
+          fb_auth.GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
-      final fb_auth.UserCredential userCredential =
-          await fb_auth.FirebaseAuth.instance.signInWithCredential(credential);
-      final String? firebaseIdToken = await userCredential.user?.getIdToken(true);
+      final fb_auth.UserCredential userCredential = await fb_auth
+          .FirebaseAuth
+          .instance
+          .signInWithCredential(credential);
+      final String? firebaseIdToken = await userCredential.user?.getIdToken(
+        true,
+      );
 
       if (firebaseIdToken == null) {
         throw Exception('No se pudo obtener el token de Firebase');
@@ -153,14 +160,18 @@ class Auth extends _$Auth {
     }
   }
 
-  Future<void> updateNotificationPreferences(Map<String, dynamic> preferences) async {
+  Future<void> updateNotificationPreferences(
+    Map<String, dynamic> preferences,
+  ) async {
     final currentUser = state.value;
     if (currentUser == null) return;
 
     state = const AsyncValue.loading();
     try {
       final userService = ref.read(authServiceProvider);
-      final updatedUser = await userService.updateNotificationPreferences(preferences);
+      final updatedUser = await userService.updateNotificationPreferences(
+        preferences,
+      );
       state = AsyncValue.data(updatedUser);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -176,6 +187,20 @@ class Auth extends _$Auth {
     try {
       final userService = ref.read(authServiceProvider);
       final updatedUser = await userService.activateProPlan();
+      state = AsyncValue.data(updatedUser);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    }
+  }
+
+  Future<void> refreshProfile() async {
+    final currentUser = state.value;
+    if (currentUser == null) return;
+
+    try {
+      final userService = ref.read(authServiceProvider);
+      final updatedUser = await userService.getMe();
       state = AsyncValue.data(updatedUser);
     } catch (e, st) {
       state = AsyncValue.error(e, st);

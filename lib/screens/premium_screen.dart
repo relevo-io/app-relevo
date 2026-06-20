@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/models/payment_model.dart';
 import '../data/providers/auth_provider.dart';
+import '../data/services/payment_service.dart';
 import '../l10n/app_localizations.dart';
+import 'payment_checkout_screen.dart';
 import '../theme/relevo_theme.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
@@ -16,7 +20,7 @@ class PremiumScreen extends ConsumerStatefulWidget {
 class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   bool _isLoading = false;
 
-  void _showSimulatedPaymentDialog(BuildContext context) {
+  void _showPaymentDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
@@ -28,12 +32,19 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
         backgroundColor: theme.colorScheme.surfaceContainer,
         title: Row(
           children: [
-            Icon(Icons.workspace_premium, color: theme.colorScheme.primary, size: 28),
+            Icon(
+              Icons.workspace_premium,
+              color: theme.colorScheme.primary,
+              size: 28,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 l10n.premiumPaymentDialogTitle,
-                style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                ),
               ),
             ),
           ],
@@ -41,7 +52,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
         content: Text(
           l10n.premiumPaymentDialogMessage,
           style: TextStyle(
-            color: theme.colorScheme.onSurface.withOpacity(0.8),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
             fontSize: 14,
             height: 1.4,
           ),
@@ -51,7 +62,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
             onPressed: () => Navigator.pop(dialogCtx),
             child: Text(
               l10n.premiumPaymentDialogCancel,
-              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6)),
+              style: TextStyle(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
           ),
           ElevatedButton(
@@ -63,7 +76,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
               backgroundColor: theme.colorScheme.primary,
               foregroundColor: theme.colorScheme.onPrimary,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: Text(
               l10n.premiumPaymentDialogConfirm,
@@ -81,16 +96,57 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
     });
 
     try {
-      await ref.read(authProvider.notifier).activateProPlan();
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
+      final checkoutSession = await ref
+          .read(paymentServiceProvider)
+          .createCheckoutSession(
+            CreateCheckoutSessionPayload(
+              kind: PaymentKind.proActivation,
+              returnUrlBase: kIsWeb ? Uri.base.origin : null,
+            ),
+          );
+
+      if (!mounted) return;
+
+      final status = await Navigator.of(context).push<CheckoutSessionStatus>(
+        MaterialPageRoute(
+          builder: (_) => PaymentCheckoutScreen(
+            checkoutUrl: checkoutSession.checkoutUrl,
+            paymentSessionId: checkoutSession.paymentSessionId,
+            kind: PaymentKind.proActivation,
+          ),
+        ),
+      );
+
+      if (!mounted || status == null) return;
+
+      final l10n = AppLocalizations.of(context)!;
+
+      if (status.status == PaymentStatus.completed) {
+        await ref.read(authProvider.notifier).refreshProfile();
+        if (!mounted) return;
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.premiumSuccessMessage),
             backgroundColor: const Color(0xFF00B286),
           ),
         );
+        return;
       }
+
+      if (status.status == PaymentStatus.canceled) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.paymentCheckoutCanceled)));
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.paymentCheckoutStatusError),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
@@ -145,7 +201,10 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: GlassmorphicAppBar(
-        title: Text(l10n.premiumScreenTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.premiumScreenTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Stack(
         children: [
@@ -172,9 +231,12 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.15),
+                          color: Colors.black.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1.5,
+                          ),
                         ),
                         child: const Icon(
                           Icons.workspace_premium,
@@ -199,7 +261,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           height: 1.4,
                         ),
                         textAlign: TextAlign.center,
@@ -216,12 +278,23 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                       // Status card if already pro (Sleek light green theme)
                       if (isPro) ...[
                         RelevoCard(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.08),
-                          border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.3), width: 1.5),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.08,
+                          ),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.3,
+                            ),
+                            width: 1.5,
+                          ),
                           padding: const EdgeInsets.all(20),
                           child: Row(
                             children: [
-                              Icon(Icons.stars_rounded, color: theme.colorScheme.primary, size: 36),
+                              Icon(
+                                Icons.stars_rounded,
+                                color: theme.colorScheme.primary,
+                                size: 36,
+                              ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
@@ -265,50 +338,58 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                       const SizedBox(height: 16),
 
                       // Benefits Grid / List
-                      ...benefits.map((benefit) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25), width: 1),
+                      ...benefits.map(
+                        (benefit) => Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.primary.withValues(
+                                    alpha: 0.1,
                                   ),
-                                  child: Icon(
-                                    benefit['icon'] as IconData,
-                                    color: theme.colorScheme.primary,
-                                    size: 24,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        benefit['title'] as String,
-                                        style: theme.textTheme.titleMedium?.copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        benefit['desc'] as String,
-                                        style: theme.textTheme.bodyMedium?.copyWith(
-                                          fontSize: 13,
-                                          height: 1.4,
-                                        ),
-                                      ),
-                                    ],
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.25,
+                                    ),
+                                    width: 1,
                                   ),
                                 ),
-                              ],
-                            ),
-                          )),
+                                child: Icon(
+                                  benefit['icon'] as IconData,
+                                  color: theme.colorScheme.primary,
+                                  size: 24,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      benefit['title'] as String,
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      benefit['desc'] as String,
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(fontSize: 13, height: 1.4),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
 
                       const SizedBox(height: 24),
 
@@ -339,7 +420,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                               width: double.infinity,
                               height: 54,
                               child: ElevatedButton(
-                                onPressed: () => _showSimulatedPaymentDialog(context),
+                                onPressed: () => _showPaymentDialog(context),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: theme.colorScheme.primary,
                                   foregroundColor: theme.colorScheme.onPrimary,
@@ -373,7 +454,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
               color: Colors.black45,
               child: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.primary,
+                  ),
                 ),
               ),
             ),
