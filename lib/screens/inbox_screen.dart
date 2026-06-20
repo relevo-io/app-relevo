@@ -29,25 +29,25 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
     final receivedRequestsAsync = ref.watch(receivedRequestsProvider);
     final sentRequestsAsync = ref.watch(sentRequestsProvider);
+    final topPadding = MediaQuery.of(context).padding.top + 68.0;
 
     return Scaffold(
       // Set appBar to null because MainScreen has a central AppBar
       appBar: null,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Screen Title inside the body (Since AppBar has 'Relevo')
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 16.0),
-              child: Text(
-                locale == 'ca' ? 'Sol·licituds d\'Interès' : 'Solicitudes de Interés',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 24,
-                ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Screen Title inside the body (Since AppBar has 'Relevo')
+          Padding(
+            padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 16.0),
+            child: Text(
+              locale == 'ca' ? 'Sol·licituds d\'Interès' : 'Solicitudes de Interés',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 24,
               ),
             ),
+          ),
 
             // Custom Segmented Tab Controller (Matches 3rd screenshot)
             Padding(
@@ -139,7 +139,6 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 

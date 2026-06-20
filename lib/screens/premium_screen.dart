@@ -4,6 +4,8 @@ import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/relevo_theme.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class PremiumScreen extends ConsumerStatefulWidget {
   const PremiumScreen({super.key});
 
@@ -141,9 +143,9 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.premiumScreenTitle),
-        elevation: 0,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.premiumScreenTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Stack(
         children: [
@@ -154,7 +156,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
               children: [
                 // Premium Banner Header with Elegant Theme Gradient
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+                  padding: const EdgeInsets.fromLTRB(24, 100, 24, 40),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [

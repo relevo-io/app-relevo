@@ -7,6 +7,8 @@ import '../data/models/mentoring_progress_model.dart';
 import '../utils/mentoring_localizations.dart';
 import 'module_detail_screen.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class MentoringScreen extends ConsumerStatefulWidget {
   const MentoringScreen({super.key});
 
@@ -42,9 +44,9 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.mentoringTitle),
-        elevation: 0,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.mentoringTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: modulesAsync.when(
         loading: () => const Center(
@@ -75,7 +77,7 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                   return [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.all(24.0),
+                        padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(

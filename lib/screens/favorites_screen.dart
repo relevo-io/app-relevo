@@ -5,6 +5,8 @@ import '../data/providers/offers_provider.dart';
 import '../widgets/offer_card_grid.dart';
 import '../widgets/offers_shimmer.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class FavoritesScreen extends ConsumerWidget {
   const FavoritesScreen({super.key});
 
@@ -33,12 +35,12 @@ class FavoritesScreen extends ConsumerWidget {
             : 'Error loading favorites';
 
     return Scaffold(
-      appBar: AppBar(
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
         title: Text(
           titleText,
           style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
-        elevation: 0,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -50,12 +52,12 @@ class FavoritesScreen extends ConsumerWidget {
         color: theme.colorScheme.secondary,
         child: favoritesAsync.when(
           loading: () => const Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
             child: OffersShimmer(),
           ),
           error: (err, stack) => Center(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
               child: Text(
                 '$errorText: $err',
                 style: TextStyle(color: theme.colorScheme.error),
@@ -70,7 +72,7 @@ class FavoritesScreen extends ConsumerWidget {
                 child: Container(
                   height: MediaQuery.of(context).size.height - 150,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.all(32.0),
+                  padding: const EdgeInsets.fromLTRB(32.0, 100.0, 32.0, 32.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -97,7 +99,7 @@ class FavoritesScreen extends ConsumerWidget {
 
             return GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,

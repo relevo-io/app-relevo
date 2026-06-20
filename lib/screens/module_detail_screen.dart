@@ -7,6 +7,8 @@ import '../data/services/mentoring_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/mentoring_localizations.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class ModuleDetailScreen extends ConsumerStatefulWidget {
   final MentoringModule module;
   final bool isCompleted;
@@ -65,16 +67,16 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.mentoringDetailTitle),
-        elevation: 0,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.mentoringDetailTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

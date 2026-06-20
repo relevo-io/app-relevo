@@ -37,7 +37,7 @@ class ProfileScreen extends ConsumerWidget {
         appBar: null,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 24.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 110.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -363,7 +363,7 @@ class ProfileScreen extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 16.0),
+            padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 110.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

@@ -12,6 +12,8 @@ import 'chat_room_screen.dart';
 import 'solicitud_details_screen.dart';
 import 'offer_details_screen.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class NotificationsInboxScreen extends ConsumerWidget {
   const NotificationsInboxScreen({super.key});
 
@@ -117,16 +119,12 @@ class NotificationsInboxScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
 
+    final topPadding = MediaQuery.of(context).padding.top + 68.0;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.notificationsTitle,
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        elevation: 0,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: null,
         actions: [
           // Marcar todo como leído
           IconButton(
@@ -210,45 +208,59 @@ class NotificationsInboxScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: notificationsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(
-            err.toString(),
-            style: TextStyle(color: theme.colorScheme.error),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 16.0),
+            child: Text(
+              l10n.notificationsTitle,
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 24,
+              ),
+            ),
           ),
-        ),
-        data: (notifications) {
-          final content = notifications.isEmpty
-              ? SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 80.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.notifications_off_outlined,
-                            size: 64,
-                            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            l10n.notificationsEmpty,
-                            style: GoogleFonts.inter(
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                              fontSize: 14,
+            Expanded(
+              child: notificationsAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, stack) => Center(
+                  child: Text(
+                    err.toString(),
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                ),
+                data: (notifications) {
+                  final content = notifications.isEmpty
+                      ? SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 80.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.notifications_off_outlined,
+                                    size: 64,
+                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    l10n.notificationsEmpty,
+                                    style: GoogleFonts.inter(
+                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(24.0),
+                        )
+                      : ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0),
                   itemCount: notifications.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 16),
                   itemBuilder: (context, index) {
@@ -429,6 +441,9 @@ class NotificationsInboxScreen extends ConsumerWidget {
           );
         },
       ),
+    ),
+  ],
+),
     );
   }
 }

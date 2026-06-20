@@ -5,6 +5,8 @@ import '../data/providers/auth_provider.dart';
 import '../data/models/user_model.dart';
 import '../l10n/app_localizations.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class NotificationPreferencesScreen extends ConsumerStatefulWidget {
   const NotificationPreferencesScreen({super.key});
 
@@ -77,7 +79,8 @@ class _NotificationPreferencesScreenState
     final userAsync = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
         title: Text(
           l10n.notificationPreferencesTitle,
           style: GoogleFonts.inter(
@@ -85,9 +88,6 @@ class _NotificationPreferencesScreenState
             fontSize: 18,
           ),
         ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: theme.colorScheme.onSurface,
       ),
       body: userAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -115,7 +115,7 @@ class _NotificationPreferencesScreenState
             children: [
               SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

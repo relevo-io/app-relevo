@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/providers/alert_provider.dart';
 import '../l10n/app_localizations.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class ManageAlertsScreen extends ConsumerStatefulWidget {
   const ManageAlertsScreen({super.key});
 
@@ -46,13 +48,13 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.alertsTitle),
-        elevation: 0,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.alertsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
