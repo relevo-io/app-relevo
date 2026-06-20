@@ -171,4 +171,17 @@ class OfferService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<void> purchasePublicationCredit() async {
+    try {
+      await _dio.post('/ofertas/publication-credit/purchase');
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al procesar el pago simulado',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

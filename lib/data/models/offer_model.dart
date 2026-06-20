@@ -70,6 +70,33 @@ class Offer {
     };
   }
 
+  String getLocalizedSector(String locale) {
+    final cleanSector = sector.toLowerCase().trim();
+    switch (cleanSector) {
+      case 'tecnologia':
+      case 'tecnología':
+        return locale == 'ca' ? 'Tecnologia' : locale == 'en' ? 'Technology' : 'Tecnología';
+      case 'hostaleria':
+      case 'hostelería':
+      case 'hosteleria':
+        return locale == 'ca' ? 'Hostaleria' : locale == 'en' ? 'Hospitality' : 'Hostelería';
+      case 'servicios':
+      case 'serveis':
+      case 'services':
+        return locale == 'ca' ? 'Serveis' : locale == 'en' ? 'Services' : 'Servicios';
+      case 'industria':
+      case 'indústria':
+      case 'industry':
+        return locale == 'ca' ? 'Indústria' : locale == 'en' ? 'Industry' : 'Industria';
+      case 'comercio':
+      case 'comerç':
+      case 'commerce':
+        return locale == 'ca' ? 'Comerç' : locale == 'en' ? 'Commerce' : 'Comercio';
+      default:
+        return sector;
+    }
+  }
+
   String get formattedRevenue {
     if (revenueRange == null) return 'Consulta';
     switch (revenueRange) {

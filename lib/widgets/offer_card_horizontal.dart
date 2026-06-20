@@ -108,7 +108,7 @@ class OfferCardHorizontal extends ConsumerWidget {
                           ),
                         ),
                         child: Text(
-                          offer.sector.toUpperCase(),
+                          offer.getLocalizedSector(localeCode).toUpperCase(),
                           style: theme.textTheme.labelSmall?.copyWith(
                             fontSize: 8,
                             fontWeight: FontWeight.bold,

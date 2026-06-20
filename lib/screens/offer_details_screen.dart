@@ -155,7 +155,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          offer.sector.toUpperCase(),
+                          offer.getLocalizedSector(localeCode).toUpperCase(),
                           style: GoogleFonts.inter(
                             fontSize: 11,
                             fontWeight: FontWeight.w800,

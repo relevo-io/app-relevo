@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final ScrollController _scrollController;
-  String _selectedCategory = 'Todos';
+  int _selectedCategoryIndex = 0;
 
   @override
   void initState() {
@@ -49,9 +49,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<String> _getCategories(String locale) {
     if (locale == 'ca') {
-      return ['Todos', 'Hosteleria', 'Comerç', 'Indústria', 'Salut', 'Serveis'];
+      return ['Tots', 'Hosteleria', 'Comerç', 'Indústria', 'Salut', 'Serveis'];
     } else if (locale == 'en') {
-      return ['Todos', 'Hospitality', 'Retail', 'Industrial', 'Health', 'Services'];
+      return ['All', 'Hospitality', 'Retail', 'Industrial', 'Health', 'Services'];
     }
     return ['Todos', 'Hostelería', 'Comercio', 'Industria', 'Salud', 'Servicios'];
   }
@@ -147,7 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
                           final cat = categories[index];
-                          final isSelected = _selectedCategory.toLowerCase() == cat.toLowerCase();
+                          final isSelected = _selectedCategoryIndex == index;
                           return Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ChoiceChip(
@@ -155,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               selected: isSelected,
                               onSelected: (selected) {
                                 setState(() {
-                                  _selectedCategory = selected ? cat : 'Todos';
+                                  _selectedCategoryIndex = selected ? index : 0;
                                 });
                               },
                               labelStyle: theme.textTheme.labelMedium?.copyWith(
@@ -192,12 +192,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ? offers.where((o) => o.owner != user.id).toList()
                     : offers;
 
-                final displayed = _selectedCategory == 'Todos'
+                final List<String> categoryKeys = ['', 'hostaleria', 'comercio', 'industria', 'salud', 'servicios'];
+                final displayed = _selectedCategoryIndex == 0
                     ? filtered
                     : filtered
-                        .where((o) => o.sector
-                            .toLowerCase()
-                            .contains(_selectedCategory.toLowerCase().substring(0, 4)))
+                        .where((o) => o.sector.toLowerCase().trim() == categoryKeys[_selectedCategoryIndex])
                         .toList();
 
                 final displayedOffers = isLoggedIn
