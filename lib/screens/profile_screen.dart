@@ -13,6 +13,7 @@ import 'register_screen.dart';
 import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
 import 'notifications_inbox_screen.dart';
+import 'notification_preferences_screen.dart';
 import '../data/providers/mentoring_provider.dart';
 import 'favorites_screen.dart';
 
@@ -268,7 +269,7 @@ class ProfileScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const NotificationsInboxScreen(),
+                            builder: (context) => const NotificationPreferencesScreen(),
                           ),
                         );
                       },

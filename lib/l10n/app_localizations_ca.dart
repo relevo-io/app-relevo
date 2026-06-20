@@ -887,4 +887,65 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get solicitudSuitabilityFeedback => 'Feedback d\'Idoneïtat';
+
+  @override
+  String get notificationPreferencesTitle => 'Configuració de notificacions';
+
+  @override
+  String get notificationPrefNewMessages => 'Nous missatges';
+
+  @override
+  String get notificationPrefNewMessagesDesc =>
+      'Rebre alertes quan tinguis nous missatges de xat.';
+
+  @override
+  String get notificationPrefApplicationStatus => 'Estat de les sol·licituds';
+
+  @override
+  String get notificationPrefApplicationStatusDesc =>
+      'Alertes sobre actualitzacions de les teves sol·licituds enviades.';
+
+  @override
+  String get notificationPrefNewApplications => 'Noves sol·licituds rebudes';
+
+  @override
+  String get notificationPrefNewApplicationsDesc =>
+      'Notificar quan un candidat sol·liciti informació del teu negoci.';
+
+  @override
+  String get notificationPrefCvAnalysis => 'Anàlisi de CV per IA';
+
+  @override
+  String get notificationPrefCvAnalysisDesc =>
+      'Avisar quan finalitzi l\'anàlisi de CV intel·ligent d\'un candidat.';
+
+  @override
+  String get notificationPrefOfferAlerts => 'Alertes de noves ofertes';
+
+  @override
+  String get notificationPrefOfferAlertsDesc =>
+      'Notificacions d\'ofertes que coincideixin amb les teves facturacions d\'interès.';
+
+  @override
+  String get notificationPrefSaveSuccess =>
+      'Preferències de notificació desades correctament';
+
+  @override
+  String get notificationsMarkAllRead => 'Marcar-ho tot com a llegit';
+
+  @override
+  String get notificationsClearAll => 'Buidar historial';
+
+  @override
+  String get notificationsDeleteConfirm => 'Vols eliminar aquesta notificació?';
+
+  @override
+  String get notificationsClearConfirm =>
+      'Segur que vols buidar l\'historial de notificacions?';
+
+  @override
+  String get notificationsDelete => 'Eliminar';
+
+  @override
+  String get notificationsCancel => 'Cancel·lar';
 }

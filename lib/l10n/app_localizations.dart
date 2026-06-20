@@ -1731,6 +1731,114 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Feedback de Idoneidad'**
   String get solicitudSuitabilityFeedback;
+
+  /// No description provided for @notificationPreferencesTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Configuración de notificaciones'**
+  String get notificationPreferencesTitle;
+
+  /// No description provided for @notificationPrefNewMessages.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevos mensajes'**
+  String get notificationPrefNewMessages;
+
+  /// No description provided for @notificationPrefNewMessagesDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibir alertas cuando tengas nuevos mensajes de chat.'**
+  String get notificationPrefNewMessagesDesc;
+
+  /// No description provided for @notificationPrefApplicationStatus.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado de solicitudes'**
+  String get notificationPrefApplicationStatus;
+
+  /// No description provided for @notificationPrefApplicationStatusDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas sobre actualizaciones en tus solicitudes enviadas.'**
+  String get notificationPrefApplicationStatusDesc;
+
+  /// No description provided for @notificationPrefNewApplications.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevas solicitudes recibidas'**
+  String get notificationPrefNewApplications;
+
+  /// No description provided for @notificationPrefNewApplicationsDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificar cuando un candidato solicite información de tu negocio.'**
+  String get notificationPrefNewApplicationsDesc;
+
+  /// No description provided for @notificationPrefCvAnalysis.
+  ///
+  /// In es, this message translates to:
+  /// **'Análisis de CV por IA'**
+  String get notificationPrefCvAnalysis;
+
+  /// No description provided for @notificationPrefCvAnalysisDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Avisar cuando termine el análisis de CV inteligente de un candidato.'**
+  String get notificationPrefCvAnalysisDesc;
+
+  /// No description provided for @notificationPrefOfferAlerts.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas de nuevas ofertas'**
+  String get notificationPrefOfferAlerts;
+
+  /// No description provided for @notificationPrefOfferAlertsDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificaciones de ofertas que coincidan con tus facturaciones de interés.'**
+  String get notificationPrefOfferAlertsDesc;
+
+  /// No description provided for @notificationPrefSaveSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'Preferencias de notificación guardadas correctamente'**
+  String get notificationPrefSaveSuccess;
+
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar todo como leído'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsClearAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Vaciar historial'**
+  String get notificationsClearAll;
+
+  /// No description provided for @notificationsDeleteConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Quieres eliminar esta notificación?'**
+  String get notificationsDeleteConfirm;
+
+  /// No description provided for @notificationsClearConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Seguro que quieres vaciar el historial de notificaciones?'**
+  String get notificationsClearConfirm;
+
+  /// No description provided for @notificationsDelete.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar'**
+  String get notificationsDelete;
+
+  /// No description provided for @notificationsCancel.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get notificationsCancel;
 }
 
 class _AppLocalizationsDelegate

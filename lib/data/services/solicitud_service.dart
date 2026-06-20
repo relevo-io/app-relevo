@@ -178,4 +178,18 @@ class SolicitudService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<Solicitud> getSolicitud(String id) async {
+    try {
+      final response = await _dio.get('/solicitudes/$id');
+      return Solicitud.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener la solicitud',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../data/models/solicitud_model.dart';
 import '../data/providers/solicitud_provider.dart';
+import '../data/providers/navigation_providers.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/relevo_theme.dart';
 import 'solicitud_details_screen.dart';
@@ -16,10 +17,11 @@ class InboxScreen extends ConsumerStatefulWidget {
 }
 
 class _InboxScreenState extends ConsumerState<InboxScreen> {
-  int _activeTab = 0; // 0 = Recibidas, 1 = Enviadas
+  final Set<String> _processingRequestIds = {};
 
   @override
   Widget build(BuildContext context) {
+    final activeTab = ref.watch(inboxActiveTabProvider);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
@@ -60,15 +62,15 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => setState(() => _activeTab = 0),
+                        onTap: () => ref.read(inboxActiveTabProvider.notifier).setTab(0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           decoration: BoxDecoration(
-                            color: _activeTab == 0
+                            color: activeTab == 0
                                 ? (isDark ? const Color(0xFF0B1326) : Colors.white)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: _activeTab == 0
+                            boxShadow: activeTab == 0
                                 ? [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.06),
@@ -83,7 +85,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                             textAlign: TextAlign.center,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: _activeTab == 0
+                              color: activeTab == 0
                                   ? (isDark ? const Color(0xFF4EDE83) : const Color(0xFF006C49))
                                   : theme.colorScheme.onSurface.withOpacity(0.5),
                             ),
@@ -93,15 +95,15 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => setState(() => _activeTab = 1),
+                        onTap: () => ref.read(inboxActiveTabProvider.notifier).setTab(1),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           decoration: BoxDecoration(
-                            color: _activeTab == 1
+                            color: activeTab == 1
                                 ? (isDark ? const Color(0xFF0B1326) : Colors.white)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: _activeTab == 1
+                            boxShadow: activeTab == 1
                                 ? [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.06),
@@ -116,7 +118,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                             textAlign: TextAlign.center,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: _activeTab == 1
+                              color: activeTab == 1
                                   ? (isDark ? const Color(0xFF4EDE83) : const Color(0xFF006C49))
                                   : theme.colorScheme.onSurface.withOpacity(0.5),
                             ),
@@ -131,7 +133,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
             // Tab View Body
             Expanded(
-              child: _activeTab == 0
+              child: activeTab == 0
                   ? _buildReceivedRequestsList(context, ref, receivedRequestsAsync, locale)
                   : _buildSentRequestsList(context, ref, sentRequestsAsync, locale),
             ),
@@ -463,26 +465,33 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () async {
-                        try {
-                          await ref.read(receivedRequestsProvider.notifier).acceptRequest(request.id);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Contacto iniciado con éxito'),
-                                backgroundColor: Color(0xFF00B286),
-                              ),
-                            );
-                          }
-                        } catch (err) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Error: ${err.toString()}')),
-                            );
-                          }
-                        }
-                      },
+                      onPressed: _processingRequestIds.contains(request.id)
+                          ? null
+                          : () async {
+                              setState(() => _processingRequestIds.add(request.id));
+                              try {
+                                await ref.read(receivedRequestsProvider.notifier).acceptRequest(request.id);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Contacto iniciado con éxito'),
+                                      backgroundColor: Color(0xFF00B286),
+                                    ),
+                                  );
+                                }
+                              } catch (err) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: ${err.toString()}')),
+                                  );
+                                }
+                              } finally {
+                                if (mounted) {
+                                  setState(() => _processingRequestIds.remove(request.id));
+                                }
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF006C49), // Stitch Primary Dark Green
                         foregroundColor: Colors.white,
@@ -491,7 +500,13 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      icon: const Icon(Icons.check_rounded, size: 16),
+                      icon: _processingRequestIds.contains(request.id)
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                            )
+                          : const Icon(Icons.check_rounded, size: 16),
                       label: Text(
                         locale == 'ca' ? 'Acceptar' : 'Aceptar',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
@@ -501,26 +516,33 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () async {
-                        try {
-                          await ref.read(receivedRequestsProvider.notifier).rejectRequest(request.id);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Solicitud declinada'),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
-                          }
-                        } catch (err) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Error: ${err.toString()}')),
-                            );
-                          }
-                        }
-                      },
+                      onPressed: _processingRequestIds.contains(request.id)
+                          ? null
+                          : () async {
+                              setState(() => _processingRequestIds.add(request.id));
+                              try {
+                                await ref.read(receivedRequestsProvider.notifier).rejectRequest(request.id);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Solicitud declinada'),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                              } catch (err) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: ${err.toString()}')),
+                                  );
+                                }
+                              } finally {
+                                if (mounted) {
+                                  setState(() => _processingRequestIds.remove(request.id));
+                                }
+                              }
+                            },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: theme.colorScheme.onSurface,
                         side: BorderSide(color: theme.colorScheme.outline.withOpacity(0.4)),

@@ -879,4 +879,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get solicitudSuitabilityFeedback => 'Suitability Feedback';
+
+  @override
+  String get notificationPreferencesTitle => 'Notification Settings';
+
+  @override
+  String get notificationPrefNewMessages => 'New messages';
+
+  @override
+  String get notificationPrefNewMessagesDesc =>
+      'Receive alerts when you have new chat messages.';
+
+  @override
+  String get notificationPrefApplicationStatus => 'Application status';
+
+  @override
+  String get notificationPrefApplicationStatusDesc =>
+      'Alerts about updates to your sent applications.';
+
+  @override
+  String get notificationPrefNewApplications => 'New applications received';
+
+  @override
+  String get notificationPrefNewApplicationsDesc =>
+      'Notify when a candidate requests info on your business.';
+
+  @override
+  String get notificationPrefCvAnalysis => 'AI CV Analysis';
+
+  @override
+  String get notificationPrefCvAnalysisDesc =>
+      'Alert when a candidate\'s smart CV analysis is completed.';
+
+  @override
+  String get notificationPrefOfferAlerts => 'New offer alerts';
+
+  @override
+  String get notificationPrefOfferAlertsDesc =>
+      'Notifications for offers that match your annual revenue of interest.';
+
+  @override
+  String get notificationPrefSaveSuccess =>
+      'Notification preferences saved successfully';
+
+  @override
+  String get notificationsMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsClearAll => 'Clear history';
+
+  @override
+  String get notificationsDeleteConfirm =>
+      'Do you want to delete this notification?';
+
+  @override
+  String get notificationsClearConfirm =>
+      'Are you sure you want to clear your notification history?';
+
+  @override
+  String get notificationsDelete => 'Delete';
+
+  @override
+  String get notificationsCancel => 'Cancel';
 }

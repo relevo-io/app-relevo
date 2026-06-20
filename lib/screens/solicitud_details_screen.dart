@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../widgets/request_status_badge.dart';
 import 'chat_room_screen.dart';
 import '../data/services/chat_service.dart';
+import '../data/providers/notification_provider.dart';
 
 class SolicitudDetailsScreen extends ConsumerStatefulWidget {
   final Solicitud solicitud;
@@ -26,6 +27,18 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
   bool _isViewingCv = false;
   bool _isAnalyzingCv = false;
   bool _isAiExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref
+            .read(notificationsStateProvider.notifier)
+            .markSolicitudNotificationsAsRead(widget.solicitud.id);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

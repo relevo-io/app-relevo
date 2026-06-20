@@ -40,4 +40,43 @@ class NotificationService {
       throw Exception('Error de conexión: ${e.message}');
     }
   }
+
+  Future<void> markAllAsRead() async {
+    try {
+      await _dio.patch('/notificaciones/read-all');
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al marcar todas las notificaciones como leídas',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<void> deleteNotification(String notificationId) async {
+    try {
+      await _dio.delete('/notificaciones/$notificationId');
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al eliminar la notificación',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<void> clearAllNotifications() async {
+    try {
+      await _dio.delete('/notificaciones');
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al vaciar el historial de notificaciones',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
 }

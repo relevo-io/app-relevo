@@ -888,4 +888,66 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get solicitudSuitabilityFeedback => 'Feedback de Idoneidad';
+
+  @override
+  String get notificationPreferencesTitle => 'Configuración de notificaciones';
+
+  @override
+  String get notificationPrefNewMessages => 'Nuevos mensajes';
+
+  @override
+  String get notificationPrefNewMessagesDesc =>
+      'Recibir alertas cuando tengas nuevos mensajes de chat.';
+
+  @override
+  String get notificationPrefApplicationStatus => 'Estado de solicitudes';
+
+  @override
+  String get notificationPrefApplicationStatusDesc =>
+      'Alertas sobre actualizaciones en tus solicitudes enviadas.';
+
+  @override
+  String get notificationPrefNewApplications => 'Nuevas solicitudes recibidas';
+
+  @override
+  String get notificationPrefNewApplicationsDesc =>
+      'Notificar cuando un candidato solicite información de tu negocio.';
+
+  @override
+  String get notificationPrefCvAnalysis => 'Análisis de CV por IA';
+
+  @override
+  String get notificationPrefCvAnalysisDesc =>
+      'Avisar cuando termine el análisis de CV inteligente de un candidato.';
+
+  @override
+  String get notificationPrefOfferAlerts => 'Alertas de nuevas ofertas';
+
+  @override
+  String get notificationPrefOfferAlertsDesc =>
+      'Notificaciones de ofertas que coincidan con tus facturaciones de interés.';
+
+  @override
+  String get notificationPrefSaveSuccess =>
+      'Preferencias de notificación guardadas correctamente';
+
+  @override
+  String get notificationsMarkAllRead => 'Marcar todo como leído';
+
+  @override
+  String get notificationsClearAll => 'Vaciar historial';
+
+  @override
+  String get notificationsDeleteConfirm =>
+      '¿Quieres eliminar esta notificación?';
+
+  @override
+  String get notificationsClearConfirm =>
+      '¿Seguro que quieres vaciar el historial de notificaciones?';
+
+  @override
+  String get notificationsDelete => 'Eliminar';
+
+  @override
+  String get notificationsCancel => 'Cancelar';
 }

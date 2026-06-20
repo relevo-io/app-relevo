@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_relevo/data/network/dio_client.dart';
 import 'package:flutter_relevo/data/models/message_model.dart';
+import 'package:flutter_relevo/data/models/notification_model.dart';
 
 final socketServiceProvider = Provider<SocketService>((ref) {
   // Obtenemos la URL base de Dio para deducir la URL del Socket
@@ -20,6 +21,7 @@ class SocketService {
   // StreamControllers para exponer los eventos entrantes del WebSocket
   final _messageController = StreamController<Message>.broadcast();
   final _chatNotificationController = StreamController<Map<String, dynamic>>.broadcast();
+  final _newNotificationController = StreamController<NotificationModel>.broadcast();
   final _typingStartController = StreamController<String>.broadcast();
   final _typingStopController = StreamController<String>.broadcast();
   final _userOnlineController = StreamController<String>.broadcast();
@@ -31,6 +33,7 @@ class SocketService {
   // Getters de los Streams
   Stream<Message> get onMessageReceived => _messageController.stream;
   Stream<Map<String, dynamic>> get onChatNotification => _chatNotificationController.stream;
+  Stream<NotificationModel> get onNewNotification => _newNotificationController.stream;
   Stream<String> get onTypingStart => _typingStartController.stream;
   Stream<String> get onTypingStop => _typingStopController.stream;
   Stream<String> get onUserOnline => _userOnlineController.stream;
@@ -79,6 +82,15 @@ class SocketService {
     _socket!.on('chat_notification', (data) {
       if (data is Map<String, dynamic>) {
         _chatNotificationController.add(data);
+      }
+    });
+
+    _socket!.on('new_notification', (data) {
+      try {
+        final notification = NotificationModel.fromJson(data);
+        _newNotificationController.add(notification);
+      } catch (e) {
+        // Ignorar
       }
     });
 
@@ -211,6 +223,7 @@ class SocketService {
     disconnect();
     _messageController.close();
     _chatNotificationController.close();
+    _newNotificationController.close();
     _typingStartController.close();
     _typingStopController.close();
     _userOnlineController.close();

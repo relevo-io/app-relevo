@@ -8,6 +8,7 @@ import 'package:flutter_relevo/data/services/chat_service.dart';
 import 'package:flutter_relevo/data/services/socket_service.dart';
 import 'package:flutter_relevo/data/providers/auth_provider.dart';
 import 'package:flutter_relevo/data/services/push_notification_service.dart';
+import 'notification_provider.dart';
 
 part 'chat_providers.g.dart';
 
@@ -298,6 +299,13 @@ class ChatRoomMessages extends _$ChatRoomMessages {
     // Marcar como leído
     socketService.markRead(chatId);
 
+    // Marcar las notificaciones del chat locales como leídas
+    Future.microtask(() {
+      ref
+          .read(notificationsStateProvider.notifier)
+          .markChatNotificationsAsReadLocally(chatId);
+    });
+
     // Escuchar nuevos mensajes recibidos por el socket
     _messageSubscription?.cancel();
     _messageSubscription = socketService.onMessageReceived.listen((message) {
@@ -314,6 +322,11 @@ class ChatRoomMessages extends _$ChatRoomMessages {
           // Actualizamos la lista de chats en segundo plano
           ref.read(chatsListProvider.notifier).updateLastMessageInList(message);
           ref.read(chatsListProvider.notifier).markChatAsReadLocally(chatId);
+
+          // Marcar las notificaciones del chat locales como leídas
+          ref
+              .read(notificationsStateProvider.notifier)
+              .markChatNotificationsAsReadLocally(chatId);
         }
       }
     });

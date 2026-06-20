@@ -7,6 +7,7 @@ import '../data/providers/theme_provider.dart';
 import '../data/providers/language_provider.dart';
 import '../data/providers/notification_provider.dart';
 import '../data/providers/chat_providers.dart';
+import '../data/providers/navigation_providers.dart';
 import '../l10n/app_localizations.dart';
 
 import 'home_screen.dart';
@@ -29,16 +30,13 @@ class MainScreen extends ConsumerStatefulWidget {
 }
 
 class _MainScreenState extends ConsumerState<MainScreen> {
-  int _currentIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<dynamic>>(authProvider, (previous, next) {
       if (previous?.value == null && next.value != null) {
-        setState(() {
-          _currentIndex = 0;
-        });
+        ref.read(mainNavigationIndexProvider.notifier).setIndex(0);
       }
     });
 
@@ -86,8 +84,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       const ProfileScreen(),
     ];
 
-    if (_currentIndex >= screens.length) {
-      _currentIndex = 0;
+    final currentIndex = ref.watch(mainNavigationIndexProvider);
+    int safeIndex = currentIndex;
+    if (safeIndex >= screens.length) {
+      safeIndex = 0;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(mainNavigationIndexProvider.notifier).setIndex(0);
+      });
     }
 
     return Scaffold(
@@ -220,10 +223,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     ? 'Inicio'
                     : 'Home',
               ),
-              selected: _currentIndex == 0,
+              selected: currentIndex == 0,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 0);
+                ref.read(mainNavigationIndexProvider.notifier).setIndex(0);
                 Navigator.pop(context);
               },
             ),
@@ -236,20 +239,20 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     ? 'Vender'
                     : 'Sell',
               ),
-              selected: _currentIndex == 1,
+              selected: currentIndex == 1,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 1);
+                ref.read(mainNavigationIndexProvider.notifier).setIndex(1);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.description_outlined),
               title: Text(l10n.bottomNavInbox),
-              selected: _currentIndex == 2,
+              selected: currentIndex == 2,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 2);
+                ref.read(mainNavigationIndexProvider.notifier).setIndex(2);
                 Navigator.pop(context);
               },
             ),
@@ -262,20 +265,20 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     ? 'Chats'
                     : 'Chats',
               ),
-              selected: _currentIndex == 3,
+              selected: currentIndex == 3,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 3);
+                ref.read(mainNavigationIndexProvider.notifier).setIndex(3);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.person_outline_rounded),
               title: Text(l10n.bottomNavYou),
-              selected: _currentIndex == 4,
+              selected: currentIndex == 4,
               selectedColor: theme.colorScheme.primary,
               onTap: () {
-                setState(() => _currentIndex = 4);
+                ref.read(mainNavigationIndexProvider.notifier).setIndex(4);
                 Navigator.pop(context);
               },
             ),
@@ -385,7 +388,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   ref.read(authProvider.notifier).logout();
-                  setState(() => _currentIndex = 0);
+                  ref.read(mainNavigationIndexProvider.notifier).setIndex(0);
                 },
               ),
             ] else ...[
@@ -412,13 +415,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           ],
         ),
       ),
-      body: IndexedStack(index: _currentIndex, children: screens),
+      body: IndexedStack(index: safeIndex, children: screens),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
+        selectedIndex: safeIndex,
         onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          ref.read(mainNavigationIndexProvider.notifier).setIndex(index);
         },
         indicatorColor: theme.colorScheme.primary.withOpacity(0.15),
         destinations: [

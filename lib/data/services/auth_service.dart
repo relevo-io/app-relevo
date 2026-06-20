@@ -126,16 +126,33 @@ class UserService {
         '/usuarios/$userId',
         data: {
           'fullName': fullName,
-          'location': ?location,
-          'bio': ?bio,
-          'professionalBackground': ?professionalBackground,
-          'preferredRegions': ?preferredRegions,
+          'location': location,
+          'bio': bio,
+          'professionalBackground': professionalBackground,
+          'preferredRegions': preferredRegions,
         },
       );
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         throw Exception(
           e.response?.data['message'] ?? 'Error actualizando perfil',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<User> updateNotificationPreferences(Map<String, dynamic> preferences) async {
+    try {
+      final response = await _dio.patch(
+        '/usuarios/me/notification-preferences',
+        data: preferences,
+      );
+      return User.fromJson(response.data['user']);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al actualizar preferencias de notificación',
         );
       }
       throw Exception('Error de conexión: ${e.message}');

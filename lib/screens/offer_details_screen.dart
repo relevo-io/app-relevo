@@ -15,6 +15,7 @@ import '../data/providers/offers_provider.dart';
 import '../widgets/offer_map_widget.dart';
 import 'chat_room_screen.dart';
 import '../data/services/chat_service.dart';
+import '../data/providers/notification_provider.dart';
 
 class OfferDetailsScreen extends ConsumerWidget {
   final Offer offer;
@@ -23,6 +24,12 @@ class OfferDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(notificationsStateProvider.notifier)
+          .markOfferNotificationsAsRead(offer.id);
+    });
+
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final localeCode = Localizations.localeOf(context).languageCode;
