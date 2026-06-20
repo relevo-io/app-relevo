@@ -50,6 +50,27 @@ class NotificationPreferences {
   }
 }
 
+class RatingSummary {
+  final double average;
+  final int count;
+
+  RatingSummary({required this.average, required this.count});
+
+  factory RatingSummary.fromJson(Map<String, dynamic> json) {
+    return RatingSummary(
+      average: json['average'] != null ? (json['average'] as num).toDouble() : 0.0,
+      count: json['count'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'average': average,
+      'count': count,
+    };
+  }
+}
+
 class User {
   final String id;
   final String fullName;
@@ -66,6 +87,8 @@ class User {
   final NotificationPreferences? notificationPreferences;
   final bool? proActive;
   final String? proExpiresAt;
+  final RatingSummary? ratingAsOwner;
+  final RatingSummary? ratingAsInterested;
 
   User({
     required this.id,
@@ -83,6 +106,8 @@ class User {
     this.notificationPreferences,
     this.proActive,
     this.proExpiresAt,
+    this.ratingAsOwner,
+    this.ratingAsInterested,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -106,6 +131,12 @@ class User {
           : null,
       proActive: json['proActive'],
       proExpiresAt: json['proExpiresAt']?.toString(),
+      ratingAsOwner: json['ratingAsOwner'] != null
+          ? RatingSummary.fromJson(json['ratingAsOwner'])
+          : null,
+      ratingAsInterested: json['ratingAsInterested'] != null
+          ? RatingSummary.fromJson(json['ratingAsInterested'])
+          : null,
     );
   }
 
@@ -126,6 +157,8 @@ class User {
       'notificationPreferences': notificationPreferences?.toJson(),
       'proActive': proActive,
       'proExpiresAt': proExpiresAt,
+      'ratingAsOwner': ratingAsOwner?.toJson(),
+      'ratingAsInterested': ratingAsInterested?.toJson(),
     };
   }
 }
