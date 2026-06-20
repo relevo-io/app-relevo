@@ -203,6 +203,16 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         case 'retail':
         case 'comercio':
           return l10n.categoryRetail;
+        case 'healthcare':
+        case 'health':
+        case 'salud':
+          return l10n.categoryHealth;
+        case 'logistics':
+        case 'logistica':
+          return l10n.categoryLogistics;
+        case 'education':
+        case 'educacion':
+          return l10n.categoryEducation;
         default:
           return sectorKey;
       }
@@ -519,17 +529,30 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
         case 'retail':
         case 'comercio':
           return l10n.categoryRetail;
+        case 'healthcare':
+        case 'health':
+        case 'salud':
+          return l10n.categoryHealth;
+        case 'logistics':
+        case 'logistica':
+          return l10n.categoryLogistics;
+        case 'education':
+        case 'educacion':
+          return l10n.categoryEducation;
         default:
           return sectorKey;
       }
     }
 
     final List<String> sectorOptions = [
-      'Technology',
-      'Hospitality',
-      'Services',
-      'Industrial',
-      'Retail',
+      'TECHNOLOGY',
+      'HOSPITALITY',
+      'SERVICES',
+      'INDUSTRIAL',
+      'RETAIL',
+      'HEALTHCARE',
+      'LOGISTICS',
+      'EDUCATION',
     ];
 
     return Scaffold(

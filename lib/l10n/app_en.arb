@@ -305,6 +305,8 @@
     "categoryHealth": "Health",
     "categoryServices": "Services",
     "categoryTechnology": "Technology",
+    "categoryLogistics": "Logistics",
+    "categoryEducation": "Education",
     "noOffersFound": "No offers found",
     "offerPaymentContinueButton": "Continue with payment",
     "offerPaymentConfirmTitle": "Confirm payment and publish",

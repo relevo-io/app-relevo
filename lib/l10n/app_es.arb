@@ -317,6 +317,8 @@
     "categoryHealth": "Salud",
     "categoryServices": "Servicios",
     "categoryTechnology": "Tecnología",
+    "categoryLogistics": "Logística",
+    "categoryEducation": "Educación",
     "noOffersFound": "No se encontraron ofertas",
     "offerPaymentContinueButton": "Seguir con el pago",
     "offerPaymentConfirmTitle": "Confirmar pago y publicar",

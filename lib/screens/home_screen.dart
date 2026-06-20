@@ -8,6 +8,7 @@ import '../data/providers/offers_provider.dart';
 import '../data/providers/theme_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/offer_card_grid.dart';
+import '../widgets/premium_invite_dialog.dart';
 import '../widgets/offers_shimmer.dart';
 import '../widgets/custom_search_bar.dart';
 import '../theme/relevo_theme.dart';
@@ -24,34 +25,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  static const Map<String, String> _sectorNormalization = {
-    'tecnologia': 'Technology',
-    'tecnología': 'Technology',
-    'technology': 'Technology',
-    'hostaleria': 'Hospitality',
-    'hostelería': 'Hospitality',
-    'hosteleria': 'Hospitality',
-    'hospitality': 'Hospitality',
-    'servicios': 'Services',
-    'serveis': 'Services',
-    'services': 'Services',
-    'industria': 'Industrial',
-    'indústria': 'Industrial',
-    'industry': 'Industrial',
-    'industrial': 'Industrial',
-    'comercio': 'Retail',
-    'comerç': 'Retail',
-    'commerce': 'Retail',
-    'retail': 'Retail',
-    'salud': 'Healthcare',
-    'salut': 'Healthcare',
-    'health': 'Healthcare',
-    'healthcare': 'Healthcare',
-  };
-
-  String _normalizeSector(String sector) {
-    return _sectorNormalization[sector.toLowerCase().trim()] ?? sector;
-  }
 
   late final ScrollController _scrollController;
   late final PageController _pageController;
@@ -78,6 +51,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = Theme.of(context);
     final user = ref.watch(authProvider).value;
     final isLoggedIn = user != null;
+    final isPro = user != null &&
+        (user.proActive == true || user.roles.contains('ADMIN'));
     final l10n = AppLocalizations.of(context)!;
     final localeCode = Localizations.localeOf(context).languageCode;
     final isDark = theme.brightness == Brightness.dark;
@@ -103,360 +78,298 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           } catch (_) {}
         },
         color: theme.colorScheme.primary,
-        child: CustomScrollView(
+        child: NestedScrollView(
           controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            // Search and Category Chips (Visible to both guest and member!)
-            SliverToBoxAdapter(
-              child: Container(
-                color: theme.scaffoldBackgroundColor,
-                padding: const EdgeInsets.only(top: 80, bottom: 8),
-                child: Column(
-                  children: [
-                    // Search bar + Filter slider button row
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomSearchBar(
-                              hintText: l10n.homeSearchHint,
-                              onSearch: (query) {
-                                ref
-                                    .read(offersProvider.notifier)
-                                    .updateSearchQuery(query);
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          // Filter button (matching Stitch mockup)
-                          Builder(
-                            builder: (context) {
-                              final hasFilters = offersState.value?.sector != null ||
-                                  offersState.value?.region != null ||
-                                  offersState.value?.employeeRange != null ||
-                                  offersState.value?.revenueRange != null ||
-                                  offersState.value?.creationYearFrom != null ||
-                                  offersState.value?.creationYearTo != null;
-
-                              return Container(
-                                height: 48,
-                                width: 48,
-                                decoration: BoxDecoration(
-                                  color: theme.colorScheme.surfaceContainer,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: hasFilters
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.outline.withOpacity(0.15),
-                                    width: hasFilters ? 1.8 : 1.0,
-                                  ),
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.tune_outlined,
-                                    color: hasFilters
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.onSurface.withOpacity(0.8),
-                                  ),
-                                  onPressed: () {
-                                    final user = ref.read(authProvider).value;
-                                    final isPro = user != null &&
-                                        (user.proActive == true ||
-                                            user.roles.contains('ADMIN'));
-                                    if (!isPro) {
-                                      _showPremiumInviteDialog(context);
-                                    } else {
-                                      _showFiltersBottomSheet(context);
-                                    }
-                                  },
-                                ),
-                              );
-                            }
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                    // Horizontal Category Chips
-                    SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) {
-                          final cat = categories[index];
-                          final isSelected = _selectedCategoryIndex == index;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ChoiceChip(
-                              label: Text(cat),
-                              selected: isSelected,
-                              checkmarkColor: Colors.white,
-                              onSelected: (selected) {
-                                setState(() {
-                                  _selectedCategoryIndex = selected ? index : 0;
-                                });
-                                _pageController.animateToPage(
-                                  selected ? index : 0,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              labelStyle: theme.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: isSelected
-                                    ? Colors.white
-                                    : theme.colorScheme.onSurface,
-                              ),
-                              selectedColor: theme.colorScheme.primary,
-                              backgroundColor: theme.colorScheme.surfaceContainer,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(
-                                  color: isSelected
-                                      ? Colors.transparent
-                                      : theme.colorScheme.outline.withOpacity(0.15),
-                                ),
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              // Search and Category Chips (Visible to both guest and member!)
+              SliverToBoxAdapter(
+                child: Container(
+                  color: theme.scaffoldBackgroundColor,
+                  padding: const EdgeInsets.only(top: 80, bottom: 8),
+                  child: Column(
+                    children: [
+                      // Search bar + Filter slider button row
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomSearchBar(
+                                hintText: l10n.homeSearchHint,
+                                onSearch: (query) {
+                                  ref
+                                      .read(offersProvider.notifier)
+                                      .updateSearchQuery(query);
+                                },
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                            const SizedBox(width: 12),
+                            // Filter button (matching Stitch mockup)
+                            Builder(
+                              builder: (context) {
+                                final hasFilters = offersState.value?.sector != null ||
+                                    offersState.value?.region != null ||
+                                    offersState.value?.employeeRange != null ||
+                                    offersState.value?.revenueRange != null ||
+                                    offersState.value?.creationYearFrom != null ||
+                                    offersState.value?.creationYearTo != null;
 
-            // Offers Grid (Refactored to PageView for sliding page transitions)
-            SliverFillRemaining(
-              hasScrollBody: true,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: categories.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _selectedCategoryIndex = index;
-                  });
-                },
-                itemBuilder: (context, catIndex) {
-                  return offersState.when(
-                    data: (stateData) {
-                      final offers = stateData.items;
-                      final filtered = isLoggedIn
-                          ? offers.where((o) => o.owner != user.id).toList()
-                          : offers;
-
-                      final List<String> categoryKeys = ['', 'Hospitality', 'Retail', 'Industrial', 'Healthcare', 'Services'];
-
-                      final displayed = catIndex == 0
-                          ? filtered
-                          : filtered
-                              .where((o) => _normalizeSector(o.sector) == _normalizeSector(categoryKeys[catIndex]))
-                              .toList();
-
-                      final displayedOffers = isLoggedIn
-                          ? displayed
-                          : displayed.take(4).toList();
-
-                      // Background pre-fetching logic:
-                      // If the selected category feed is empty but more pages are available on the backend,
-                      // automatically load the next page in the background.
-                      final currentPage = stateData.pagination?.page ?? 1;
-                      if (catIndex == _selectedCategoryIndex &&
-                          displayedOffers.isEmpty &&
-                          stateData.pagination?.hasNextPage == true &&
-                          !stateData.isLoadingMore &&
-                          isLoggedIn) {
-                        final lastFetched = _lastAutoFetchedPages[catIndex] ?? 1;
-                        if (currentPage >= lastFetched) {
-                          _lastAutoFetchedPages[catIndex] = currentPage + 1;
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            if (mounted) {
-                              ref.read(offersProvider.notifier).fetchNextPage();
-                            }
-                          });
-                        }
-                      }
-
-                      return NotificationListener<ScrollNotification>(
-                        onNotification: (ScrollNotification scrollInfo) {
-                          // Listen to scroll events on the inner CustomScrollView scrollable
-                          if (scrollInfo.depth == 0 && scrollInfo is ScrollUpdateNotification) {
-                            if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200) {
-                              if (isLoggedIn && !stateData.isLoadingMore && stateData.pagination?.hasNextPage == true) {
-                                ref.read(offersProvider.notifier).fetchNextPage();
-                              }
-                            }
-                          }
-                          return false; // let the notification bubble up
-                        },
-                        child: CustomScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          slivers: [
-                            if (displayedOffers.isEmpty)
-                              SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(32.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          noOffersText,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: theme.colorScheme.onSurface.withOpacity(0.6),
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        if (stateData.isLoadingMore) ...[
-                                          const SizedBox(height: 24),
-                                          const CircularProgressIndicator(),
-                                        ],
-                                      ],
+                                return Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.surfaceContainer,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: hasFilters
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.outline.withOpacity(0.15),
+                                      width: hasFilters ? 1.8 : 1.0,
                                     ),
                                   ),
-                                ),
-                              )
-                            else ...[
-                              SliverPadding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                                sliver: SliverGrid(
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 16,
-                                    childAspectRatio: 0.72,
-                                  ),
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      Widget card = OfferCardGrid(
-                                        offer: displayedOffers[index],
-                                      );
-                                      if (!isLoggedIn && (index == 2 || index == 3)) {
-                                        card = ShaderMask(
-                                          shaderCallback: (rect) {
-                                            return LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Colors.white,
-                                                Colors.white.withOpacity(0.0),
-                                              ],
-                                              stops: const [0.1, 0.9],
-                                            ).createShader(rect);
-                                          },
-                                          blendMode: BlendMode.dstIn,
-                                          child: card,
-                                        );
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.tune_outlined,
+                                      color: hasFilters
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onSurface.withOpacity(0.8),
+                                    ),
+                                    onPressed: () {
+                                      if (!isPro) {
+                                        showPremiumInviteDialog(context, isLoggedIn: isLoggedIn);
+                                      } else {
+                                        _showFiltersBottomSheet(context);
                                       }
-                                      return card;
                                     },
-                                    childCount: displayedOffers.length,
                                   ),
-                                ),
-                              ),
-                              if (stateData.isLoadingMore)
-                                const SliverToBoxAdapter(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 24.0),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ),
-                                ),
-                              const SliverToBoxAdapter(
-                                child: SizedBox(height: 100),
-                              ),
-                            ]
+                                );
+                              }
+                            ),
                           ],
                         ),
-                      );
+                      ),
+                      
+                      // Horizontal Category Chips
+                      SizedBox(
+                        height: 50,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final cat = categories[index];
+                            final isSelected = _selectedCategoryIndex == index;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ChoiceChip(
+                                label: Text(cat),
+                                selected: isSelected,
+                                checkmarkColor: Colors.white,
+                                onSelected: (selected) {
+                                  setState(() {
+                                    _selectedCategoryIndex = selected ? index : 0;
+                                  });
+                                  _pageController.animateToPage(
+                                    selected ? index : 0,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                                labelStyle: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : theme.colorScheme.onSurface,
+                                ),
+                                selectedColor: theme.colorScheme.primary,
+                                backgroundColor: theme.colorScheme.surfaceContainer,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                    color: isSelected
+                                        ? Colors.transparent
+                                        : theme.colorScheme.outline.withOpacity(0.15),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: PageView.builder(
+            controller: _pageController,
+            itemCount: categories.length,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedCategoryIndex = index;
+              });
+            },
+            itemBuilder: (context, catIndex) {
+              return offersState.when(
+                data: (stateData) {
+                  final offers = stateData.items;
+                  final filtered = isLoggedIn
+                      ? offers.where((o) => o.owner != user.id).toList()
+                      : offers;
+
+                  final List<String> categoryKeys = ['', 'HOSPITALITY', 'RETAIL', 'INDUSTRIAL', 'HEALTHCARE', 'SERVICES'];
+
+                  final displayed = catIndex == 0
+                      ? filtered
+                      : filtered
+                          .where((o) => o.sector.toUpperCase().trim() == categoryKeys[catIndex])
+                          .toList();
+
+                  final displayedOffers = isLoggedIn
+                      ? displayed
+                      : displayed.take(4).toList();
+
+                  // Background pre-fetching logic:
+                  // If the selected category feed is empty but more pages are available on the backend,
+                  // automatically load the next page in the background.
+                  final currentPage = stateData.pagination?.page ?? 1;
+                  if (catIndex == _selectedCategoryIndex &&
+                      displayedOffers.isEmpty &&
+                      stateData.pagination?.hasNextPage == true &&
+                      !stateData.isLoadingMore &&
+                      isLoggedIn) {
+                    final lastFetched = _lastAutoFetchedPages[catIndex] ?? 1;
+                    if (currentPage >= lastFetched) {
+                      _lastAutoFetchedPages[catIndex] = currentPage + 1;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) {
+                          ref.read(offersProvider.notifier).fetchNextPage();
+                        }
+                      });
+                    }
+                  }
+
+                  return NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      // Listen to scroll events on the inner CustomScrollView scrollable
+                      if (scrollInfo.depth == 0 && scrollInfo is ScrollUpdateNotification) {
+                        if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200) {
+                          if (isLoggedIn && !stateData.isLoadingMore && stateData.pagination?.hasNextPage == true) {
+                            ref.read(offersProvider.notifier).fetchNextPage();
+                          }
+                        }
+                      }
+                      return false; // let the notification bubble up
                     },
-                    loading: () => const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                      child: OffersShimmer(),
+                    child: CustomScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        if (displayedOffers.isEmpty)
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(32.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      noOffersText,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    if (stateData.isLoadingMore) ...[
+                                      const SizedBox(height: 24),
+                                      const CircularProgressIndicator(),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        else ...[
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                            sliver: SliverGrid(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: 0.72,
+                              ),
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final isLocked = isLoggedIn &&
+                                      !isPro &&
+                                      stateData.searchQuery.trim().isNotEmpty &&
+                                      index >= 12;
+                                  Widget card = OfferCardGrid(
+                                    offer: displayedOffers[index],
+                                    isLocked: isLocked,
+                                  );
+                                  if (!isLoggedIn && (index == 2 || index == 3)) {
+                                    card = ShaderMask(
+                                      shaderCallback: (rect) {
+                                        return LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.white,
+                                            Colors.white.withOpacity(0.0),
+                                          ],
+                                          stops: const [0.1, 0.9],
+                                        ).createShader(rect);
+                                      },
+                                      blendMode: BlendMode.dstIn,
+                                      child: card,
+                                    );
+                                  }
+                                  return card;
+                                },
+                                childCount: displayedOffers.length,
+                              ),
+                            ),
+                          ),
+                          if (stateData.isLoadingMore)
+                            const SliverToBoxAdapter(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 24.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                            ),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 100),
+                          ),
+                        ]
+                      ],
                     ),
-                    error: (err, st) => Center(child: Text('Error: $err')),
                   );
                 },
-              ),
-            ),
-          ],
+                loading: () => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  child: OffersShimmer(),
+                ),
+                error: (err, st) => Center(child: Text('Error: $err')),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  void _showPremiumInviteDialog(BuildContext context) {
-    final theme = Theme.of(context);
-    final isLoggedIn = ref.read(authProvider).value != null;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Row(
-            children: [
-              const Icon(Icons.stars, color: Colors.amber, size: 28),
-              const SizedBox(width: 8),
-              const Text(
-                'PRO',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          content: Text(
-            isLoggedIn
-                ? 'Para poder filtrar las oportunidades por facturación, sector, región y número de empleados, necesitas una cuenta Premium de Relevo.'
-                : 'Para poder filtrar y buscar oportunidades avanzadas, necesitas registrarte e iniciar sesión en Relevo.',
-            style: const TextStyle(fontSize: 15),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                if (isLoggedIn) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PremiumScreen()),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                  );
-                }
-              },
-              child: Text(isLoggedIn ? 'Hacerse PRO' : 'Registrarse'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   void _showFiltersBottomSheet(BuildContext context) {
     final theme = Theme.of(context);
@@ -488,6 +401,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         case 'retail':
         case 'comercio':
           return l10n.categoryRetail;
+        case 'healthcare':
+        case 'health':
+        case 'salud':
+          return l10n.categoryHealth;
+        case 'logistics':
+        case 'logistica':
+          return l10n.categoryLogistics;
+        case 'education':
+        case 'educacion':
+          return l10n.categoryEducation;
         default:
           return sectorKey;
       }
@@ -582,7 +505,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           value: null,
                           child: Text('Todos los sectores'),
                         ),
-                        ...['Technology', 'Hospitality', 'Services', 'Industrial', 'Retail'].map((sect) {
+                        ...['TECHNOLOGY', 'HOSPITALITY', 'SERVICES', 'INDUSTRIAL', 'RETAIL', 'HEALTHCARE', 'LOGISTICS', 'EDUCATION'].map((sect) {
                           return DropdownMenuItem<String>(
                             value: sect,
                             child: Text(getLocalizedSectorName(sect)),

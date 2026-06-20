@@ -305,6 +305,8 @@
     "categoryHealth": "Salut",
     "categoryServices": "Serveis",
     "categoryTechnology": "Tecnologia",
+    "categoryLogistics": "Logística",
+    "categoryEducation": "Educació",
     "noOffersFound": "No s'han trobat ofertes",
     "offerPaymentContinueButton": "Seguir amb el pagament",
     "offerPaymentConfirmTitle": "Confirmar pagament i publicar",

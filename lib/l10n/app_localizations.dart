@@ -1930,6 +1930,18 @@ abstract class AppLocalizations {
   /// **'Tecnología'**
   String get categoryTechnology;
 
+  /// No description provided for @categoryLogistics.
+  ///
+  /// In es, this message translates to:
+  /// **'Logística'**
+  String get categoryLogistics;
+
+  /// No description provided for @categoryEducation.
+  ///
+  /// In es, this message translates to:
+  /// **'Educación'**
+  String get categoryEducation;
+
   /// No description provided for @noOffersFound.
   ///
   /// In es, this message translates to:

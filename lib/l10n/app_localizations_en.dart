@@ -992,6 +992,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryTechnology => 'Technology';
 
   @override
+  String get categoryLogistics => 'Logistics';
+
+  @override
+  String get categoryEducation => 'Education';
+
+  @override
   String get noOffersFound => 'No offers found';
 
   @override

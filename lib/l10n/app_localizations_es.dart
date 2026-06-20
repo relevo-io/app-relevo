@@ -1002,6 +1002,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get categoryTechnology => 'Tecnología';
 
   @override
+  String get categoryLogistics => 'Logística';
+
+  @override
+  String get categoryEducation => 'Educación';
+
+  @override
   String get noOffersFound => 'No se encontraron ofertas';
 
   @override

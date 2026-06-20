@@ -1000,6 +1000,12 @@ class AppLocalizationsCa extends AppLocalizations {
   String get categoryTechnology => 'Tecnologia';
 
   @override
+  String get categoryLogistics => 'Logística';
+
+  @override
+  String get categoryEducation => 'Educació';
+
+  @override
   String get noOffersFound => 'No s\'han trobat ofertes';
 
   @override
