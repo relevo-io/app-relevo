@@ -54,12 +54,14 @@ class GlassmorphicAppBar extends StatelessWidget implements PreferredSizeWidget 
                   const SizedBox(width: 8),
                   if (title != null)
                     Expanded(
-                      child: DefaultTextStyle(
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
-                        ) ?? const TextStyle(),
-                        child: title!,
+                      child: Center(
+                        child: DefaultTextStyle(
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface,
+                          ) ?? const TextStyle(),
+                          child: title!,
+                        ),
                       ),
                     )
                   else

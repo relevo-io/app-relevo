@@ -880,6 +880,54 @@ abstract class AppLocalizations {
   /// **'Publicado'**
   String get offerDetailsPublished;
 
+  /// No description provided for @offerDetailsFavoriteAdded.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta agregada a favoritos'**
+  String get offerDetailsFavoriteAdded;
+
+  /// No description provided for @offerDetailsFavoriteRemoved.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta eliminada de favoritos'**
+  String get offerDetailsFavoriteRemoved;
+
+  /// No description provided for @offerDetailsFavoriteTooltip.
+  ///
+  /// In es, this message translates to:
+  /// **'Favorito'**
+  String get offerDetailsFavoriteTooltip;
+
+  /// No description provided for @offerDetailsStatusPendingDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente de revisión por el propietario.'**
+  String get offerDetailsStatusPendingDesc;
+
+  /// No description provided for @offerDetailsStatusAcceptedDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Solicitud aceptada! Se pondrán en contacto.'**
+  String get offerDetailsStatusAcceptedDesc;
+
+  /// No description provided for @offerDetailsStatusRejectedDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud denegada para esta oportunidad.'**
+  String get offerDetailsStatusRejectedDesc;
+
+  /// No description provided for @offerDetailsChatWithOwner.
+  ///
+  /// In es, this message translates to:
+  /// **'Chatear con el propietario'**
+  String get offerDetailsChatWithOwner;
+
+  /// No description provided for @offerDetailsChatError.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al abrir el chat: {error}'**
+  String offerDetailsChatError(Object error);
+
   /// No description provided for @inboxTitle.
   ///
   /// In es, this message translates to:

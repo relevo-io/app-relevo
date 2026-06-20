@@ -7,6 +7,8 @@ import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/error_banner.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
@@ -125,16 +127,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.registerTitle), elevation: 0),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 16.0,
-            ),
-            child: Form(
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.registerTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 16.0),
+          child: Form(
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
@@ -374,7 +375,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 

@@ -245,7 +245,6 @@ class RelevoCard extends StatelessWidget {
     );
 
     return Container(
-      padding: padding,
       decoration: BoxDecoration(
         color: color ?? theme.colorScheme.surfaceContainer,
         borderRadius: resolvedBorderRadius,
@@ -262,7 +261,10 @@ class RelevoCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: resolvedBorderRadius,
-        child: child,
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
+          child: child,
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,13 +18,31 @@ import 'chat_room_screen.dart';
 import '../data/services/chat_service.dart';
 import '../data/providers/notification_provider.dart';
 
-class OfferDetailsScreen extends ConsumerWidget {
+import '../widgets/glassmorphic_app_bar.dart';
+import '../theme/relevo_theme.dart';
+
+class OfferDetailsScreen extends ConsumerStatefulWidget {
   final Offer offer;
 
   const OfferDetailsScreen({super.key, required this.offer});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OfferDetailsScreen> createState() => _OfferDetailsScreenState();
+}
+
+class _OfferDetailsScreenState extends ConsumerState<OfferDetailsScreen>
+    with TickerProviderStateMixin {
+  AnimationController? _sheetAnimationController;
+
+  @override
+  void dispose() {
+    _sheetAnimationController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final offer = widget.offer;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(notificationsStateProvider.notifier)
@@ -58,9 +77,10 @@ class OfferDetailsScreen extends ConsumerWidget {
     final isFavorite = favoriteIdsAsync?.value?.contains(offer.id) ?? false;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.offerDetailsTitle),
-        elevation: 0,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.offerDetailsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           if (!isMyOffer && isLoggedIn)
             IconButton(
@@ -68,7 +88,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                 isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: isFavorite ? theme.colorScheme.primary : null,
               ),
-              tooltip: 'Favorit',
+              tooltip: l10n.offerDetailsFavoriteTooltip,
               onPressed: () async {
                 try {
                   await ref
@@ -82,16 +102,8 @@ class OfferDetailsScreen extends ConsumerWidget {
                             ?.contains(offer.id) ??
                         false;
                     final msg = nowFav
-                        ? (localeCode == 'ca'
-                              ? 'Oferta afegida a preferits'
-                              : localeCode == 'es'
-                              ? 'Oferta agregada a favoritos'
-                              : 'Offer added to favorites')
-                        : (localeCode == 'ca'
-                              ? 'Oferta eliminada de preferits'
-                              : localeCode == 'es'
-                              ? 'Oferta eliminada de favoritos'
-                              : 'Offer removed from favorites');
+                        ? l10n.offerDetailsFavoriteAdded
+                        : l10n.offerDetailsFavoriteRemoved;
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -119,7 +131,12 @@ class OfferDetailsScreen extends ConsumerWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              padding: EdgeInsets.fromLTRB(
+                20,
+                MediaQuery.of(context).padding.top + 80.0,
+                20,
+                24,
+              ),
               decoration: BoxDecoration(
                 color: isDark
                     ? theme.colorScheme.surfaceContainer
@@ -205,110 +222,148 @@ class OfferDetailsScreen extends ConsumerWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDetailRow(
-                    context: context,
-                    icon: Icons.location_on_outlined,
-                    label: l10n.offerDetailsLocation,
-                    value: offer.region,
-                  ),
-                  if (user != null) ...[
-                    const SizedBox(height: 12),
-                    OfferMapWidget(region: offer.region),
-                    const SizedBox(height: 12),
-                  ],
-                  _buildDetailDivider(theme),
-                  _buildDetailRow(
-                    context: context,
-                    icon: Icons.euro_outlined,
-                    label: l10n.offerDetailsRevenue,
-                    value: offer.revenueRange != null
-                        ? Offer.formatRevenueRange(offer.revenueRange!)
-                        : 'N/A',
-                  ),
-                  _buildDetailDivider(theme),
-                  _buildDetailRow(
-                    context: context,
-                    icon: Icons.people_outline_rounded,
-                    label: l10n.offerDetailsEmployees,
-                    value: offer.employeeRange != null
-                        ? Offer.formatEmployeeRange(offer.employeeRange!)
-                        : 'N/A',
-                  ),
-                  if (offer.creationYear != null) ...[
-                    _buildDetailDivider(theme),
+              padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 8.0),
+              child: RelevoCard(
+                color: theme.colorScheme.surfaceContainer,
+                padding: const EdgeInsets.all(16.0),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.4),
+                  width: 1.5,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     _buildDetailRow(
                       context: context,
-                      icon: Icons.calendar_today_outlined,
-                      label: l10n.offerDetailsYear,
-                      value: offer.creationYear.toString(),
+                      icon: Icons.location_on_outlined,
+                      label: l10n.offerDetailsLocation,
+                      value: offer.region,
                     ),
+                    if (user != null) ...[
+                      const SizedBox(height: 12),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: OfferMapWidget(region: offer.region),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              child: RelevoCard(
+                color: theme.colorScheme.surfaceContainer,
+                padding: const EdgeInsets.all(16.0),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.4),
+                  width: 1.5,
+                ),
+                child: _buildDetailRow(
+                  context: context,
+                  icon: Icons.euro_outlined,
+                  label: l10n.offerDetailsRevenue,
+                  value: offer.revenueRange != null
+                      ? Offer.formatRevenueRange(offer.revenueRange!)
+                      : 'N/A',
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              child: RelevoCard(
+                color: theme.colorScheme.surfaceContainer,
+                padding: const EdgeInsets.all(16.0),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.4),
+                  width: 1.5,
+                ),
+                child: _buildDetailRow(
+                  context: context,
+                  icon: Icons.people_outline_rounded,
+                  label: l10n.offerDetailsEmployees,
+                  value: offer.employeeRange != null
+                      ? Offer.formatEmployeeRange(offer.employeeRange!)
+                      : 'N/A',
+                ),
+              ),
+            ),
+
+            if (offer.creationYear != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                child: RelevoCard(
+                  color: theme.colorScheme.surfaceContainer,
+                  padding: const EdgeInsets.all(16.0),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.4),
+                    width: 1.5,
+                  ),
+                  child: _buildDetailRow(
+                    context: context,
+                    icon: Icons.calendar_today_outlined,
+                    label: l10n.offerDetailsYear,
+                    value: offer.creationYear.toString(),
+                  ),
+                ),
+              ),
 
             if (offer.extendedDescription != null &&
                 offer.extendedDescription!.trim().isNotEmpty) ...[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Divider(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.offerDetailsExtended,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      offer.extendedDescription!,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.8,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                child: RelevoCard(
+                  color: theme.colorScheme.surfaceContainer,
+                  padding: const EdgeInsets.all(16.0),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.4),
+                    width: 1.5,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.offerDetailsExtended,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
-                        height: 1.5,
-                      ),
+                        const SizedBox(height: 12),
+                        Text(
+                          offer.extendedDescription!,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.8,
+                            ),
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
 
-            const SizedBox(height: 120),
+            const SizedBox(height: 140),
           ],
         ),
       ),
       bottomNavigationBar: isMyOffer
           ? null
           : SafeArea(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.scaffoldBackgroundColor,
-                  border: Border(
-                    top: BorderSide(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.25),
-                      width: 1,
-                    ),
-                  ),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
                 child: existingRequest != null
                     ? Column(
                         mainAxisSize: MainAxisSize.min,
@@ -319,7 +374,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                             localeCode,
                           ),
                           if (existingRequest.status == 'ACCEPTED') ...[
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 8),
                             ElevatedButton.icon(
                               onPressed: () async {
                                 showDialog(
@@ -353,11 +408,7 @@ class OfferDetailsScreen extends ConsumerWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          localeCode == 'ca'
-                                              ? 'Error al obrir el xat: $e'
-                                              : localeCode == 'es'
-                                              ? 'Error al abrir el chat: $e'
-                                              : 'Error opening chat: $e',
+                                          l10n.offerDetailsChatError(e.toString()),
                                         ),
                                         backgroundColor: Colors.redAccent,
                                       ),
@@ -369,41 +420,70 @@ class OfferDetailsScreen extends ConsumerWidget {
                                 Icons.chat_bubble_outline_rounded,
                               ),
                               label: Text(
-                                localeCode == 'ca'
-                                    ? 'Xatejar amb el propietari'
-                                    : localeCode == 'es'
-                                    ? 'Chatear con el propietario'
-                                    : 'Chat with owner',
+                                l10n.offerDetailsChatWithOwner,
                               ),
                               style: ElevatedButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50),
-                                backgroundColor: theme.colorScheme.primary,
-                                foregroundColor: Colors.white,
+                                minimumSize: const Size.fromHeight(48),
+                                backgroundColor: Colors.white,
+                                foregroundColor: theme.colorScheme.primary,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
                             ),
                           ],
                         ],
                       )
-                    : ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) =>
-                                ApplyFormBottomSheet(offer: offer),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(54),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: isDark ? 0.45 : 0.85,
+                              ),
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: isDark ? 0.75 : 0.95,
+                                ),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                _sheetAnimationController?.dispose();
+                                _sheetAnimationController = AnimationController(
+                                  vsync: this,
+                                  duration: const Duration(milliseconds: 650),
+                                  reverseDuration: const Duration(milliseconds: 500),
+                                );
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  transitionAnimationController: _sheetAnimationController,
+                                  builder: (context) =>
+                                      ApplyFormBottomSheet(offer: offer),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(24),
+                              child: Container(
+                                height: 56,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  l10n.offerDetailsApplyButton,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        child: Text(l10n.offerDetailsApplyButton),
                       ),
               ),
             ),
@@ -429,38 +509,20 @@ class OfferDetailsScreen extends ConsumerWidget {
         bgColor = isDark ? const Color(0x33FF9800) : const Color(0xFFFFF3CD);
         textColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFF856404);
         icon = Icons.hourglass_empty_rounded;
-        if (localeCode == 'ca') {
-          description = "Pendent de revisió pel propietari.";
-        } else if (localeCode == 'es') {
-          description = "Pendiente de revisión por el propietario.";
-        } else {
-          description = "Pending review by the owner.";
-        }
+        description = l10n.offerDetailsStatusPendingDesc;
         break;
       case 'ACCEPTED':
         bgColor = isDark ? const Color(0x3310B981) : const Color(0xFFD4EDDA);
         textColor = isDark ? const Color(0xFF34D399) : const Color(0xFF155724);
         icon = Icons.check_circle_outline_rounded;
-        if (localeCode == 'ca') {
-          description = "Sol·licitud acceptada! Es posaran en contacte.";
-        } else if (localeCode == 'es') {
-          description = "¡Solicitud aceptada! Se pondrán en contacto.";
-        } else {
-          description = "Application accepted! They will contact you.";
-        }
+        description = l10n.offerDetailsStatusAcceptedDesc;
         break;
       case 'REJECTED':
       default:
         bgColor = isDark ? const Color(0x33EF5350) : const Color(0xFFF8D7DA);
         textColor = isDark ? const Color(0xFFE57373) : const Color(0xFF721C24);
         icon = Icons.cancel_outlined;
-        if (localeCode == 'ca') {
-          description = "Sol·licitud denegada per a aquesta oportunitat.";
-        } else if (localeCode == 'es') {
-          description = "Solicitud denegada para esta oportunidad.";
-        } else {
-          description = "Application denied for this opportunity.";
-        }
+        description = l10n.offerDetailsStatusRejectedDesc;
         break;
     }
 
@@ -565,16 +627,6 @@ class OfferDetailsScreen extends ConsumerWidget {
       ),
     );
   }
-
-  Widget _buildDetailDivider(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: Divider(
-        color: theme.colorScheme.outline.withValues(alpha: 0.1),
-        indent: 52,
-      ),
-    );
-  }
 }
 
 class ApplyFormBottomSheet extends ConsumerStatefulWidget {
@@ -667,10 +719,30 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
+        color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
+        ),
+        border: Border(
+          top: BorderSide(
+            color: theme.colorScheme.outline.withValues(
+              alpha: isDark ? 0.4 : 0.65,
+            ),
+            width: 1.5,
+          ),
+          left: BorderSide(
+            color: theme.colorScheme.outline.withValues(
+              alpha: isDark ? 0.4 : 0.65,
+            ),
+            width: 1.5,
+          ),
+          right: BorderSide(
+            color: theme.colorScheme.outline.withValues(
+              alpha: isDark ? 0.4 : 0.65,
+            ),
+            width: 1.5,
+          ),
         ),
       ),
       padding: EdgeInsets.only(
@@ -965,206 +1037,248 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
               _buildNdaRow(context: context, isDark: isDark),
               const SizedBox(height: 24),
 
-              // ── Botó d'enviament ──
-              ElevatedButton(
-                onPressed: (!_isFormValid || _isSubmitting)
-                    ? null
-                    : () async {
-                        setState(() {
-                          _cvError = null;
-                        });
+              Opacity(
+                opacity: (!_isFormValid || _isSubmitting) ? 0.5 : 1.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(
+                          alpha: isDark ? 0.45 : 0.85,
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: isDark ? 0.75 : 0.95,
+                          ),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: (!_isFormValid || _isSubmitting)
+                            ? null
+                            : () async {
+                                setState(() {
+                                  _cvError = null;
+                                });
 
-                        final isFormValid = _formKey.currentState!.validate();
+                                final isFormValid = _formKey.currentState!.validate();
 
-                        if (!_ndaAccepted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.offerApplyNdaError),
-                              backgroundColor: Colors.redAccent,
-                            ),
-                          );
-                          return;
-                        }
+                                if (!_ndaAccepted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(l10n.offerApplyNdaError),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                  return;
+                                }
 
-                        if (isFormValid && _ndaAccepted) {
-                          setState(() {
-                            _isSubmitting = true;
-                          });
+                                if (isFormValid && _ndaAccepted) {
+                                  setState(() {
+                                    _isSubmitting = true;
+                                  });
 
-                          final navigator = Navigator.of(context);
+                                  final navigator = Navigator.of(context);
 
-                          try {
-                            final regions = _regionsController.text
-                                .split(',')
-                                .map((v) => v.trim())
-                                .where((v) => v.isNotEmpty)
-                                .toList();
+                                  try {
+                                    final regions = _regionsController.text
+                                        .split(',')
+                                        .map((v) => v.trim())
+                                        .where((v) => v.isNotEmpty)
+                                        .toList();
 
-                            final capital =
-                                double.tryParse(
-                                  _capitalController.text.trim(),
-                                ) ??
-                                0.0;
+                                    final capital =
+                                        double.tryParse(
+                                          _capitalController.text.trim(),
+                                        ) ??
+                                        0.0;
 
-                            final solicitudService = ref.read(
-                              solicitudServiceProvider,
-                            );
+                                    final solicitudService = ref.read(
+                                      solicitudServiceProvider,
+                                    );
 
-                            // Crear la sol·licitud amb totes les dades (sense actualitzar perfil)
-                            final solicitud = await solicitudService
-                                .createSolicitud(
-                                  opportunityId: widget.offer.id,
-                                  bio: _bioController.text.trim(),
-                                  professionalBackground: _backgroundController
-                                      .text
-                                      .trim(),
-                                  preferredRegions: regions,
-                                  availableCapital: capital,
-                                  financingNeeded: _financingNeeded,
-                                  ndaAccepted: _ndaAccepted,
-                                );
+                                    // Crear la sol·licitud amb totes les dades (sense actualitzar perfil)
+                                    final solicitud = await solicitudService
+                                        .createSolicitud(
+                                          opportunityId: widget.offer.id,
+                                          bio: _bioController.text.trim(),
+                                          professionalBackground: _backgroundController
+                                              .text
+                                              .trim(),
+                                          preferredRegions: regions,
+                                          availableCapital: capital,
+                                          financingNeeded: _financingNeeded,
+                                          ndaAccepted: _ndaAccepted,
+                                        );
 
-                            if (_cvFileName != null && _pickedCvFile != null) {
-                              // Pujar el CV a S3 (només si l'ha seleccionat)
-                              final presignedData = await solicitudService
-                                  .getPresignedUploadUrl(_cvFileName!);
-                              final String uploadUrl =
-                                  presignedData['uploadUrl'];
-                              final String s3Key = presignedData['s3Key'];
+                                    if (_cvFileName != null && _pickedCvFile != null) {
+                                      // Pujar el CV a S3 (només si l'ha seleccionat)
+                                      final presignedData = await solicitudService
+                                          .getPresignedUploadUrl(_cvFileName!);
+                                      final String uploadUrl =
+                                          presignedData['uploadUrl'];
+                                      final String s3Key = presignedData['s3Key'];
 
-                              final List<int> fileBytes =
-                                  _pickedCvFile!.bytes ??
-                                  File(_pickedCvFile!.path!).readAsBytesSync();
-                              await solicitudService.uploadCvToS3(
-                                uploadUrl,
-                                fileBytes,
-                              );
+                                      final List<int> fileBytes =
+                                          _pickedCvFile!.bytes ??
+                                          File(_pickedCvFile!.path!).readAsBytesSync();
+                                      await solicitudService.uploadCvToS3(
+                                        uploadUrl,
+                                        fileBytes,
+                                      );
 
-                              // Guardar la clau S3 a la sol·licitud
-                              await solicitudService.guardarCvKey(
-                                solicitud.id,
-                                s3Key,
-                              );
-                            }
+                                      // Guardar la clau S3 a la sol·licitud
+                                      await solicitudService.guardarCvKey(
+                                        solicitud.id,
+                                        s3Key,
+                                      );
+                                    }
 
-                            ref.invalidate(sentRequestsProvider);
+                                    ref.invalidate(sentRequestsProvider);
 
-                            if (!context.mounted) return;
+                                    if (!context.mounted) return;
 
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (dialogContext) => AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                backgroundColor: theme.colorScheme.surface,
-                                content: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16.0,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: BoxDecoration(
-                                          color: isDark
-                                              ? const Color(0x3310B981)
-                                              : const Color(0xFFE8F5E9),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.check_circle_outline_rounded,
-                                          size: 60,
-                                          color: isDark
-                                              ? const Color(0xFF10B981)
-                                              : const Color(0xFF2E7D32),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        l10n.offerApplySuccessTitle,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w800,
-                                          color: theme.colorScheme.onSurface,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        l10n.offerApplySuccessMessage,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: theme.colorScheme.onSurface
-                                              .withValues(alpha: 0.7),
-                                          height: 1.4,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 24),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                            dialogContext,
-                                          ); // Close dialog
-                                          navigator.pop(); // Close bottom sheet
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          minimumSize: const Size.fromHeight(
-                                            48,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (dialogContext) => Dialog(
+                                        backgroundColor: Colors.transparent,
+                                        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(24),
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                                            child: Material(
+                                              color: theme.colorScheme.surfaceContainer.withValues(
+                                                alpha: 0.65,
+                                              ),
+                                              child: Container(
+                                                padding: const EdgeInsets.all(24),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(24),
+                                                  border: Border.all(
+                                                    color: theme.colorScheme.outline.withValues(
+                                                      alpha: isDark ? 0.25 : 0.45,
+                                                    ),
+                                                    width: 1.5,
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets.all(16),
+                                                      decoration: BoxDecoration(
+                                                        color: isDark
+                                                            ? const Color(0x3310B981)
+                                                            : const Color(0xFFE8F5E9),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.check_circle_outline_rounded,
+                                                        size: 60,
+                                                        color: isDark
+                                                            ? const Color(0xFF10B981)
+                                                            : const Color(0xFF2E7D32),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 20),
+                                                    Text(
+                                                      l10n.offerApplySuccessTitle,
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w800,
+                                                        color: theme.colorScheme.onSurface,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    Text(
+                                                      l10n.offerApplySuccessMessage,
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: theme.colorScheme.onSurface
+                                                            .withValues(alpha: 0.7),
+                                                        height: 1.4,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 24),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(dialogContext).pop(); // Close dialog
+                                                        Navigator.of(context).pop(); // Close bottom sheet
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        minimumSize: const Size.fromHeight(
+                                                          48,
+                                                        ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Text(l10n.offerApplySuccessOk),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        child: Text(l10n.offerApplySuccessOk),
                                       ),
-                                    ],
+                                    );
+                                  } catch (err) {
+                                    if (!context.mounted) return;
+                                    setState(() {
+                                      _isSubmitting = false;
+                                    });
+                                    ScaffoldMessenger.of(context).clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          l10n.offerApplyErrorPrefix(
+                                            err.toString().replaceAll(
+                                              'Exception: ',
+                                              '',
+                                            ),
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                        borderRadius: BorderRadius.circular(24),
+                        child: Container(
+                          height: 56,
+                          alignment: Alignment.center,
+                          child: _isSubmitting
+                              ? const SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : Text(
+                                  l10n.offerApplySubmitButton,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
-                              ),
-                            );
-                          } catch (err) {
-                            if (!context.mounted) return;
-                            setState(() {
-                              _isSubmitting = false;
-                            });
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.offerApplyErrorPrefix(
-                                    err.toString().replaceAll(
-                                      'Exception: ',
-                                      '',
-                                    ),
-                                  ),
-                                ),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
-                          }
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(54),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                child: _isSubmitting
-                    ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.5,
-                        ),
-                      )
-                    : Text(l10n.offerApplySubmitButton),
               ),
             ],
           ),
@@ -1189,8 +1303,8 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
             : theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-          width: 1,
+          color: theme.colorScheme.outline.withValues(alpha: 0.45),
+          width: 1.5,
         ),
       ),
       child: Row(
@@ -1238,7 +1352,7 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
           border: Border.all(
             color: _ndaAccepted
                 ? (isDark ? const Color(0xFF10B981) : const Color(0xFF81C784))
-                : theme.colorScheme.outline.withValues(alpha: 0.2),
+                : theme.colorScheme.outline.withValues(alpha: 0.45),
             width: 1.5,
           ),
         ),

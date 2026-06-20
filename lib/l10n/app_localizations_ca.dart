@@ -420,6 +420,35 @@ class AppLocalizationsCa extends AppLocalizations {
   String get offerDetailsPublished => 'Publicat';
 
   @override
+  String get offerDetailsFavoriteAdded => 'Oferta afegida a preferits';
+
+  @override
+  String get offerDetailsFavoriteRemoved => 'Oferta eliminada de preferits';
+
+  @override
+  String get offerDetailsFavoriteTooltip => 'Favorit';
+
+  @override
+  String get offerDetailsStatusPendingDesc =>
+      'Pendent de revisió pel propietari.';
+
+  @override
+  String get offerDetailsStatusAcceptedDesc =>
+      'Sol·licitud acceptada! Es posaran en contacte.';
+
+  @override
+  String get offerDetailsStatusRejectedDesc =>
+      'Sol·licitud denegada per a aquesta oportunitat.';
+
+  @override
+  String get offerDetailsChatWithOwner => 'Xatejar amb el propietari';
+
+  @override
+  String offerDetailsChatError(Object error) {
+    return 'Error al obrir el xat: $error';
+  }
+
+  @override
   String get inboxTitle => 'Bústia de sol·licituds';
 
   @override

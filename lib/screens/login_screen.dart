@@ -7,12 +7,16 @@ import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/error_banner.dart';
 
+import '../widgets/glassmorphic_app_bar.dart';
+
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
+
+class _EditProfileScreenState {} // dummy placekeeper if needed, none
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
@@ -99,16 +103,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.loginTitle), elevation: 0),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 16.0,
-            ),
-            child: Form(
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Text(l10n.loginTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 16.0),
+          child: Form(
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
@@ -324,7 +327,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 }

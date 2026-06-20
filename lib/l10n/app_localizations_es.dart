@@ -419,6 +419,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String get offerDetailsPublished => 'Publicado';
 
   @override
+  String get offerDetailsFavoriteAdded => 'Oferta agregada a favoritos';
+
+  @override
+  String get offerDetailsFavoriteRemoved => 'Oferta eliminada de favoritos';
+
+  @override
+  String get offerDetailsFavoriteTooltip => 'Favorito';
+
+  @override
+  String get offerDetailsStatusPendingDesc =>
+      'Pendiente de revisión por el propietario.';
+
+  @override
+  String get offerDetailsStatusAcceptedDesc =>
+      '¡Solicitud aceptada! Se pondrán en contacto.';
+
+  @override
+  String get offerDetailsStatusRejectedDesc =>
+      'Solicitud denegada para esta oportunidad.';
+
+  @override
+  String get offerDetailsChatWithOwner => 'Chatear con el propietario';
+
+  @override
+  String offerDetailsChatError(Object error) {
+    return 'Error al abrir el chat: $error';
+  }
+
+  @override
   String get inboxTitle => 'Buzón de solicitudes';
 
   @override

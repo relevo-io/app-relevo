@@ -18,6 +18,20 @@ class InboxScreen extends ConsumerStatefulWidget {
 
 class _InboxScreenState extends ConsumerState<InboxScreen> {
   final Set<String> _processingRequestIds = {};
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialTab = ref.read(inboxActiveTabProvider);
+    _pageController = PageController(initialPage: initialTab);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,19 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
     final receivedRequestsAsync = ref.watch(receivedRequestsProvider);
     final sentRequestsAsync = ref.watch(sentRequestsProvider);
-    final topPadding = MediaQuery.of(context).padding.top + 68.0;
+    final topPadding = MediaQuery.of(context).padding.top + 16.0;
+
+
+
+    ref.listen<int>(inboxActiveTabProvider, (previous, next) {
+      if (_pageController.hasClients && _pageController.page?.round() != next) {
+        _pageController.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
 
     return Scaffold(
       // Set appBar to null because MainScreen has a central AppBar
@@ -133,9 +159,16 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
 
             // Tab View Body
             Expanded(
-              child: activeTab == 0
-                  ? _buildReceivedRequestsList(context, ref, receivedRequestsAsync, locale)
-                  : _buildSentRequestsList(context, ref, sentRequestsAsync, locale),
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  ref.read(inboxActiveTabProvider.notifier).setTab(index);
+                },
+                children: [
+                  _buildReceivedRequestsList(context, ref, receivedRequestsAsync, locale),
+                  _buildSentRequestsList(context, ref, sentRequestsAsync, locale),
+                ],
+              ),
             ),
           ],
         ),
