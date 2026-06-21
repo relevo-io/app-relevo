@@ -31,30 +31,30 @@ class DioClient {
   // );
 
   // PAULA:
+  // DioClient(this._storage, {Ref? ref}) : _ref = ref {
+  //   dio = Dio(
+  //     BaseOptions(
+  //       baseUrl: kIsWeb
+  //           ? 'http://localhost:4000/api'
+  //           : (Platform.isAndroid
+  //                 ? 'http://192.168.1.140:4000/api'
+  //                 : 'http://192.168.1.140:4000/api'),
+  //       connectTimeout: const Duration(seconds: 30),
+  //       receiveTimeout: const Duration(seconds: 30),
+  //       headers: {'Content-Type': 'application/json'},
+  //     ),
+  //   );
+
+  // PRODUCCIÓ:
   DioClient(this._storage, {Ref? ref}) : _ref = ref {
     dio = Dio(
       BaseOptions(
-        baseUrl: kIsWeb
-            ? 'http://localhost:4000/api'
-            : (Platform.isAndroid
-                  ? 'http://192.168.1.140:4000/api'
-                  : 'http://192.168.1.140:4000/api'),
+        baseUrl: 'https://ea4-api.upc.edu/api',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {'Content-Type': 'application/json'},
       ),
     );
-
-    // PRODUCCIÓ:
-    // DioClient(this._storage, {Ref? ref}) : _ref = ref {
-    //   dio = Dio(
-    //     BaseOptions(
-    //       baseUrl: 'https://ea4-api.upc.edu/api',
-    //       connectTimeout: const Duration(seconds: 30),
-    //       receiveTimeout: const Duration(seconds: 30),
-    //       headers: {'Content-Type': 'application/json'},
-    //     ),
-    //   );
 
     dio.interceptors.add(
       LogInterceptor(
