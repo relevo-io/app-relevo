@@ -1,4 +1,4 @@
-package com.example.flutter_relevo
+package com.android.relevo
 
 import io.flutter.embedding.android.FlutterActivity
 
