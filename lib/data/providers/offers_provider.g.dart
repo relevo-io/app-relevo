@@ -32,7 +32,7 @@ final class OffersProvider extends $AsyncNotifierProvider<Offers, OffersState> {
   Offers create() => Offers();
 }
 
-String _$offersHash() => r'8ff32a4fa1e7fd14349f4ef5eb4e47d23cf337bc';
+String _$offersHash() => r'a8dcef6a70c1505e164a5e669788dac32f347c35';
 
 abstract class _$Offers extends $AsyncNotifier<OffersState> {
   FutureOr<OffersState> build();

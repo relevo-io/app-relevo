@@ -6,6 +6,7 @@ import '../data/models/solicitud_model.dart';
 import '../data/providers/solicitud_provider.dart';
 import '../data/providers/navigation_providers.dart';
 import 'solicitud_details_screen.dart';
+import '../l10n/app_localizations.dart';
 
 class InboxScreen extends ConsumerStatefulWidget {
   const InboxScreen({super.key});
@@ -35,7 +36,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     final activeTab = ref.watch(inboxActiveTabProvider);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final locale = Localizations.localeOf(context).languageCode;
+    final l10n = AppLocalizations.of(context)!;
 
     final receivedRequestsAsync = ref.watch(receivedRequestsProvider);
     final sentRequestsAsync = ref.watch(sentRequestsProvider);
@@ -63,7 +64,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(24.0, topPadding, 24.0, 16.0),
             child: Text(
-              locale == 'ca' ? 'Sol·licituds d\'Interès' : 'Solicitudes de Interés',
+              l10n.inboxTitle,
               style: theme.textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.w900,
                 fontSize: 24,
@@ -103,7 +104,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                                 : null,
                           ),
                           child: Text(
-                            locale == 'ca' ? 'Rebudes' : 'Recibidas',
+                            l10n.inboxReceived,
                             textAlign: TextAlign.center,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -136,7 +137,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                                 : null,
                           ),
                           child: Text(
-                            locale == 'ca' ? 'Enviades' : 'Enviadas',
+                            l10n.inboxSent,
                             textAlign: TextAlign.center,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -161,8 +162,8 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                   ref.read(inboxActiveTabProvider.notifier).setTab(index);
                 },
                 children: [
-                  _buildReceivedRequestsList(context, ref, receivedRequestsAsync, locale),
-                  _buildSentRequestsList(context, ref, sentRequestsAsync, locale),
+                  _buildReceivedRequestsList(context, ref, receivedRequestsAsync),
+                  _buildSentRequestsList(context, ref, sentRequestsAsync),
                 ],
               ),
             ),
@@ -175,9 +176,9 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     BuildContext context,
     WidgetRef ref,
     AsyncValue<List<Solicitud>> requestsAsync,
-    String locale,
   ) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return requestsAsync.when(
       loading: () => const Center(
@@ -194,7 +195,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
               const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 48),
               const SizedBox(height: 16),
               Text(
-                locale == 'ca' ? 'Error al carregar' : 'Error al cargar',
+                l10n.errorLoading,
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -237,9 +238,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    locale == 'ca'
-                        ? 'No has rebut cap sol·licitud d\'interès encara.'
-                        : 'No has recibido ninguna solicitud de interés todavía.',
+                    l10n.inboxNoReceivedRequests,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -266,7 +265,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
             itemCount: requests.length,
             itemBuilder: (context, index) {
               final request = requests[index];
-              return _buildRequestRichCard(context, ref, request, locale, isReceived: true);
+              return _buildRequestRichCard(context, ref, request, isReceived: true);
             },
           ),
         );
@@ -278,9 +277,9 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     BuildContext context,
     WidgetRef ref,
     AsyncValue<List<Solicitud>> requestsAsync,
-    String locale,
   ) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return requestsAsync.when(
       loading: () => const Center(
@@ -297,7 +296,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
               const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 48),
               const SizedBox(height: 16),
               Text(
-                locale == 'ca' ? 'Error al carregar' : 'Error al cargar',
+                l10n.errorLoading,
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -340,9 +339,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    locale == 'ca'
-                        ? 'No has enviat cap sol·licitud d\'interès encara.'
-                        : 'No has enviado ninguna solicitud de interés todavía.',
+                    l10n.inboxNoSentRequests,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -369,7 +366,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
             itemCount: requests.length,
             itemBuilder: (context, index) {
               final request = requests[index];
-              return _buildRequestRichCard(context, ref, request, locale, isReceived: false);
+              return _buildRequestRichCard(context, ref, request, isReceived: false);
             },
           ),
         );
@@ -381,11 +378,11 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
   Widget _buildRequestRichCard(
     BuildContext context,
     WidgetRef ref,
-    Solicitud request,
-    String locale, {
+    Solicitud request, {
     required bool isReceived,
   }) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     // Resolve target user depending on incoming/outgoing
     final targetUser = isReceived ? request.interestedUser : request.owner;
@@ -398,7 +395,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
         ? request.professionalBackground!
         : (targetUser.professionalBackground != null && targetUser.professionalBackground!.isNotEmpty
             ? targetUser.professionalBackground!
-            : (locale == 'ca' ? 'Sense trajectòria professional especificada.' : 'Sin trayectoria profesional especificada.'));
+            : l10n.inboxNoProfessionalBackground);
 
     // Status mapping & styling
     final status = request.status;
@@ -409,15 +406,15 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
     if (status == 'APPROVED' || status == 'ACCEPTED') {
       statusBgColor = const Color(0xFF00B286).withValues(alpha: 0.12);
       statusTextColor = const Color(0xFF00B286);
-      statusLabel = locale == 'ca' ? 'ACCEPTADA' : 'ACEPTADA';
+      statusLabel = l10n.statusAcceptedLabel;
     } else if (status == 'REJECTED') {
       statusBgColor = Colors.redAccent.withValues(alpha: 0.12);
       statusTextColor = Colors.redAccent;
-      statusLabel = locale == 'ca' ? 'DECLINADA' : 'DECLINADA';
+      statusLabel = l10n.statusDeclinedLabel;
     } else {
       statusBgColor = Colors.orange.withValues(alpha: 0.12);
       statusTextColor = Colors.orange;
-      statusLabel = locale == 'ca' ? 'PENDENT' : 'PENDIENTE';
+      statusLabel = l10n.statusPendingLabel;
     }
 
     // Ratings
@@ -470,7 +467,9 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                         const SizedBox(height: 2),
                         Text(
                           request.createdAt != null
-                              ? '${isReceived ? (locale == 'ca' ? 'Rebuda' : 'Recibida') : (locale == 'ca' ? 'Enviada' : 'Enviada')} el ${DateFormat('dd/MM/yyyy').format(request.createdAt!)}'
+                              ? (isReceived
+                                  ? l10n.inboxReceivedOn(DateFormat('dd/MM/yyyy').format(request.createdAt!))
+                                  : l10n.inboxSentOn(DateFormat('dd/MM/yyyy').format(request.createdAt!)))
                               : '',
                           style: TextStyle(
                             fontSize: 11,
@@ -525,8 +524,8 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                       children: [
                         Text(
                           isReceived
-                              ? (locale == 'ca' ? 'Sol·licitud de: $fullName' : 'Solicitud de: $fullName')
-                              : (locale == 'ca' ? 'Enviat a: $fullName' : 'Enviado a: $fullName'),
+                              ? l10n.inboxRequestFrom(fullName)
+                              : l10n.inboxRequestSentTo(fullName),
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontSize: 13.5,
                             fontWeight: FontWeight.bold,
@@ -548,7 +547,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                               ),
                             ] else ...[
                               Text(
-                                locale == 'ca' ? 'Sense valoracions' : 'Sin valoraciones',
+                                l10n.inboxNoRatings,
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                                   fontStyle: FontStyle.italic,
@@ -611,7 +610,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                           Text(
                             request.availableCapital != null
                                 ? NumberFormat.currency(locale: 'es_ES', symbol: '€', decimalDigits: 0).format(request.availableCapital)
-                                : (locale == 'ca' ? 'No esp.' : 'No esp.'),
+                                : l10n.inboxNotSpecified,
                             style: TextStyle(
                               fontSize: 10.5,
                               fontWeight: FontWeight.bold,
@@ -628,7 +627,7 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        '${locale == 'ca' ? 'Finan.' : 'Finan.'}: ${request.financingNeeded == true ? (locale == 'ca' ? 'Sí' : 'Sí') : (locale == 'ca' ? 'No' : 'No')}',
+                        l10n.inboxFinancingLabel(request.financingNeeded == true ? l10n.yesLabel : l10n.noLabel),
                         style: TextStyle(
                           fontSize: 10.5,
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
@@ -645,8 +644,8 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
                       ),
                       child: Text(
                         request.ndaAccepted == true
-                            ? (locale == 'ca' ? 'NDA Signat' : 'NDA Firmado')
-                            : (locale == 'ca' ? 'Sense NDA' : 'Sin NDA'),
+                            ? l10n.inboxNdaSigned
+                            : l10n.inboxNoNda,
                         style: TextStyle(
                           fontSize: 10.5,
                           fontWeight: FontWeight.bold,

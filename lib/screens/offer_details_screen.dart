@@ -15,6 +15,7 @@ import '../widgets/custom_text_field.dart';
 import '../data/providers/offers_provider.dart';
 import '../widgets/offer_map_widget.dart';
 import 'chat_room_screen.dart';
+import 'premium_screen.dart';
 import '../data/services/chat_service.dart';
 import '../data/providers/notification_provider.dart';
 
@@ -1241,16 +1242,22 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                     setState(() {
                                       _isSubmitting = false;
                                     });
-                                    showRelevoSnackBar(
-                                      context,
-                                      message: l10n.offerApplyErrorPrefix(
-                                        err.toString().replaceAll(
-                                          'Exception: ',
-                                          '',
+
+                                    final errString = err.toString().toLowerCase();
+                                    if (errString.contains('limit') || errString.contains('límit') || errString.contains('limite')) {
+                                      _showLimitExceededDialog(context);
+                                    } else {
+                                      showRelevoSnackBar(
+                                        context,
+                                        message: l10n.offerApplyErrorPrefix(
+                                          err.toString().replaceAll(
+                                            'Exception: ',
+                                            '',
+                                          ),
                                         ),
-                                      ),
-                                      isError: true,
-                                    );
+                                        isError: true,
+                                      );
+                                    }
                                   }
                                 }
                               },
@@ -1282,6 +1289,127 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showLimitExceededDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
+
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.3),
+      builder: (dialogCtx) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              decoration: BoxDecoration(
+                color: theme.brightness == Brightness.dark
+                    ? Colors.black.withValues(alpha: 0.4)
+                    : Colors.white.withValues(alpha: 0.55),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: (theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withValues(alpha: 0.12),
+                  width: 1.5,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.workspace_premium_rounded,
+                      color: theme.colorScheme.primary,
+                      size: 40,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.limitRequestsTitle,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.limitRequestsMessage,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      height: 1.4,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(dialogCtx),
+                          child: Text(
+                            l10n.notificationsCancel,
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(dialogCtx);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const PremiumScreen(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            "Premium",
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

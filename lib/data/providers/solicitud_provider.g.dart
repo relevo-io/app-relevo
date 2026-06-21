@@ -33,7 +33,7 @@ final class ReceivedRequestsProvider
   ReceivedRequests create() => ReceivedRequests();
 }
 
-String _$receivedRequestsHash() => r'020bf7455cfcd903168629ed238a8b043bafdfe0';
+String _$receivedRequestsHash() => r'4aa6ca0e45cc7848423d08130653186a4b454bb8';
 
 abstract class _$ReceivedRequests extends $AsyncNotifier<List<Solicitud>> {
   FutureOr<List<Solicitud>> build();
@@ -77,7 +77,7 @@ final class SentRequestsProvider
   SentRequests create() => SentRequests();
 }
 
-String _$sentRequestsHash() => r'ccdaf28ae5e66e30fa8de2463096b9cdf6baddcd';
+String _$sentRequestsHash() => r'27bcc9ea777b35105aeecad8443044a92fe480d1';
 
 abstract class _$SentRequests extends $AsyncNotifier<List<Solicitud>> {
   FutureOr<List<Solicitud>> build();

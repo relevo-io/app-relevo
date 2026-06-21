@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,8 +18,11 @@ import 'package:flutter_relevo/data/models/chat_model.dart';
 import 'package:flutter_relevo/data/models/message_model.dart';
 import 'package:flutter_relevo/data/models/user_model.dart';
 import 'package:flutter_relevo/data/models/offer_model.dart';
+import 'package:flutter_relevo/data/models/rating_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
+import '../l10n/app_localizations.dart';
+import '../widgets/glassmorphic_app_bar.dart';
 
 class ChatRoomScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -45,6 +49,12 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   Timer? _typingStopTimer;
   bool _hasText = false; // Control de visualización del botón enviar/grabar
 
+  // Cerrar trato y Valoraciones
+  bool _isClosingDeal = false;
+  int _ratingScore = 0;
+  final TextEditingController _ratingCommentController = TextEditingController();
+  bool _isSubmittingRating = false;
+
   @override
   void initState() {
     super.initState();
@@ -59,7 +69,49 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
     _audioRecorder.dispose();
     _recordingTimer?.cancel();
     _typingStopTimer?.cancel();
+    _ratingCommentController.dispose();
     super.dispose();
+  }
+
+  Future<void> _closeDeal() async {
+    setState(() {
+      _isClosingDeal = true;
+    });
+    try {
+      await ref.read(chatServiceProvider).closeDeal(widget.chatId);
+      ref.invalidate(chatsListProvider);
+    } catch (e) {
+      _showErrorSnackBar(e.toString());
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isClosingDeal = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _submitRating() async {
+    if (_ratingScore == 0) return;
+    setState(() {
+      _isSubmittingRating = true;
+    });
+    try {
+      await ref.read(chatServiceProvider).rateChat(
+            widget.chatId,
+            _ratingScore,
+            _ratingCommentController.text.trim().isEmpty ? null : _ratingCommentController.text.trim(),
+          );
+      ref.invalidate(myChatRatingProvider(widget.chatId));
+    } catch (e) {
+      _showErrorSnackBar(e.toString());
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmittingRating = false;
+        });
+      }
+    }
   }
 
   void _onScroll() {
@@ -362,74 +414,78 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
         : '?';
 
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  child: Text(
-                    initials,
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ),
-                if (isOnline)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 1.5),
+      extendBodyBehindAppBar: true,
+      appBar: GlassmorphicAppBar(
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    child: Text(
+                      initials,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   ),
-              ],
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    otherUserName,
-                    style: GoogleFonts.inter(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
+                  if (isOnline)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1.5),
+                        ),
+                      ),
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    chat?.oferta.sector ?? '',
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.secondary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      otherUserName,
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      chat?.oferta.sector ?? '',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.secondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
         children: [
+          SizedBox(height: MediaQuery.of(context).padding.top + 80.0),
           // Banner de Aprobación
           if (isPending)
             Container(
@@ -516,7 +572,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
               ),
             ),
 
-          if (isReadOnly)
+          if (isReadOnly && chat?.closedAt == null)
             Container(
               color: theme.colorScheme.outline.withValues(alpha: 0.15),
               width: double.infinity,
@@ -583,18 +639,418 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
               ),
             ),
 
-          // Campo de Entrada (Input)
-          if (!isPending && !isRejected && !isReadOnly)
-            Container(
-              padding: EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                top: 8.0,
-                bottom: 8.0 + (!kIsWeb && Platform.isIOS ? 16.0 : 8.0),
+          // Campo de Entrada (Input) o Paneles de Cierre/Valoración
+          if (!isPending && !isRejected) ...[
+            ref.watch(myChatRatingProvider(widget.chatId)).when(
+              loading: () => const SizedBox(
+                height: 100,
+                child: Center(child: CircularProgressIndicator()),
               ),
+              error: (err, stack) => Container(
+                padding: const EdgeInsets.all(16),
+                color: theme.colorScheme.errorContainer,
+                child: Text(err.toString()),
+              ),
+              data: (rating) {
+                final bool isDealClosed = chat?.closedAt != null;
+                final bool hasConfirmedDeal = isOwner ? (chat?.closedByOwner ?? false) : (chat?.closedByInterested ?? false);
+                final bool isWaitingOtherDealConfirmation = isDealClosed ? false : (hasConfirmedDeal ? (isOwner ? !(chat?.closedByInterested ?? false) : !(chat?.closedByOwner ?? false)) : false);
+                final bool otherConfirmedDeal = isOwner ? (chat?.closedByInterested ?? false) : (chat?.closedByOwner ?? false);
+                final bool canShowDealClosePanel = chat?.status == 'APPROVED' && !isDealClosed;
+
+                if (isDealClosed) {
+                  if (rating == null) {
+                    return _buildGlassmorphicRatingPanel(context, otherUserName);
+                  } else {
+                    return _buildGlassmorphicTratoCerradoPanel(context);
+                  }
+                } else if (isReadOnly) {
+                  return const SizedBox.shrink();
+                } else {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (canShowDealClosePanel)
+                        _buildGlassmorphicCloseDealPanel(
+                          context,
+                          hasConfirmedDeal,
+                          isWaitingOtherDealConfirmation,
+                          otherConfirmedDeal,
+                        ),
+                      _buildInputRow(context, theme),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGlassmorphicCloseDealPanel(
+    BuildContext context,
+    bool hasConfirmedDeal,
+    bool isWaitingOtherDealConfirmation,
+    bool otherConfirmedDeal,
+  ) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final bgColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.white.withValues(alpha: 0.55);
+    final borderColor = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.12);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: borderColor, width: 1.5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.handshake_outlined,
+                      color: theme.colorScheme.primary,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.chatDealCloseTitle,
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            otherConfirmedDeal && !hasConfirmedDeal
+                                ? l10n.chatDealOtherConfirmed
+                                : l10n.chatDealCloseDesc,
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              fontWeight: otherConfirmedDeal && !hasConfirmedDeal ? FontWeight.bold : FontWeight.normal,
+                              color: otherConfirmedDeal && !hasConfirmedDeal
+                                  ? (isDark ? Colors.amber[300] : Colors.amber[900])
+                                  : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (!hasConfirmedDeal) ...[
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: _isClosingDeal ? null : _closeDeal,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: otherConfirmedDeal ? Colors.amber[700] : theme.colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: _isClosingDeal
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              )
+                            : Text(
+                                l10n.chatDealCloseTitle,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ],
+                ),
+                if (hasConfirmedDeal) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: isWaitingOtherDealConfirmation
+                          ? (isDark ? Colors.amber.withValues(alpha: 0.2) : Colors.amber.withValues(alpha: 0.15))
+                          : (isDark ? Colors.green.withValues(alpha: 0.2) : Colors.green.withValues(alpha: 0.15)),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isWaitingOtherDealConfirmation
+                            ? (isDark ? Colors.amber[400]! : Colors.amber[800]!)
+                            : (isDark ? Colors.green[400]! : Colors.green[800]!),
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isWaitingOtherDealConfirmation
+                              ? Icons.hourglass_empty_rounded
+                              : Icons.check_circle_rounded,
+                          size: 16,
+                          color: isWaitingOtherDealConfirmation
+                              ? (isDark ? Colors.amber[300] : Colors.amber[900])
+                              : (isDark ? Colors.green[300] : Colors.green[900]),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            isWaitingOtherDealConfirmation
+                                ? l10n.chatDealWaitingOther
+                                : l10n.chatDealConfirmedByYou,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: isWaitingOtherDealConfirmation
+                                  ? (isDark ? Colors.amber[200] : Colors.amber[900])
+                                  : (isDark ? Colors.green[200] : Colors.green[900]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGlassmorphicRatingPanel(BuildContext context, String otherName) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final bgColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.white.withValues(alpha: 0.55);
+    final borderColor = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.12);
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainer,
-                border: Border(top: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.1))),
+                color: bgColor,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: borderColor, width: 1.5),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.workspace_premium_outlined,
+                        color: theme.colorScheme.primary,
+                        size: 24,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.ratingTitle,
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.ratingDesc(otherName),
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // 5 interactive stars
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (index) {
+                      final starVal = index + 1;
+                      return IconButton(
+                        icon: Icon(
+                          _ratingScore >= starVal
+                              ? Icons.star_rounded
+                              : Icons.star_outline_rounded,
+                          color: Colors.amber[700],
+                          size: 32,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _ratingScore = starVal;
+                          });
+                        },
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 8),
+                  
+                  // Comment input
+                  TextField(
+                    controller: _ratingCommentController,
+                    maxLines: 2,
+                    maxLength: 600,
+                    decoration: InputDecoration(
+                      hintText: l10n.ratingCommentPlaceholder,
+                      hintStyle: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.15)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // Submit button
+                  ElevatedButton(
+                    onPressed: (_ratingScore == 0 || _isSubmittingRating) ? null : _submitRating,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: _isSubmittingRating
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          )
+                        : Text(
+                            l10n.ratingSubmit,
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGlassmorphicTratoCerradoPanel(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final bgColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.white.withValues(alpha: 0.55);
+    final borderColor = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.12);
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: borderColor, width: 1.5),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.verified_rounded,
+                    color: Colors.green,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${l10n.chatDealClosed} - ${l10n.ratingSent}',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.green[700],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputRow(BuildContext context, ThemeData theme) {
+    final isDark = theme.brightness == Brightness.dark;
+    final bgColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.white.withValues(alpha: 0.55);
+    final borderColor = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.12);
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: borderColor, width: 1.5),
               ),
               child: Row(
                 children: [
@@ -644,9 +1100,9 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                           )
                         : Container(
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.surface,
+                              color: theme.colorScheme.surface.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(24),
-                              border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+                              border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.15)),
                             ),
                             child: TextField(
                               controller: _textController,
@@ -707,7 +1163,8 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
                 ],
               ),
             ),
-        ],
+          ),
+        ),
       ),
     );
   }

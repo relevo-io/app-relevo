@@ -931,7 +931,7 @@ abstract class AppLocalizations {
   /// No description provided for @inboxTitle.
   ///
   /// In es, this message translates to:
-  /// **'Buzón de solicitudes'**
+  /// **'Solicitudes de Interés'**
   String get inboxTitle;
 
   /// No description provided for @inboxTabReceived.
@@ -2271,6 +2271,258 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargar más ofertas'**
   String get loadMoreOffers;
+
+  /// No description provided for @chatDealCloseTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar trato'**
+  String get chatDealCloseTitle;
+
+  /// No description provided for @chatDealCloseDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir el proceso de compra/venta fuera de la plataforma. Si lo pulsas, el otro usuario también deberá confirmar para finalizar la conversación.'**
+  String get chatDealCloseDesc;
+
+  /// No description provided for @chatDealClosed.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Trato cerrado!'**
+  String get chatDealClosed;
+
+  /// No description provided for @chatDealWaitingOther.
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando la confirmación del otro usuario...'**
+  String get chatDealWaitingOther;
+
+  /// No description provided for @chatDealConfirmedByYou.
+  ///
+  /// In es, this message translates to:
+  /// **'Trato confirmado por ti'**
+  String get chatDealConfirmedByYou;
+
+  /// No description provided for @chatDealClosing.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrando trato...'**
+  String get chatDealClosing;
+
+  /// No description provided for @chatDealOtherConfirmed.
+  ///
+  /// In es, this message translates to:
+  /// **'El otro usuario ha cerrado el trato. ¡Solo faltas tú por confirmar!'**
+  String get chatDealOtherConfirmed;
+
+  /// No description provided for @ratingTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Valoración del trato'**
+  String get ratingTitle;
+
+  /// No description provided for @ratingDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Por favor, valora a la persona con la que has hecho el trato ({name}):'**
+  String ratingDesc(String name);
+
+  /// No description provided for @ratingCommentPlaceholder.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un comentario sobre el trato...'**
+  String get ratingCommentPlaceholder;
+
+  /// No description provided for @ratingSubmit.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar valoración'**
+  String get ratingSubmit;
+
+  /// No description provided for @ratingSending.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando valoración...'**
+  String get ratingSending;
+
+  /// No description provided for @ratingSent.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Valoración enviada!'**
+  String get ratingSent;
+
+  /// No description provided for @profileMyRatings.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis valoraciones'**
+  String get profileMyRatings;
+
+  /// No description provided for @profileRatingsAsBuyer.
+  ///
+  /// In es, this message translates to:
+  /// **'Como comprador'**
+  String get profileRatingsAsBuyer;
+
+  /// No description provided for @profileRatingsAsSeller.
+  ///
+  /// In es, this message translates to:
+  /// **'Como vendedor'**
+  String get profileRatingsAsSeller;
+
+  /// No description provided for @profileRatingsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis valoraciones'**
+  String get profileRatingsTitle;
+
+  /// No description provided for @profileRatingsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no has recibido ninguna valoración.'**
+  String get profileRatingsEmpty;
+
+  /// No description provided for @inboxReceived.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibidas'**
+  String get inboxReceived;
+
+  /// No description provided for @inboxSent.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviadas'**
+  String get inboxSent;
+
+  /// No description provided for @errorLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al cargar'**
+  String get errorLoading;
+
+  /// No description provided for @inboxNoReceivedRequests.
+  ///
+  /// In es, this message translates to:
+  /// **'No has recibido ninguna solicitud de interés todavía.'**
+  String get inboxNoReceivedRequests;
+
+  /// No description provided for @inboxNoSentRequests.
+  ///
+  /// In es, this message translates to:
+  /// **'No has enviado ninguna solicitud de interés todavía.'**
+  String get inboxNoSentRequests;
+
+  /// No description provided for @inboxNoProfessionalBackground.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin trayectoria profesional especificada.'**
+  String get inboxNoProfessionalBackground;
+
+  /// No description provided for @statusAcceptedLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'ACEPTADA'**
+  String get statusAcceptedLabel;
+
+  /// No description provided for @statusDeclinedLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'DECLINADA'**
+  String get statusDeclinedLabel;
+
+  /// No description provided for @statusPendingLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'PENDIENTE'**
+  String get statusPendingLabel;
+
+  /// No description provided for @inboxReceivedOn.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibida el {date}'**
+  String inboxReceivedOn(String date);
+
+  /// No description provided for @inboxSentOn.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviada el {date}'**
+  String inboxSentOn(String date);
+
+  /// No description provided for @inboxRequestFrom.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud de: {name}'**
+  String inboxRequestFrom(String name);
+
+  /// No description provided for @inboxRequestSentTo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviado a: {name}'**
+  String inboxRequestSentTo(String name);
+
+  /// No description provided for @inboxNoRatings.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin valoraciones'**
+  String get inboxNoRatings;
+
+  /// No description provided for @inboxNotSpecified.
+  ///
+  /// In es, this message translates to:
+  /// **'No esp.'**
+  String get inboxNotSpecified;
+
+  /// No description provided for @inboxFinancingLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Financ.: {value}'**
+  String inboxFinancingLabel(String value);
+
+  /// No description provided for @inboxNdaSigned.
+  ///
+  /// In es, this message translates to:
+  /// **'NDA Firmado'**
+  String get inboxNdaSigned;
+
+  /// No description provided for @inboxNoNda.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin NDA'**
+  String get inboxNoNda;
+
+  /// No description provided for @yesLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí'**
+  String get yesLabel;
+
+  /// No description provided for @noLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get noLabel;
+
+  /// No description provided for @limitRequestsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Límite de solicitudes superado'**
+  String get limitRequestsTitle;
+
+  /// No description provided for @limitRequestsMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Has alcanzado tu límite de solicitudes de contacto directo. Pásate a Relevo Premium para obtener solicitudes ilimitadas.'**
+  String get limitRequestsMessage;
+
+  /// No description provided for @limitOffersTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Límite de ofertas superado'**
+  String get limitOffersTitle;
+
+  /// No description provided for @limitOffersMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Has alcanzado tu límite de publicación de ofertas. Pásate a Relevo Premium para publicar ofertas ilimitadas.'**
+  String get limitOffersMessage;
 }
 
 class _AppLocalizationsDelegate

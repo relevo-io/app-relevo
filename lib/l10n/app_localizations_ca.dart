@@ -449,7 +449,7 @@ class AppLocalizationsCa extends AppLocalizations {
   }
 
   @override
-  String get inboxTitle => 'Bústia de sol·licituds';
+  String get inboxTitle => 'Sol·licituds d\'Interès';
 
   @override
   String get inboxTabReceived => 'Rebudes';
@@ -1185,4 +1185,151 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get loadMoreOffers => 'Carregar més ofertes';
+
+  @override
+  String get chatDealCloseTitle => 'Tancar tracte';
+
+  @override
+  String get chatDealCloseDesc =>
+      'Seguir el procés de compra/venda fora de la plataforma. Si el prems, l\'altre usuari també haurà de confirmar per finalitzar la conversa.';
+
+  @override
+  String get chatDealClosed => 'Tracte tancat!';
+
+  @override
+  String get chatDealWaitingOther =>
+      'Esperant la confirmació de l\'altre usuari...';
+
+  @override
+  String get chatDealConfirmedByYou => 'Tracte confirmat per tu';
+
+  @override
+  String get chatDealClosing => 'Tancant tracte...';
+
+  @override
+  String get chatDealOtherConfirmed =>
+      'L\'altre usuari ha tancat el tracte. Només faltes tu per confirmar!';
+
+  @override
+  String get ratingTitle => 'Valoració del tracte';
+
+  @override
+  String ratingDesc(String name) {
+    return 'Si us plau, valora la persona amb la qual has fet el tracte ($name):';
+  }
+
+  @override
+  String get ratingCommentPlaceholder =>
+      'Escriu un comentari sobre el tracte...';
+
+  @override
+  String get ratingSubmit => 'Enviar valoració';
+
+  @override
+  String get ratingSending => 'Enviant valoració...';
+
+  @override
+  String get ratingSent => 'Valoració enviada!';
+
+  @override
+  String get profileMyRatings => 'Les meves valoracions';
+
+  @override
+  String get profileRatingsAsBuyer => 'Com a comprador';
+
+  @override
+  String get profileRatingsAsSeller => 'Com a venedor';
+
+  @override
+  String get profileRatingsTitle => 'Les meves valoracions';
+
+  @override
+  String get profileRatingsEmpty => 'Encara no has rebut cap valoració.';
+
+  @override
+  String get inboxReceived => 'Rebudes';
+
+  @override
+  String get inboxSent => 'Enviades';
+
+  @override
+  String get errorLoading => 'Error al carregar';
+
+  @override
+  String get inboxNoReceivedRequests =>
+      'No has rebut cap sol·licitud d\'interès encara.';
+
+  @override
+  String get inboxNoSentRequests =>
+      'No has enviat cap sol·licitud d\'interès encara.';
+
+  @override
+  String get inboxNoProfessionalBackground =>
+      'Sense trajectòria professional especificada.';
+
+  @override
+  String get statusAcceptedLabel => 'ACCEPTADA';
+
+  @override
+  String get statusDeclinedLabel => 'DECLINADA';
+
+  @override
+  String get statusPendingLabel => 'PENDENT';
+
+  @override
+  String inboxReceivedOn(String date) {
+    return 'Rebuda el $date';
+  }
+
+  @override
+  String inboxSentOn(String date) {
+    return 'Enviada el $date';
+  }
+
+  @override
+  String inboxRequestFrom(String name) {
+    return 'Sol·licitud de: $name';
+  }
+
+  @override
+  String inboxRequestSentTo(String name) {
+    return 'Enviat a: $name';
+  }
+
+  @override
+  String get inboxNoRatings => 'Sense valoracions';
+
+  @override
+  String get inboxNotSpecified => 'No esp.';
+
+  @override
+  String inboxFinancingLabel(String value) {
+    return 'Finanç.: $value';
+  }
+
+  @override
+  String get inboxNdaSigned => 'NDA Signat';
+
+  @override
+  String get inboxNoNda => 'Sense NDA';
+
+  @override
+  String get yesLabel => 'Sí';
+
+  @override
+  String get noLabel => 'No';
+
+  @override
+  String get limitRequestsTitle => 'Límit de sol·licituds superat';
+
+  @override
+  String get limitRequestsMessage =>
+      'Has arribat al teu límit de sol·licituds de contacte directes. Passa\'t a Relevo Premium per a obtenir sol·licituds il·limitades.';
+
+  @override
+  String get limitOffersTitle => 'Límit d\'ofertes superat';
+
+  @override
+  String get limitOffersMessage =>
+      'Has arribat al teu límit de publicació d\'ofertes. Passa\'t a Relevo Premium per a publicar ofertes il·limitades.';
 }

@@ -16,6 +16,7 @@ import 'notification_preferences_screen.dart';
 import '../data/providers/mentoring_provider.dart';
 import 'favorites_screen.dart';
 import 'premium_screen.dart';
+import 'user_ratings_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -277,6 +278,20 @@ class ProfileScreen extends ConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const NotificationPreferencesScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildProfileOptionCard(
+                context,
+                Icons.star_outline_rounded,
+                l10n.profileMyRatings,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserRatingsScreen(),
                     ),
                   );
                 },

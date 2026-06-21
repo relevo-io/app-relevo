@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_relevo/data/network/dio_client.dart';
 import 'package:flutter_relevo/data/models/chat_model.dart';
 import 'package:flutter_relevo/data/models/message_model.dart';
+import 'package:flutter_relevo/data/models/rating_model.dart';
 
 final chatServiceProvider = Provider<ChatService>((ref) {
   return ChatService(ref.read(dioProvider));
@@ -141,6 +142,70 @@ class ChatService {
         );
       }
       throw Exception('Error de conexión durante la subida a S3: ${e.message}');
+    }
+  }
+
+  Future<Chat> closeDeal(String chatId) async {
+    try {
+      final response = await _dio.post('/chats/$chatId/close');
+      return Chat.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al cerrar el trato',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<Rating?> getMyChatRating(String chatId) async {
+    try {
+      final response = await _dio.get('/chats/$chatId/my-rating');
+      final data = response.data['rating'];
+      if (data == null) return null;
+      return Rating.fromJson(data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener valoración del xat',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<Rating> rateChat(String chatId, int score, String? comment) async {
+    try {
+      final response = await _dio.post(
+        '/chats/$chatId/rating',
+        data: {
+          'score': score,
+          if (comment != null) 'comment': comment,
+        },
+      );
+      return Rating.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al valorar el xat',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
+    }
+  }
+
+  Future<MyRatingsResponse> getMyRatings() async {
+    try {
+      final response = await _dio.get('/usuarios/me/ratings');
+      return MyRatingsResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(
+          e.response?.data['message'] ?? 'Error al obtener mis valoraciones',
+        );
+      }
+      throw Exception('Error de conexión: ${e.message}');
     }
   }
 }

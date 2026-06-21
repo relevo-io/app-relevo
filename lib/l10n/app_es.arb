@@ -380,5 +380,90 @@
     "paymentCheckoutOpenError": "No hemos podido abrir Stripe. Inténtalo de nuevo.",
     "paymentCheckoutStatusError": "No hemos podido confirmar el estado del pago todavía.",
     "paymentCheckoutCanceled": "Has cancelado el proceso de pago.",
-    "loadMoreOffers": "Cargar más ofertas"
+    "loadMoreOffers": "Cargar más ofertas",
+    "chatDealCloseTitle": "Cerrar trato",
+    "chatDealCloseDesc": "Seguir el proceso de compra/venta fuera de la plataforma. Si lo pulsas, el otro usuario también deberá confirmar para finalizar la conversación.",
+    "chatDealClosed": "¡Trato cerrado!",
+    "chatDealWaitingOther": "Esperando la confirmación del otro usuario...",
+    "chatDealConfirmedByYou": "Trato confirmado por ti",
+    "chatDealClosing": "Cerrando trato...",
+    "chatDealOtherConfirmed": "El otro usuario ha cerrado el trato. ¡Solo faltas tú por confirmar!",
+    "ratingTitle": "Valoración del trato",
+    "ratingDesc": "Por favor, valora a la persona con la que has hecho el trato ({name}):",
+    "@ratingDesc": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "ratingCommentPlaceholder": "Escribe un comentario sobre el trato...",
+    "ratingSubmit": "Enviar valoración",
+    "ratingSending": "Enviando valoración...",
+    "ratingSent": "¡Valoración enviada!",
+    "profileMyRatings": "Mis valoraciones",
+    "profileRatingsAsBuyer": "Como comprador",
+    "profileRatingsAsSeller": "Como vendedor",
+    "profileRatingsTitle": "Mis valoraciones",
+    "profileRatingsEmpty": "Aún no has recibido ninguna valoración.",
+    "inboxTitle": "Solicitudes de Interés",
+    "inboxReceived": "Recibidas",
+    "inboxSent": "Enviadas",
+    "errorLoading": "Error al cargar",
+    "inboxNoReceivedRequests": "No has recibido ninguna solicitud de interés todavía.",
+    "inboxNoSentRequests": "No has enviado ninguna solicitud de interés todavía.",
+    "inboxNoProfessionalBackground": "Sin trayectoria profesional especificada.",
+    "statusAcceptedLabel": "ACEPTADA",
+    "statusDeclinedLabel": "DECLINADA",
+    "statusPendingLabel": "PENDIENTE",
+    "inboxReceivedOn": "Recibida el {date}",
+    "@inboxReceivedOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxSentOn": "Enviada el {date}",
+    "@inboxSentOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestFrom": "Solicitud de: {name}",
+    "@inboxRequestFrom": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestSentTo": "Enviado a: {name}",
+    "@inboxRequestSentTo": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNoRatings": "Sin valoraciones",
+    "inboxNotSpecified": "No esp.",
+    "inboxFinancingLabel": "Financ.: {value}",
+    "@inboxFinancingLabel": {
+      "placeholders": {
+        "value": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNdaSigned": "NDA Firmado",
+    "inboxNoNda": "Sin NDA",
+    "yesLabel": "Sí",
+    "noLabel": "No",
+    "limitRequestsTitle": "Límite de solicitudes superado",
+    "limitRequestsMessage": "Has alcanzado tu límite de solicitudes de contacto directo. Pásate a Relevo Premium para obtener solicitudes ilimitadas.",
+    "limitOffersTitle": "Límite de ofertas superado",
+    "limitOffersMessage": "Has alcanzado tu límite de publicación de ofertas. Pásate a Relevo Premium para publicar ofertas ilimitadas."
 }

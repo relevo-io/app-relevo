@@ -10,6 +10,8 @@ import 'package:flutter_relevo/data/providers/auth_provider.dart';
 import 'package:flutter_relevo/data/services/push_notification_service.dart';
 import 'notification_provider.dart';
 
+import 'package:flutter_relevo/data/models/rating_model.dart';
+
 part 'chat_providers.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -157,9 +159,16 @@ class ChatsList extends _$ChatsList {
       }
     });
 
+    final newNotificationSub = socketService.onNewNotification.listen((notification) {
+      if (notification.data != null && notification.data['chatId'] != null) {
+        ref.invalidateSelf();
+      }
+    });
+
     ref.onDispose(() {
       _notificationSubscription?.cancel();
       _messageSubscription?.cancel();
+      newNotificationSub.cancel();
     });
 
     // Ordenamos por fecha del último mensaje o updatedAt
@@ -483,4 +492,16 @@ int unreadChatsCount(Ref ref) {
     },
     orElse: () => 0,
   );
+}
+
+@riverpod
+Future<Rating?> myChatRating(Ref ref, String chatId) async {
+  final service = ref.read(chatServiceProvider);
+  return service.getMyChatRating(chatId);
+}
+
+@riverpod
+Future<MyRatingsResponse> userRatings(Ref ref) async {
+  final service = ref.read(chatServiceProvider);
+  return service.getMyRatings();
 }

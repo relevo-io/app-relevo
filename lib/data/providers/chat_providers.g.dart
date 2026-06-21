@@ -136,7 +136,7 @@ final class ChatRoomMessagesProvider
   }
 }
 
-String _$chatRoomMessagesHash() => r'6dd63404a329d92ea79cb982898e64140964454e';
+String _$chatRoomMessagesHash() => r'23be428414f7309d7c028a0734696890f1847a57';
 
 final class ChatRoomMessagesFamily extends $Family
     with
@@ -445,3 +445,113 @@ final class UnreadChatsCountProvider extends $FunctionalProvider<int, int, int>
 }
 
 String _$unreadChatsCountHash() => r'4c6da48cdf1eda78538b54c78fff0e5cb899e88d';
+
+@ProviderFor(myChatRating)
+final myChatRatingProvider = MyChatRatingFamily._();
+
+final class MyChatRatingProvider
+    extends $FunctionalProvider<AsyncValue<Rating?>, Rating?, FutureOr<Rating?>>
+    with $FutureModifier<Rating?>, $FutureProvider<Rating?> {
+  MyChatRatingProvider._({
+    required MyChatRatingFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'myChatRatingProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$myChatRatingHash();
+
+  @override
+  String toString() {
+    return r'myChatRatingProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Rating?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Rating?> create(Ref ref) {
+    final argument = this.argument as String;
+    return myChatRating(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MyChatRatingProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$myChatRatingHash() => r'5adeefaeef82d3837e2699f91e48999474c5146a';
+
+final class MyChatRatingFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Rating?>, String> {
+  MyChatRatingFamily._()
+    : super(
+        retry: null,
+        name: r'myChatRatingProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  MyChatRatingProvider call(String chatId) =>
+      MyChatRatingProvider._(argument: chatId, from: this);
+
+  @override
+  String toString() => r'myChatRatingProvider';
+}
+
+@ProviderFor(userRatings)
+final userRatingsProvider = UserRatingsProvider._();
+
+final class UserRatingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<MyRatingsResponse>,
+          MyRatingsResponse,
+          FutureOr<MyRatingsResponse>
+        >
+    with
+        $FutureModifier<MyRatingsResponse>,
+        $FutureProvider<MyRatingsResponse> {
+  UserRatingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userRatingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userRatingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<MyRatingsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<MyRatingsResponse> create(Ref ref) {
+    return userRatings(ref);
+  }
+}
+
+String _$userRatingsHash() => r'ff598e13bae5ebab71cfccc0c4d17aa93953861f';

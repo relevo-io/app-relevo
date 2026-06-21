@@ -11,6 +11,7 @@ import 'data/providers/language_provider.dart';
 import 'data/providers/theme_provider.dart';
 import 'data/providers/chat_providers.dart';
 import 'screens/main_screen.dart';
+import 'screens/splash_screen.dart';
 import 'theme/relevo_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -77,7 +78,7 @@ class MainApp extends ConsumerWidget {
           ),
         );
       },
-      home: const MainScreen(),
+      home: const SplashScreen(),
     );
   }
 }

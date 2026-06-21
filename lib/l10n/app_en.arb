@@ -368,5 +368,90 @@
     "paymentCheckoutOpenError": "We could not open Stripe. Please try again.",
     "paymentCheckoutStatusError": "We could not confirm the payment status yet.",
     "paymentCheckoutCanceled": "You canceled the payment process.",
-    "loadMoreOffers": "Load more offers"
+    "loadMoreOffers": "Load more offers",
+    "chatDealCloseTitle": "Close deal",
+    "chatDealCloseDesc": "Follow the buying/selling process outside the platform. If you press it, the other user will also need to confirm to end the conversation.",
+    "chatDealClosed": "Deal closed!",
+    "chatDealWaitingOther": "Waiting for the other user's confirmation...",
+    "chatDealConfirmedByYou": "Deal confirmed by you",
+    "chatDealClosing": "Closing deal...",
+    "chatDealOtherConfirmed": "The other user closed the deal. Only you are left to confirm!",
+    "ratingTitle": "Deal rating",
+    "ratingDesc": "Please rate the person you made the deal with ({name}):",
+    "@ratingDesc": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "ratingCommentPlaceholder": "Write a comment about the deal...",
+    "ratingSubmit": "Submit rating",
+    "ratingSending": "Submitting rating...",
+    "ratingSent": "Rating sent!",
+    "profileMyRatings": "My Ratings",
+    "profileRatingsAsBuyer": "As buyer",
+    "profileRatingsAsSeller": "As seller",
+    "profileRatingsTitle": "My Ratings",
+    "profileRatingsEmpty": "You haven't received any ratings yet.",
+    "inboxTitle": "Requests of Interest",
+    "inboxReceived": "Received",
+    "inboxSent": "Sent",
+    "errorLoading": "Error loading",
+    "inboxNoReceivedRequests": "You have not received any requests of interest yet.",
+    "inboxNoSentRequests": "You have not sent any requests of interest yet.",
+    "inboxNoProfessionalBackground": "No professional background specified.",
+    "statusAcceptedLabel": "ACCEPTED",
+    "statusDeclinedLabel": "DECLINED",
+    "statusPendingLabel": "PENDING",
+    "inboxReceivedOn": "Received on {date}",
+    "@inboxReceivedOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxSentOn": "Sent on {date}",
+    "@inboxSentOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestFrom": "Request from: {name}",
+    "@inboxRequestFrom": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestSentTo": "Sent to: {name}",
+    "@inboxRequestSentTo": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNoRatings": "No ratings",
+    "inboxNotSpecified": "Not specified",
+    "inboxFinancingLabel": "Finan.: {value}",
+    "@inboxFinancingLabel": {
+      "placeholders": {
+        "value": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNdaSigned": "NDA Signed",
+    "inboxNoNda": "No NDA",
+    "yesLabel": "Yes",
+    "noLabel": "No",
+    "limitRequestsTitle": "Request Limit Exceeded",
+    "limitRequestsMessage": "You have reached your direct contact request limit. Upgrade to Relevo Premium for unlimited requests.",
+    "limitOffersTitle": "Offer Limit Exceeded",
+    "limitOffersMessage": "You have reached your offer publication limit. Upgrade to Relevo Premium to publish unlimited offers."
 }

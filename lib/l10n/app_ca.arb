@@ -368,5 +368,90 @@
     "paymentCheckoutOpenError": "No hem pogut obrir Stripe. Torna-ho a provar.",
     "paymentCheckoutStatusError": "Encara no hem pogut confirmar l'estat del pagament.",
     "paymentCheckoutCanceled": "Has cancel·lat el procés de pagament.",
-    "loadMoreOffers": "Carregar més ofertes"
+    "loadMoreOffers": "Carregar més ofertes",
+    "chatDealCloseTitle": "Tancar tracte",
+    "chatDealCloseDesc": "Seguir el procés de compra/venda fora de la plataforma. Si el prems, l'altre usuari també haurà de confirmar per finalitzar la conversa.",
+    "chatDealClosed": "Tracte tancat!",
+    "chatDealWaitingOther": "Esperant la confirmació de l'altre usuari...",
+    "chatDealConfirmedByYou": "Tracte confirmat per tu",
+    "chatDealClosing": "Tancant tracte...",
+    "chatDealOtherConfirmed": "L'altre usuari ha tancat el tracte. Només faltes tu per confirmar!",
+    "ratingTitle": "Valoració del tracte",
+    "ratingDesc": "Si us plau, valora la persona amb la qual has fet el tracte ({name}):",
+    "@ratingDesc": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "ratingCommentPlaceholder": "Escriu un comentari sobre el tracte...",
+    "ratingSubmit": "Enviar valoració",
+    "ratingSending": "Enviant valoració...",
+    "ratingSent": "Valoració enviada!",
+    "profileMyRatings": "Les meves valoracions",
+    "profileRatingsAsBuyer": "Com a comprador",
+    "profileRatingsAsSeller": "Com a venedor",
+    "profileRatingsTitle": "Les meves valoracions",
+    "profileRatingsEmpty": "Encara no has rebut cap valoració.",
+    "inboxTitle": "Sol·licituds d'Interès",
+    "inboxReceived": "Rebudes",
+    "inboxSent": "Enviades",
+    "errorLoading": "Error al carregar",
+    "inboxNoReceivedRequests": "No has rebut cap sol·licitud d'interès encara.",
+    "inboxNoSentRequests": "No has enviat cap sol·licitud d'interès encara.",
+    "inboxNoProfessionalBackground": "Sense trajectòria professional especificada.",
+    "statusAcceptedLabel": "ACCEPTADA",
+    "statusDeclinedLabel": "DECLINADA",
+    "statusPendingLabel": "PENDENT",
+    "inboxReceivedOn": "Rebuda el {date}",
+    "@inboxReceivedOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxSentOn": "Enviada el {date}",
+    "@inboxSentOn": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestFrom": "Sol·licitud de: {name}",
+    "@inboxRequestFrom": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxRequestSentTo": "Enviat a: {name}",
+    "@inboxRequestSentTo": {
+      "placeholders": {
+        "name": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNoRatings": "Sense valoracions",
+    "inboxNotSpecified": "No esp.",
+    "inboxFinancingLabel": "Finanç.: {value}",
+    "@inboxFinancingLabel": {
+      "placeholders": {
+        "value": {
+          "type": "String"
+        }
+      }
+    },
+    "inboxNdaSigned": "NDA Signat",
+    "inboxNoNda": "Sense NDA",
+    "yesLabel": "Sí",
+    "noLabel": "No",
+    "limitRequestsTitle": "Límit de sol·licituds superat",
+    "limitRequestsMessage": "Has arribat al teu límit de sol·licituds de contacte directes. Passa't a Relevo Premium per a obtenir sol·licituds il·limitades.",
+    "limitOffersTitle": "Límit d'ofertes superat",
+    "limitOffersMessage": "Has arribat al teu límit de publicació d'ofertes. Passa't a Relevo Premium per a publicar ofertes il·limitades."
 }

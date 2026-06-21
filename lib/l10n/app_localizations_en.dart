@@ -445,7 +445,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get inboxTitle => 'Requests Inbox';
+  String get inboxTitle => 'Requests of Interest';
 
   @override
   String get inboxTabReceived => 'Received';
@@ -1176,4 +1176,150 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadMoreOffers => 'Load more offers';
+
+  @override
+  String get chatDealCloseTitle => 'Close deal';
+
+  @override
+  String get chatDealCloseDesc =>
+      'Follow the buying/selling process outside the platform. If you press it, the other user will also need to confirm to end the conversation.';
+
+  @override
+  String get chatDealClosed => 'Deal closed!';
+
+  @override
+  String get chatDealWaitingOther =>
+      'Waiting for the other user\'s confirmation...';
+
+  @override
+  String get chatDealConfirmedByYou => 'Deal confirmed by you';
+
+  @override
+  String get chatDealClosing => 'Closing deal...';
+
+  @override
+  String get chatDealOtherConfirmed =>
+      'The other user closed the deal. Only you are left to confirm!';
+
+  @override
+  String get ratingTitle => 'Deal rating';
+
+  @override
+  String ratingDesc(String name) {
+    return 'Please rate the person you made the deal with ($name):';
+  }
+
+  @override
+  String get ratingCommentPlaceholder => 'Write a comment about the deal...';
+
+  @override
+  String get ratingSubmit => 'Submit rating';
+
+  @override
+  String get ratingSending => 'Submitting rating...';
+
+  @override
+  String get ratingSent => 'Rating sent!';
+
+  @override
+  String get profileMyRatings => 'My Ratings';
+
+  @override
+  String get profileRatingsAsBuyer => 'As buyer';
+
+  @override
+  String get profileRatingsAsSeller => 'As seller';
+
+  @override
+  String get profileRatingsTitle => 'My Ratings';
+
+  @override
+  String get profileRatingsEmpty => 'You haven\'t received any ratings yet.';
+
+  @override
+  String get inboxReceived => 'Received';
+
+  @override
+  String get inboxSent => 'Sent';
+
+  @override
+  String get errorLoading => 'Error loading';
+
+  @override
+  String get inboxNoReceivedRequests =>
+      'You have not received any requests of interest yet.';
+
+  @override
+  String get inboxNoSentRequests =>
+      'You have not sent any requests of interest yet.';
+
+  @override
+  String get inboxNoProfessionalBackground =>
+      'No professional background specified.';
+
+  @override
+  String get statusAcceptedLabel => 'ACCEPTED';
+
+  @override
+  String get statusDeclinedLabel => 'DECLINED';
+
+  @override
+  String get statusPendingLabel => 'PENDING';
+
+  @override
+  String inboxReceivedOn(String date) {
+    return 'Received on $date';
+  }
+
+  @override
+  String inboxSentOn(String date) {
+    return 'Sent on $date';
+  }
+
+  @override
+  String inboxRequestFrom(String name) {
+    return 'Request from: $name';
+  }
+
+  @override
+  String inboxRequestSentTo(String name) {
+    return 'Sent to: $name';
+  }
+
+  @override
+  String get inboxNoRatings => 'No ratings';
+
+  @override
+  String get inboxNotSpecified => 'Not specified';
+
+  @override
+  String inboxFinancingLabel(String value) {
+    return 'Finan.: $value';
+  }
+
+  @override
+  String get inboxNdaSigned => 'NDA Signed';
+
+  @override
+  String get inboxNoNda => 'No NDA';
+
+  @override
+  String get yesLabel => 'Yes';
+
+  @override
+  String get noLabel => 'No';
+
+  @override
+  String get limitRequestsTitle => 'Request Limit Exceeded';
+
+  @override
+  String get limitRequestsMessage =>
+      'You have reached your direct contact request limit. Upgrade to Relevo Premium for unlimited requests.';
+
+  @override
+  String get limitOffersTitle => 'Offer Limit Exceeded';
+
+  @override
+  String get limitOffersMessage =>
+      'You have reached your offer publication limit. Upgrade to Relevo Premium to publish unlimited offers.';
 }
