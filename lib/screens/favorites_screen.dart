@@ -51,13 +51,13 @@ class FavoritesScreen extends ConsumerWidget {
         },
         color: theme.colorScheme.secondary,
         child: favoritesAsync.when(
-          loading: () => const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
+          loading: () => Padding(
+            padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top + 20.0, 16.0, 16.0),
             child: OffersShimmer(),
           ),
           error: (err, stack) => Center(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+              padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
               child: Text(
                 '$errorText: $err',
                 style: TextStyle(color: theme.colorScheme.error),
@@ -72,7 +72,7 @@ class FavoritesScreen extends ConsumerWidget {
                 child: Container(
                   height: MediaQuery.of(context).size.height - 150,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.fromLTRB(32.0, 100.0, 32.0, 32.0),
+                  padding: EdgeInsets.fromLTRB(32.0, MediaQuery.of(context).padding.top + 20.0, 32.0, 32.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -99,7 +99,7 @@ class FavoritesScreen extends ConsumerWidget {
 
             return GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 16.0),
+              padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top + 20.0, 16.0, 16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,

@@ -366,191 +366,201 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
           ),
         ),
       ),
-      bottomNavigationBar: status == 'PENDING'
-          ? SafeArea(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  color: theme.scaffoldBackgroundColor,
-                  border: Border(
-                    top: BorderSide(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.25),
-                      width: 1,
-                    ),
+      bottomNavigationBar: () {
+        final isOwner = currentUser?.id == req.owner.id;
+        if (isOwner && status == 'PENDING') {
+          return SafeArea(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                border: Border(
+                  top: BorderSide(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.25),
+                    width: 1,
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: _isProcessing
-                            ? null
-                            : () async {
-                                final scaffoldMessenger = ScaffoldMessenger.of(context);
-                                final navigator = Navigator.of(context);
-                                setState(() => _isProcessing = true);
-                                try {
-                                  await ref.read(receivedRequestsProvider.notifier).rejectRequest(req.id);
-                                  scaffoldMessenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text('${l10n.inboxStatusRejected} ${l10n.inboxStatusUpdatedSuccessfully}'),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                  navigator.pop();
-                                } catch (err) {
-                                  scaffoldMessenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text('Error: ${err.toString()}'),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                } finally {
-                                  if (mounted) setState(() => _isProcessing = false);
-                                }
-                              },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.redAccent,
-                          side: const BorderSide(color: Colors.redAccent, width: 1.5),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          l10n.inboxActionReject,
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _isProcessing
-                            ? null
-                            : () async {
-                                final scaffoldMessenger = ScaffoldMessenger.of(context);
-                                final navigator = Navigator.of(context);
-                                setState(() => _isProcessing = true);
-                                try {
-                                  await ref.read(receivedRequestsProvider.notifier).acceptRequest(req.id);
-                                  scaffoldMessenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text('${l10n.inboxStatusAccepted} ${l10n.inboxStatusUpdatedSuccessfully}'),
-                                      backgroundColor: const Color(0xFF10B981),
-                                    ),
-                                  );
-                                  navigator.pop();
-                                } catch (err) {
-                                  scaffoldMessenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text('Error: ${err.toString()}'),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                } finally {
-                                  if (mounted) setState(() => _isProcessing = false);
-                                }
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF10B981),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: _isProcessing
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                              )
-                            : Text(
-                                l10n.inboxActionAccept,
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
-                              ),
-                      ),
-                    ),
-                  ],
-                ),
               ),
-            )
-          : (status == 'ACCEPTED'
-              ? SafeArea(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      border: Border(
-                        top: BorderSide(
-                          color: theme.colorScheme.outline.withValues(alpha: 0.25),
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                        try {
-                          final chat = await ref.read(chatServiceProvider).getOrCreateChat(
-                                offer.id,
-                                interestedId: req.interestedUser.id,
-                              );
-                          if (context.mounted) {
-                            Navigator.pop(context); // Close loading dialog
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatRoomScreen(chatId: chat.id),
-                              ),
-                            );
-                          }
-                        } catch (e) {
-                          if (context.mounted) {
-                            Navigator.pop(context); // Close loading dialog
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  Localizations.localeOf(context).languageCode == 'ca'
-                                      ? 'Error al obrir el xat: $e'
-                                      : Localizations.localeOf(context).languageCode == 'es'
-                                          ? 'Error al abrir el chat: $e'
-                                          : 'Error opening chat: $e',
-                                ),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      icon: const Icon(Icons.chat_bubble_outline_rounded),
-                      label: Text(
-                        Localizations.localeOf(context).languageCode == 'ca'
-                            ? 'Xatejar amb el candidat'
-                            : Localizations.localeOf(context).languageCode == 'es'
-                                ? 'Chatear con el candidato'
-                                : 'Chat with candidate',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size.fromHeight(54),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _isProcessing
+                          ? null
+                          : () async {
+                              final scaffoldMessenger = ScaffoldMessenger.of(context);
+                              final navigator = Navigator.of(context);
+                              setState(() => _isProcessing = true);
+                              try {
+                                await ref.read(receivedRequestsProvider.notifier).rejectRequest(req.id);
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text('${l10n.inboxStatusRejected} ${l10n.inboxStatusUpdatedSuccessfully}'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
+                                navigator.pop();
+                              } catch (err) {
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error: ${err.toString()}'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
+                              } finally {
+                                if (mounted) setState(() => _isProcessing = false);
+                              }
+                            },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.redAccent,
+                        side: const BorderSide(color: Colors.redAccent, width: 1.5),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
+                      child: Text(
+                        l10n.inboxActionReject,
+                        style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                      ),
                     ),
                   ),
-                )
-              : null),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _isProcessing
+                          ? null
+                          : () async {
+                              final scaffoldMessenger = ScaffoldMessenger.of(context);
+                              final navigator = Navigator.of(context);
+                              setState(() => _isProcessing = true);
+                              try {
+                                await ref.read(receivedRequestsProvider.notifier).acceptRequest(req.id);
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text('${l10n.inboxStatusAccepted} ${l10n.inboxStatusUpdatedSuccessfully}'),
+                                    backgroundColor: const Color(0xFF10B981),
+                                  ),
+                                );
+                                navigator.pop();
+                              } catch (err) {
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error: ${err.toString()}'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
+                              } finally {
+                                if (mounted) setState(() => _isProcessing = false);
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF10B981),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: _isProcessing
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                            )
+                          : Text(
+                              l10n.inboxActionAccept,
+                              style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else if (status == 'ACCEPTED' || status == 'APPROVED') {
+          return SafeArea(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                border: Border(
+                  top: BorderSide(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.25),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                  try {
+                    final chat = await ref.read(chatServiceProvider).getOrCreateChat(
+                          offer.id,
+                          interestedId: isOwner ? req.interestedUser.id : null,
+                        );
+                    if (context.mounted) {
+                      Navigator.pop(context); // Close loading dialog
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatRoomScreen(chatId: chat.id),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      Navigator.pop(context); // Close loading dialog
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            Localizations.localeOf(context).languageCode == 'ca'
+                                ? 'Error al obrir el xat: $e'
+                                : Localizations.localeOf(context).languageCode == 'es'
+                                    ? 'Error al abrir el chat: $e'
+                                    : 'Error opening chat: $e',
+                          ),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
+                    }
+                  }
+                },
+                icon: const Icon(Icons.chat_bubble_outline_rounded),
+                label: Text(
+                  isOwner
+                      ? (Localizations.localeOf(context).languageCode == 'ca'
+                          ? 'Xatejar amb el candidat'
+                          : Localizations.localeOf(context).languageCode == 'es'
+                              ? 'Chatear con el candidato'
+                              : 'Chat with candidate')
+                      : (Localizations.localeOf(context).languageCode == 'ca'
+                          ? 'Xatejar amb el propietari'
+                          : Localizations.localeOf(context).languageCode == 'es'
+                              ? 'Chatear con el propietario'
+                              : 'Chat with owner'),
+                  style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(54),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+        return null;
+      }(),
     );
   }
 
@@ -645,7 +655,6 @@ class _SolicitudDetailsScreenState extends ConsumerState<SolicitudDetailsScreen>
     }
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     
     final estado = _isAnalyzingCv ? 'EN_PROCESO' : (request.estadoAnalisis ?? 'PENDIENTE');
 

@@ -25,11 +25,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-
   late final ScrollController _scrollController;
   late final PageController _pageController;
   int _selectedCategoryIndex = 0;
-  final Map<int, int> _lastAutoFetchedPages = {}; // Track auto-fetched pages per category index to prevent loops
+  final Map<int, int> _lastAutoFetchedPages =
+      {}; // Track auto-fetched pages per category index to prevent loops
 
   @override
   void initState() {
@@ -51,7 +51,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = Theme.of(context);
     final user = ref.watch(authProvider).value;
     final isLoggedIn = user != null;
-    final isPro = user != null &&
+    final isPro =
+        user != null &&
         (user.proActive == true || user.roles.contains('ADMIN'));
     final l10n = AppLocalizations.of(context)!;
     final localeCode = Localizations.localeOf(context).languageCode;
@@ -86,7 +87,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SliverToBoxAdapter(
                 child: Container(
                   color: theme.scaffoldBackgroundColor,
-                  padding: const EdgeInsets.only(top: 80, bottom: 8),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 20,
+                    bottom: 8,
+                  ),
                   child: Column(
                     children: [
                       // Search bar + Filter slider button row
@@ -111,11 +115,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             // Filter button (matching Stitch mockup)
                             Builder(
                               builder: (context) {
-                                final hasFilters = offersState.value?.sector != null ||
+                                final hasFilters =
+                                    offersState.value?.sector != null ||
                                     offersState.value?.region != null ||
                                     offersState.value?.employeeRange != null ||
                                     offersState.value?.revenueRange != null ||
-                                    offersState.value?.creationYearFrom != null ||
+                                    offersState.value?.creationYearFrom !=
+                                        null ||
                                     offersState.value?.creationYearTo != null;
 
                                 return Container(
@@ -127,7 +133,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     border: Border.all(
                                       color: hasFilters
                                           ? theme.colorScheme.primary
-                                          : theme.colorScheme.outline.withOpacity(0.15),
+                                          : theme.colorScheme.outline
+                                                .withOpacity(0.15),
                                       width: hasFilters ? 1.8 : 1.0,
                                     ),
                                   ),
@@ -136,29 +143,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       Icons.tune_outlined,
                                       color: hasFilters
                                           ? theme.colorScheme.primary
-                                          : theme.colorScheme.onSurface.withOpacity(0.8),
+                                          : theme.colorScheme.onSurface
+                                                .withOpacity(0.8),
                                     ),
                                     onPressed: () {
                                       if (!isPro) {
-                                        showPremiumInviteDialog(context, isLoggedIn: isLoggedIn);
+                                        showPremiumInviteDialog(
+                                          context,
+                                          isLoggedIn: isLoggedIn,
+                                        );
                                       } else {
                                         _showFiltersBottomSheet(context);
                                       }
                                     },
                                   ),
                                 );
-                              }
+                              },
                             ),
                           ],
                         ),
                       ),
-                      
+
                       // Horizontal Category Chips
                       SizedBox(
                         height: 50,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           itemCount: categories.length,
                           itemBuilder: (context, index) {
                             final cat = categories[index];
@@ -171,7 +185,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 checkmarkColor: Colors.white,
                                 onSelected: (selected) {
                                   setState(() {
-                                    _selectedCategoryIndex = selected ? index : 0;
+                                    _selectedCategoryIndex = selected
+                                        ? index
+                                        : 0;
                                   });
                                   _pageController.animateToPage(
                                     selected ? index : 0,
@@ -179,20 +195,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     curve: Curves.easeInOut,
                                   );
                                 },
-                                labelStyle: theme.textTheme.labelMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : theme.colorScheme.onSurface,
-                                ),
+                                labelStyle: theme.textTheme.labelMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : theme.colorScheme.onSurface,
+                                    ),
                                 selectedColor: theme.colorScheme.primary,
-                                backgroundColor: theme.colorScheme.surfaceContainer,
+                                backgroundColor:
+                                    theme.colorScheme.surfaceContainer,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   side: BorderSide(
                                     color: isSelected
                                         ? Colors.transparent
-                                        : theme.colorScheme.outline.withOpacity(0.15),
+                                        : theme.colorScheme.outline.withOpacity(
+                                            0.15,
+                                          ),
                                   ),
                                 ),
                               ),
@@ -222,13 +242,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? offers.where((o) => o.owner != user.id).toList()
                       : offers;
 
-                  final List<String> categoryKeys = ['', 'HOSPITALITY', 'RETAIL', 'INDUSTRIAL', 'HEALTHCARE', 'SERVICES'];
+                  final List<String> categoryKeys = [
+                    '',
+                    'HOSPITALITY',
+                    'RETAIL',
+                    'INDUSTRIAL',
+                    'HEALTHCARE',
+                    'SERVICES',
+                  ];
 
                   final displayed = catIndex == 0
                       ? filtered
                       : filtered
-                          .where((o) => o.sector.toUpperCase().trim() == categoryKeys[catIndex])
-                          .toList();
+                            .where(
+                              (o) =>
+                                  o.sector.toUpperCase().trim() ==
+                                  categoryKeys[catIndex],
+                            )
+                            .toList();
 
                   final displayedOffers = isLoggedIn
                       ? displayed
@@ -257,9 +288,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   return NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       // Listen to scroll events on the inner CustomScrollView scrollable
-                      if (scrollInfo.depth == 0 && scrollInfo is ScrollUpdateNotification) {
-                        if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200) {
-                          if (isLoggedIn && !stateData.isLoadingMore && stateData.pagination?.hasNextPage == true) {
+                      if (scrollInfo.depth == 0 &&
+                          scrollInfo is ScrollUpdateNotification) {
+                        if (scrollInfo.metrics.pixels >=
+                            scrollInfo.metrics.maxScrollExtent - 200) {
+                          if (isLoggedIn &&
+                              !stateData.isLoadingMore &&
+                              stateData.pagination?.hasNextPage == true) {
                             ref.read(offersProvider.notifier).fetchNextPage();
                           }
                         }
@@ -283,7 +318,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                        color: theme.colorScheme.onSurface
+                                            .withOpacity(0.6),
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -298,45 +334,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           )
                         else ...[
                           SliverPadding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 16.0,
+                            ),
                             sliver: SliverGrid(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 16,
-                                childAspectRatio: 0.72,
-                              ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final isLocked = isLoggedIn &&
-                                      !isPro &&
-                                      stateData.searchQuery.trim().isNotEmpty &&
-                                      index >= 12;
-                                  Widget card = OfferCardGrid(
-                                    offer: displayedOffers[index],
-                                    isLocked: isLocked,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 16,
+                                    childAspectRatio: 0.72,
+                                  ),
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final isLocked =
+                                    isLoggedIn &&
+                                    !isPro &&
+                                    stateData.searchQuery.trim().isNotEmpty &&
+                                    index >= 12;
+                                Widget card = OfferCardGrid(
+                                  offer: displayedOffers[index],
+                                  isLocked: isLocked,
+                                );
+                                if (!isLoggedIn && (index == 2 || index == 3)) {
+                                  card = ShaderMask(
+                                    shaderCallback: (rect) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.white,
+                                          Colors.white.withOpacity(0.0),
+                                        ],
+                                        stops: const [0.1, 0.9],
+                                      ).createShader(rect);
+                                    },
+                                    blendMode: BlendMode.dstIn,
+                                    child: card,
                                   );
-                                  if (!isLoggedIn && (index == 2 || index == 3)) {
-                                    card = ShaderMask(
-                                      shaderCallback: (rect) {
-                                        return LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.white,
-                                            Colors.white.withOpacity(0.0),
-                                          ],
-                                          stops: const [0.1, 0.9],
-                                        ).createShader(rect);
-                                      },
-                                      blendMode: BlendMode.dstIn,
-                                      child: card,
-                                    );
-                                  }
-                                  return card;
-                                },
-                                childCount: displayedOffers.length,
-                              ),
+                                }
+                                return card;
+                              }, childCount: displayedOffers.length),
                             ),
                           ),
                           if (stateData.isLoadingMore)
@@ -351,13 +392,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const SliverToBoxAdapter(
                             child: SizedBox(height: 100),
                           ),
-                        ]
+                        ],
                       ],
                     ),
                   );
                 },
                 loading: () => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 24.0,
+                  ),
                   child: OffersShimmer(),
                 ),
                 error: (err, st) => Center(child: Text('Error: $err')),
@@ -369,8 +413,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-
-
   void _showFiltersBottomSheet(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
@@ -380,9 +422,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     String? selectedEmployee = currentFilterState?.employeeRange;
     String? selectedRevenue = currentFilterState?.revenueRange;
 
-    final regionController = TextEditingController(text: currentFilterState?.region ?? '');
-    final yearFromController = TextEditingController(text: currentFilterState?.creationYearFrom?.toString() ?? '');
-    final yearToController = TextEditingController(text: currentFilterState?.creationYearTo?.toString() ?? '');
+    final regionController = TextEditingController(
+      text: currentFilterState?.region ?? '',
+    );
+    final yearFromController = TextEditingController(
+      text: currentFilterState?.creationYearFrom?.toString() ?? '',
+    );
+    final yearToController = TextEditingController(
+      text: currentFilterState?.creationYearTo?.toString() ?? '',
+    );
 
     String getLocalizedSectorName(String sectorKey) {
       switch (sectorKey.toLowerCase()) {
@@ -505,14 +553,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           value: null,
                           child: Text('Todos los sectores'),
                         ),
-                        ...['TECHNOLOGY', 'HOSPITALITY', 'SERVICES', 'INDUSTRIAL', 'RETAIL', 'HEALTHCARE', 'LOGISTICS', 'EDUCATION'].map((sect) {
+                        ...[
+                          'TECHNOLOGY',
+                          'HOSPITALITY',
+                          'SERVICES',
+                          'INDUSTRIAL',
+                          'RETAIL',
+                          'HEALTHCARE',
+                          'LOGISTICS',
+                          'EDUCATION',
+                        ].map((sect) {
                           return DropdownMenuItem<String>(
                             value: sect,
                             child: Text(getLocalizedSectorName(sect)),
                           );
                         }),
                       ],
-                      onChanged: (val) => setModalState(() => selectedSector = val),
+                      onChanged: (val) =>
+                          setModalState(() => selectedSector = val),
                     ),
                     const SizedBox(height: 16),
 
@@ -553,7 +611,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           );
                         }),
                       ],
-                      onChanged: (val) => setModalState(() => selectedEmployee = val),
+                      onChanged: (val) =>
+                          setModalState(() => selectedEmployee = val),
                     ),
                     const SizedBox(height: 16),
 
@@ -580,7 +639,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           );
                         }),
                       ],
-                      onChanged: (val) => setModalState(() => selectedRevenue = val),
+                      onChanged: (val) =>
+                          setModalState(() => selectedRevenue = val),
                     ),
                     const SizedBox(height: 16),
 
@@ -595,7 +655,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               labelText: 'Año desde',
                               prefixIcon: Icon(Icons.calendar_today_outlined),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12),
+                                ),
                               ),
                               hintText: '1800',
                             ),
@@ -610,7 +672,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               labelText: 'Año hasta',
                               prefixIcon: Icon(Icons.calendar_today_outlined),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12),
+                                ),
                               ),
                               hintText: '2026',
                             ),
@@ -635,8 +699,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         final yearFromStr = yearFromController.text.trim();
                         final yearToStr = yearToController.text.trim();
 
-                        final int? yearFrom = yearFromStr.isEmpty ? null : int.tryParse(yearFromStr);
-                        final int? yearTo = yearToStr.isEmpty ? null : int.tryParse(yearToStr);
+                        final int? yearFrom = yearFromStr.isEmpty
+                            ? null
+                            : int.tryParse(yearFromStr);
+                        final int? yearTo = yearToStr.isEmpty
+                            ? null
+                            : int.tryParse(yearToStr);
 
                         // If all filters are cleared/null, call clearFilters()
                         if (selectedSector == null &&
@@ -647,14 +715,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             yearTo == null) {
                           ref.read(offersProvider.notifier).clearFilters();
                         } else {
-                          ref.read(offersProvider.notifier).updateFilters(
-                            sector: selectedSector,
-                            region: region.isEmpty ? null : region,
-                            employeeRange: selectedEmployee,
-                            revenueRange: selectedRevenue,
-                            creationYearFrom: yearFrom,
-                            creationYearTo: yearTo,
-                          );
+                          ref
+                              .read(offersProvider.notifier)
+                              .updateFilters(
+                                sector: selectedSector,
+                                region: region.isEmpty ? null : region,
+                                employeeRange: selectedEmployee,
+                                revenueRange: selectedRevenue,
+                                creationYearFrom: yearFrom,
+                                creationYearTo: yearTo,
+                              );
                         }
                         Navigator.pop(context);
                       },

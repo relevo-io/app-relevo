@@ -51,7 +51,7 @@ class ChatListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: null,
       body: Padding(
-        padding: const EdgeInsets.only(top: 80.0),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
         child: chatsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(

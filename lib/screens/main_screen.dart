@@ -488,6 +488,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     height: 60,
                     elevation: 0,
                     backgroundColor: Colors.transparent,
+                    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                     onDestinationSelected: (index) {
                       ref
                           .read(mainNavigationIndexProvider.notifier)

@@ -12,7 +12,6 @@ import 'login_screen.dart';
 import 'register_screen.dart';
 import 'mentoring_screen.dart';
 import 'manage_alerts_screen.dart';
-import 'notifications_inbox_screen.dart';
 import 'notification_preferences_screen.dart';
 import '../data/providers/mentoring_provider.dart';
 import 'favorites_screen.dart';
@@ -37,7 +36,7 @@ class ProfileScreen extends ConsumerWidget {
         appBar: null,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 110.0),
+          padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 110.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -363,7 +362,7 @@ class ProfileScreen extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 80.0, 24.0, 110.0),
+            padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 110.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

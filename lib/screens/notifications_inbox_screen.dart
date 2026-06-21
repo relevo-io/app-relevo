@@ -119,7 +119,7 @@ class NotificationsInboxScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
 
-    final topPadding = MediaQuery.of(context).padding.top + 68.0;
+    final topPadding = MediaQuery.of(context).padding.top + 20.0;
 
     return Scaffold(
       extendBodyBehindAppBar: true,

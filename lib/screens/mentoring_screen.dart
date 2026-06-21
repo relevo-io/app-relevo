@@ -77,7 +77,7 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                   return [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+                        padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(

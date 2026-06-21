@@ -215,7 +215,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
               children: [
                 // Premium Banner Header with Elegant Theme Gradient
                 Container(
-                  padding: const EdgeInsets.fromLTRB(24, 100, 24, 40),
+                  padding: EdgeInsets.fromLTRB(24, MediaQuery.of(context).padding.top + 20.0, 24, 40),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
