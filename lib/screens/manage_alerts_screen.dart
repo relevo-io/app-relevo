@@ -50,11 +50,19 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: GlassmorphicAppBar(
-        title: Text(l10n.alertsTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.alertsTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
+        padding: EdgeInsets.fromLTRB(
+          24.0,
+          MediaQuery.of(context).padding.top + 20.0,
+          24.0,
+          24.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -232,7 +240,7 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
                               Icons.delete_outline,
                               color: theme.colorScheme.error,
                             ),
-                             onPressed: () async {
+                            onPressed: () async {
                               try {
                                 await ref
                                     .read(alertsStateProvider.notifier)

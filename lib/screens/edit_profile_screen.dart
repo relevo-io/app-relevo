@@ -121,101 +121,106 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
+        padding: EdgeInsets.fromLTRB(
+          24.0,
+          MediaQuery.of(context).padding.top + 20.0,
+          24.0,
+          24.0,
+        ),
         child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (_error != null) ...[
-                  ErrorBanner(message: _error!),
-                  const SizedBox(height: 24),
-                ],
-                Container(
-                  padding: const EdgeInsets.all(24.0),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.35),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      CustomTextField(
-                        controller: _nameController,
-                        label: l10n.fullNameLabel,
-                        hint: l10n.fullNameHint,
-                        icon: Icons.person_outline,
-                        textInputAction: TextInputAction.next,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.errorRequiredField;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _locationController,
-                        label: l10n.profileLocationLabel,
-                        hint: l10n.profileLocationHint,
-                        icon: Icons.location_on_outlined,
-                        textInputAction: TextInputAction.next,
-                      ),
-                      const SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _bioController,
-                        label: l10n.profileBioLabel,
-                        hint: l10n.profileBioHint,
-                        icon: Icons.info_outline_rounded,
-                        maxLines: 3,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline,
-                      ),
-                      const SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _backgroundController,
-                        label: l10n.profileBackgroundLabel,
-                        hint: l10n.profileBackgroundHint,
-                        icon: Icons.business_center_outlined,
-                        maxLines: 4,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline,
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: authState.isLoading ? null : _saveProfile,
-                        style: theme.elevatedButtonTheme.style?.copyWith(
-                          elevation: const WidgetStatePropertyAll(0),
-                        ),
-                        child: authState.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(l10n.profileSaveButton),
-                      ),
-                    ],
-                  ),
-                ),
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (_error != null) ...[
+                ErrorBanner(message: _error!),
+                const SizedBox(height: 24),
               ],
-            ),
+              Container(
+                padding: const EdgeInsets.all(24.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: theme.colorScheme.outline.withValues(alpha: 0.35),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    CustomTextField(
+                      controller: _nameController,
+                      label: l10n.fullNameLabel,
+                      hint: l10n.fullNameHint,
+                      icon: Icons.person_outline,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return l10n.errorRequiredField;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      controller: _locationController,
+                      label: l10n.profileLocationLabel,
+                      hint: l10n.profileLocationHint,
+                      icon: Icons.location_on_outlined,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      controller: _bioController,
+                      label: l10n.profileBioLabel,
+                      hint: l10n.profileBioHint,
+                      icon: Icons.info_outline_rounded,
+                      maxLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      controller: _backgroundController,
+                      label: l10n.profileBackgroundLabel,
+                      hint: l10n.profileBackgroundHint,
+                      icon: Icons.business_center_outlined,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: authState.isLoading ? null : _saveProfile,
+                      style: theme.elevatedButtonTheme.style?.copyWith(
+                        elevation: const WidgetStatePropertyAll(0),
+                      ),
+                      child: authState.isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(l10n.profileSaveButton),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

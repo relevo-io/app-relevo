@@ -16,7 +16,8 @@ class MentoringScreen extends ConsumerStatefulWidget {
   ConsumerState<MentoringScreen> createState() => _MentoringScreenState();
 }
 
-class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTickerProviderStateMixin {
+class _MentoringScreenState extends ConsumerState<MentoringScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -46,12 +47,13 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: GlassmorphicAppBar(
-        title: Text(l10n.mentoringTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.mentoringTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: modulesAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Text(
             l10n.mentoringError(error.toString()),
@@ -60,9 +62,7 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
         ),
         data: (modules) {
           return progressAsync.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stack) => Center(
               child: Text(
                 l10n.mentoringError(error.toString()),
@@ -77,7 +77,12 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                   return [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
+                        padding: EdgeInsets.fromLTRB(
+                          24.0,
+                          MediaQuery.of(context).padding.top + 20.0,
+                          24.0,
+                          24.0,
+                        ),
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
@@ -92,7 +97,9 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: 0.15,
+                                ),
                                 blurRadius: 20,
                                 offset: const Offset(0, 8),
                               ),
@@ -117,10 +124,12 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                                       borderRadius: BorderRadius.circular(10),
                                       child: LinearProgressIndicator(
                                         value: percentage / 100.0,
-                                        backgroundColor: Colors.white.withValues(alpha: 0.2),
-                                        valueColor: const AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
-                                        ),
+                                        backgroundColor: Colors.white
+                                            .withValues(alpha: 0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                              Colors.white,
+                                            ),
                                         minHeight: 12,
                                       ),
                                     ),
@@ -146,7 +155,10 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                       delegate: _TabBarDelegate(
                         child: Container(
                           color: theme.colorScheme.surface,
-                          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0,
+                            vertical: 8.0,
+                          ),
                           child: Container(
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainer,
@@ -160,7 +172,8 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                                 color: theme.colorScheme.primary,
                               ),
                               labelColor: Colors.white,
-                              unselectedLabelColor: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              unselectedLabelColor: theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.6),
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: [
                                 Tab(text: l10n.mentoringTabBuy),
@@ -245,10 +258,8 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ModuleDetailScreen(
-              module: module,
-              isCompleted: isCompleted,
-            ),
+            builder: (context) =>
+                ModuleDetailScreen(module: module, isCompleted: isCompleted),
           ),
         );
       },
@@ -286,7 +297,9 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
               ),
               child: Icon(
                 isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: isCompleted ? theme.colorScheme.secondary : theme.colorScheme.primary,
+                color: isCompleted
+                    ? theme.colorScheme.secondary
+                    : theme.colorScheme.primary,
                 size: 24,
               ),
             ),
@@ -321,23 +334,34 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                       Icon(
                         Icons.access_time_rounded,
                         size: 14,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         l10n.mentoringDurationMinutes(module.duration),
                         style: TextStyle(
                           fontSize: 12,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: isCompleted
-                              ? theme.colorScheme.secondary.withValues(alpha: 0.1)
-                              : theme.colorScheme.onSurface.withValues(alpha: 0.05),
+                              ? theme.colorScheme.secondary.withValues(
+                                  alpha: 0.1,
+                                )
+                              : theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.05,
+                                ),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -349,7 +373,9 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen> with SingleTi
                             fontWeight: FontWeight.bold,
                             color: isCompleted
                                 ? theme.colorScheme.secondary
-                                : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                : theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.6,
+                                  ),
                           ),
                         ),
                       ),
@@ -370,7 +396,11 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   _TabBarDelegate({required this.child});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return child;
   }
 

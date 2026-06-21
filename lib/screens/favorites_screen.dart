@@ -19,20 +19,20 @@ class FavoritesScreen extends ConsumerWidget {
     final String titleText = locale == 'ca'
         ? 'Els meus preferits'
         : locale == 'es'
-            ? 'Mis favoritos'
-            : 'My Favorites';
+        ? 'Mis favoritos'
+        : 'My Favorites';
 
     final String emptyText = locale == 'ca'
         ? 'No tens cap oferta preferida encara.'
         : locale == 'es'
-            ? 'No tienes ninguna oferta favorita todavía.'
-            : 'You do not have any favorite offers yet.';
+        ? 'No tienes ninguna oferta favorita todavía.'
+        : 'You do not have any favorite offers yet.';
 
     final String errorText = locale == 'ca'
         ? 'Error al carregar els preferits'
         : locale == 'es'
-            ? 'Error al cargar los favoritos'
-            : 'Error loading favorites';
+        ? 'Error al cargar los favoritos'
+        : 'Error loading favorites';
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -52,12 +52,22 @@ class FavoritesScreen extends ConsumerWidget {
         color: theme.colorScheme.secondary,
         child: favoritesAsync.when(
           loading: () => Padding(
-            padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top + 20.0, 16.0, 16.0),
+            padding: EdgeInsets.fromLTRB(
+              16.0,
+              MediaQuery.of(context).padding.top + 20.0,
+              16.0,
+              16.0,
+            ),
             child: OffersShimmer(),
           ),
           error: (err, stack) => Center(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(24.0, MediaQuery.of(context).padding.top + 20.0, 24.0, 24.0),
+              padding: EdgeInsets.fromLTRB(
+                24.0,
+                MediaQuery.of(context).padding.top + 20.0,
+                24.0,
+                24.0,
+              ),
               child: Text(
                 '$errorText: $err',
                 style: TextStyle(color: theme.colorScheme.error),
@@ -72,21 +82,30 @@ class FavoritesScreen extends ConsumerWidget {
                 child: Container(
                   height: MediaQuery.of(context).size.height - 150,
                   alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(32.0, MediaQuery.of(context).padding.top + 20.0, 32.0, 32.0),
+                  padding: EdgeInsets.fromLTRB(
+                    32.0,
+                    MediaQuery.of(context).padding.top + 20.0,
+                    32.0,
+                    32.0,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.favorite_border_rounded,
                         size: 64,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.3,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         emptyText,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),
@@ -99,7 +118,12 @@ class FavoritesScreen extends ConsumerWidget {
 
             return GridView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top + 20.0, 16.0, 16.0),
+              padding: EdgeInsets.fromLTRB(
+                16.0,
+                MediaQuery.of(context).padding.top + 20.0,
+                16.0,
+                16.0,
+              ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,

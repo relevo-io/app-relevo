@@ -23,21 +23,17 @@ class NotificationsInboxScreen extends ConsumerWidget {
     notification,
   ) async {
     final theme = Theme.of(context);
-    
+
     // Marcar como leído en local inmediatamente al pulsar
     if (!notification.isRead) {
-      ref
-          .read(notificationsStateProvider.notifier)
-          .markAsRead(notification.id);
+      ref.read(notificationsStateProvider.notifier).markAsRead(notification.id);
     }
 
     // Mostrar loader dialog
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
     try {
@@ -87,8 +83,7 @@ class NotificationsInboxScreen extends ConsumerWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    OfferDetailsScreen(offer: offerDetail),
+                builder: (context) => OfferDetailsScreen(offer: offerDetail),
               ),
             );
           }
@@ -119,7 +114,7 @@ class NotificationsInboxScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
 
-    final topPadding = MediaQuery.of(context).padding.top + 20.0;
+    final topPadding = MediaQuery.of(context).padding.top + 70.0;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -221,229 +216,284 @@ class NotificationsInboxScreen extends ConsumerWidget {
               ),
             ),
           ),
-            Expanded(
-              child: notificationsAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(
-                  child: Text(
-                    err.toString(),
-                    style: TextStyle(color: theme.colorScheme.error),
-                  ),
+          Expanded(
+            child: notificationsAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Center(
+                child: Text(
+                  err.toString(),
+                  style: TextStyle(color: theme.colorScheme.error),
                 ),
-                data: (notifications) {
-                  final content = notifications.isEmpty
-                      ? SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 80.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.notifications_off_outlined,
-                                    size: 64,
-                                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+              ),
+              data: (notifications) {
+                final content = notifications.isEmpty
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 80.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.notifications_off_outlined,
+                                  size: 64,
+                                  color: theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.2,
                                   ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    l10n.notificationsEmpty,
-                                    style: GoogleFonts.inter(
-                                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0),
-                  itemCount: notifications.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 16),
-                  itemBuilder: (context, index) {
-                    final notification = notifications[index];
-                    final isUnread = !notification.isRead;
-                    final String titleText = notification.title.isNotEmpty
-                        ? notification.title
-                        : (notification.type == 'NUEVA_OFERTA'
-                            ? l10n.notificationsNewOffer(notification.data['sector'] ?? '')
-                            : notification.type);
-                    final String bodyText = notification.body;
-
-                    final timeAgoStr = notification.createdAt != null
-                        ? timeago.format(notification.createdAt!, locale: locale)
-                        : '';
-
-                    return Dismissible(
-                      key: Key(notification.id),
-                      direction: DismissDirection.endToStart,
-                      confirmDismiss: (direction) async {
-                        return await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(l10n.notificationsDelete),
-                            content: Text(l10n.notificationsDeleteConfirm),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text(l10n.notificationsCancel),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                style: TextButton.styleFrom(
-                                  foregroundColor: theme.colorScheme.error,
                                 ),
-                                child: Text(l10n.notificationsDelete),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      background: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 24.0),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.error,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(
-                          Icons.delete_outline_rounded,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                      onDismissed: (direction) async {
-                        try {
-                          await ref
-                              .read(notificationsStateProvider.notifier)
-                              .deleteNotification(notification.id);
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: theme.colorScheme.error,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () => _handleNotificationTap(context, ref, notification),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: isUnread
-                                ? theme.colorScheme.primary.withValues(alpha: 0.08)
-                                : theme.colorScheme.surface,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: isUnread
-                                  ? theme.colorScheme.primary.withValues(alpha: 0.3)
-                                  : theme.colorScheme.outline.withValues(alpha: 0.08),
-                              width: isUnread ? 1.5 : 1.0,
+                                const SizedBox(height: 16),
+                                Text(
+                                  l10n.notificationsEmpty,
+                                  style: GoogleFonts.inter(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.5),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
+                        ),
+                      )
+                    : ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(
+                          left: 24.0,
+                          right: 24.0,
+                          bottom: 24.0,
+                        ),
+                        itemCount: notifications.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 16),
+                        itemBuilder: (context, index) {
+                          final notification = notifications[index];
+                          final isUnread = !notification.isRead;
+                          final String titleText = notification.title.isNotEmpty
+                              ? notification.title
+                              : (notification.type == 'NUEVA_OFERTA'
+                                    ? l10n.notificationsNewOffer(
+                                        notification.data['sector'] ?? '',
+                                      )
+                                    : notification.type);
+                          final String bodyText = notification.body;
+
+                          final timeAgoStr = notification.createdAt != null
+                              ? timeago.format(
+                                  notification.createdAt!,
+                                  locale: locale,
+                                )
+                              : '';
+
+                          return Dismissible(
+                            key: Key(notification.id),
+                            direction: DismissDirection.endToStart,
+                            confirmDismiss: (direction) async {
+                              return await showDialog<bool>(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(l10n.notificationsDelete),
+                                  content: Text(
+                                    l10n.notificationsDeleteConfirm,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: Text(l10n.notificationsCancel),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      style: TextButton.styleFrom(
+                                        foregroundColor:
+                                            theme.colorScheme.error,
+                                      ),
+                                      child: Text(l10n.notificationsDelete),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.only(right: 24.0),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.error,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const Icon(
+                                Icons.delete_outline_rounded,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                            onDismissed: (direction) async {
+                              try {
+                                await ref
+                                    .read(notificationsStateProvider.notifier)
+                                    .deleteNotification(notification.id);
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.toString()),
+                                      backgroundColor: theme.colorScheme.error,
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(16),
+                              onTap: () => _handleNotificationTap(
+                                context,
+                                ref,
+                                notification,
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   color: isUnread
-                                      ? theme.colorScheme.primary.withValues(alpha: 0.12)
-                                      : theme.colorScheme.onSurface.withValues(alpha: 0.04),
-                                  shape: BoxShape.circle,
+                                      ? theme.colorScheme.primary.withValues(
+                                          alpha: 0.08,
+                                        )
+                                      : theme.colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isUnread
+                                        ? theme.colorScheme.primary.withValues(
+                                            alpha: 0.3,
+                                          )
+                                        : theme.colorScheme.outline.withValues(
+                                            alpha: 0.08,
+                                          ),
+                                    width: isUnread ? 1.5 : 1.0,
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.notifications_outlined,
-                                  color: isUnread
-                                      ? theme.colorScheme.primary
-                                      : theme.colorScheme.onSurface.withValues(alpha: 0.4),
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      titleText,
-                                      style: GoogleFonts.inter(
-                                        fontWeight: isUnread ? FontWeight.w900 : FontWeight.w500,
-                                        fontSize: 14,
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
                                         color: isUnread
-                                            ? theme.colorScheme.onSurface
-                                            : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                                            ? theme.colorScheme.primary
+                                                  .withValues(alpha: 0.12)
+                                            : theme.colorScheme.onSurface
+                                                  .withValues(alpha: 0.04),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.notifications_outlined,
+                                        color: isUnread
+                                            ? theme.colorScheme.primary
+                                            : theme.colorScheme.onSurface
+                                                  .withValues(alpha: 0.4),
+                                        size: 20,
                                       ),
                                     ),
-                                    if (bodyText.isNotEmpty) ...[
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        bodyText,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 13,
-                                          fontWeight: isUnread ? FontWeight.w600 : FontWeight.normal,
-                                          color: isUnread
-                                              ? theme.colorScheme.onSurface.withValues(alpha: 0.85)
-                                              : theme.colorScheme.onSurface.withValues(alpha: 0.55),
-                                        ),
-                                      ),
-                                    ],
-                                    if (timeAgoStr.isNotEmpty) ...[
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        timeAgoStr,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 11,
-                                          color: theme.colorScheme.onSurface.withValues(
-                                            alpha: isUnread ? 0.5 : 0.3,
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            titleText,
+                                            style: GoogleFonts.inter(
+                                              fontWeight: isUnread
+                                                  ? FontWeight.w900
+                                                  : FontWeight.w500,
+                                              fontSize: 14,
+                                              color: isUnread
+                                                  ? theme.colorScheme.onSurface
+                                                  : theme.colorScheme.onSurface
+                                                        .withValues(alpha: 0.7),
+                                            ),
                                           ),
+                                          if (bodyText.isNotEmpty) ...[
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              bodyText,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 13,
+                                                fontWeight: isUnread
+                                                    ? FontWeight.w600
+                                                    : FontWeight.normal,
+                                                color: isUnread
+                                                    ? theme
+                                                          .colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.85,
+                                                          )
+                                                    : theme
+                                                          .colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.55,
+                                                          ),
+                                              ),
+                                            ),
+                                          ],
+                                          if (timeAgoStr.isNotEmpty) ...[
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              timeAgoStr,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 11,
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withValues(
+                                                      alpha: isUnread
+                                                          ? 0.5
+                                                          : 0.3,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                    if (isUnread)
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                          left: 8,
+                                          top: 4,
+                                        ),
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.primary,
+                                          shape: BoxShape.circle,
                                         ),
                                       ),
-                                    ],
                                   ],
                                 ),
                               ),
-                              if (isUnread)
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8, top: 4),
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
+                            ),
+                          );
+                        },
+                      );
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(notificationsStateProvider);
-              try {
-                await ref.read(notificationsStateProvider.future);
-              } catch (_) {}
-            },
-            color: const Color(0xFF10B981),
-            child: content,
-          );
-        },
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(notificationsStateProvider);
+                    try {
+                      await ref.read(notificationsStateProvider.future);
+                    } catch (_) {}
+                  },
+                  color: const Color(0xFF10B981),
+                  child: content,
+                );
+              },
+            ),
+          ),
+        ],
       ),
-    ),
-  ],
-),
     );
   }
 }
