@@ -6,6 +6,7 @@ import '../data/models/user_model.dart';
 import '../l10n/app_localizations.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
+import '../utils/snackbar_utils.dart';
 
 class NotificationPreferencesScreen extends ConsumerStatefulWidget {
   const NotificationPreferencesScreen({super.key});
@@ -44,23 +45,17 @@ class _NotificationPreferencesScreenState
           .updateNotificationPreferences(newPrefs.toJson());
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.notificationPrefSaveSuccess),
-            behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 2),
-          ),
+        showRelevoSnackBar(
+          context,
+          message: l10n.notificationPrefSaveSuccess,
         );
       }
     } catch (e) {
       if (mounted) {
-        final theme = Theme.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: theme.colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
+        showRelevoSnackBar(
+          context,
+          message: e.toString(),
+          isError: true,
         );
       }
     } finally {
@@ -287,7 +282,7 @@ class _NotificationPreferencesScreenState
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: theme.colorScheme.primary,
+            activeThumbColor: theme.colorScheme.primary,
             activeTrackColor: theme.colorScheme.primary.withValues(alpha: 0.2),
             inactiveThumbColor: theme.colorScheme.outline,
             inactiveTrackColor: theme.colorScheme.surface,

@@ -40,6 +40,23 @@ class RelevoTheme {
         onSurfaceVariant: lightTextSecondary,
       ),
       textTheme: _buildTextTheme(ThemeData.light().textTheme, Brightness.light),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: const Color(0xE6ECEEF0),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: lightOutline.withOpacity(0.55),
+            width: 1.2,
+          ),
+        ),
+        contentTextStyle: const TextStyle(
+          color: lightTextPrimary,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: lightBg,
         elevation: 0,
@@ -120,6 +137,23 @@ class RelevoTheme {
         onSurfaceVariant: darkTextSecondary,
       ),
       textTheme: _buildTextTheme(ThemeData.dark().textTheme, Brightness.dark),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: const Color(0xE6171F33),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: darkOutline.withOpacity(0.55),
+            width: 1.2,
+          ),
+        ),
+        contentTextStyle: const TextStyle(
+          color: darkTextPrimary,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: darkBg,
         elevation: 0,

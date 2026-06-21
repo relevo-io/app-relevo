@@ -4,6 +4,7 @@ import '../data/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/error_banner.dart';
+import '../utils/snackbar_utils.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
 
@@ -70,29 +71,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle_outline, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    l10n.profileSaveSuccess,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        showRelevoSnackBar(
+          context,
+          message: l10n.profileSaveSuccess,
         );
         Navigator.pop(context);
       }
@@ -123,7 +104,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.fromLTRB(
           24.0,
-          MediaQuery.of(context).padding.top + 20.0,
+          MediaQuery.of(context).padding.top + 92.0,
           24.0,
           24.0,
         ),

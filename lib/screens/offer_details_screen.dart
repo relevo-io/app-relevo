@@ -20,6 +20,7 @@ import '../data/providers/notification_provider.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
 import '../theme/relevo_theme.dart';
+import '../utils/snackbar_utils.dart';
 
 class OfferDetailsScreen extends ConsumerStatefulWidget {
   final Offer offer;
@@ -104,19 +105,18 @@ class _OfferDetailsScreenState extends ConsumerState<OfferDetailsScreen>
                     final msg = nowFav
                         ? l10n.offerDetailsFavoriteAdded
                         : l10n.offerDetailsFavoriteRemoved;
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(msg),
-                        duration: const Duration(seconds: 2),
-                      ),
+                    showRelevoSnackBar(
+                      context,
+                      message: msg,
                     );
                   }
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(
+                    showRelevoSnackBar(
                       context,
-                    ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                      message: 'Error: $e',
+                      isError: true,
+                    );
                   }
                 }
               },
@@ -405,13 +405,10 @@ class _OfferDetailsScreenState extends ConsumerState<OfferDetailsScreen>
                                     Navigator.pop(
                                       context,
                                     ); // Close loading dialog
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          l10n.offerDetailsChatError(e.toString()),
-                                        ),
-                                        backgroundColor: Colors.redAccent,
-                                      ),
+                                    showRelevoSnackBar(
+                                      context,
+                                      message: l10n.offerDetailsChatError(e.toString()),
+                                      isError: true,
                                     );
                                   }
                                 }
@@ -532,44 +529,53 @@ class _OfferDetailsScreenState extends ConsumerState<OfferDetailsScreen>
         ? l10n.inboxStatusAccepted
         : l10n.inboxStatusRejected;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: textColor.withValues(alpha: 0.3), width: 1),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: textColor, size: 28),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label.toUpperCase(),
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w900,
-                    color: textColor,
-                    letterSpacing: 0.8,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: textColor.withValues(alpha: 0.8),
-                  ),
-                ),
-              ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: bgColor.withValues(alpha: isDark ? 0.25 : 0.45),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: textColor.withValues(alpha: isDark ? 0.35 : 0.55),
+              width: 1.2,
             ),
           ),
-        ],
+          child: Row(
+            children: [
+              Icon(icon, color: textColor, size: 28),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label.toUpperCase(),
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        color: textColor,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      description,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: textColor.withValues(alpha: 0.8),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -1067,11 +1073,10 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                 final isFormValid = _formKey.currentState!.validate();
 
                                 if (!_ndaAccepted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(l10n.offerApplyNdaError),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
+                                  showRelevoSnackBar(
+                                    context,
+                                    message: l10n.offerApplyNdaError,
+                                    isError: true,
                                   );
                                   return;
                                 }
@@ -1236,19 +1241,15 @@ class _ApplyFormBottomSheetState extends ConsumerState<ApplyFormBottomSheet> {
                                     setState(() {
                                       _isSubmitting = false;
                                     });
-                                    ScaffoldMessenger.of(context).clearSnackBars();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          l10n.offerApplyErrorPrefix(
-                                            err.toString().replaceAll(
-                                              'Exception: ',
-                                              '',
-                                            ),
-                                          ),
+                                    showRelevoSnackBar(
+                                      context,
+                                      message: l10n.offerApplyErrorPrefix(
+                                        err.toString().replaceAll(
+                                          'Exception: ',
+                                          '',
                                         ),
-                                        backgroundColor: Colors.redAccent,
                                       ),
+                                      isError: true,
                                     );
                                   }
                                 }

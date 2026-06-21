@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -235,165 +236,189 @@ class _CreateOfferScreenState extends ConsumerState<CreateOfferScreen> {
 
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          titlePadding: const EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: 24,
-            bottom: 12,
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-          actionsPadding: const EdgeInsets.only(
-            left: 24,
-            right: 24,
-            bottom: 20,
-            top: 16,
-          ),
-          title: Row(
-            children: [
-              Icon(
-                Icons.payment_rounded,
-                color: theme.colorScheme.primary,
-                size: 26,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+      builder: (dialogContext) {
+        final isDark = theme.brightness == Brightness.dark;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Material(
+                color: theme.colorScheme.surfaceContainer.withValues(
+                  alpha: 0.65,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: theme.colorScheme.outline.withValues(
+                        alpha: isDark ? 0.25 : 0.45,
+                      ),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.payment_rounded,
+                            color: theme.colorScheme.primary,
+                            size: 26,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                message,
+                                style: TextStyle(
+                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                                  fontSize: 13,
+                                  height: 1.3,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                summaryHeader,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: theme.colorScheme.primary,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildSummaryBox(
+                                      labelSector,
+                                      sectorFormatted,
+                                      Icons.category_outlined,
+                                      theme,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: _buildSummaryBox(
+                                      labelRegion,
+                                      regionFormatted,
+                                      Icons.location_on_outlined,
+                                      theme,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildSummaryBox(
+                                      labelRevenue,
+                                      revenueFormatted,
+                                      Icons.monetization_on_outlined,
+                                      theme,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: _buildSummaryBox(
+                                      labelEmployees,
+                                      employeesFormatted,
+                                      Icons.people_outline,
+                                      theme,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              _buildSummaryBox(
+                                labelYear,
+                                yearFormatted,
+                                Icons.calendar_today_outlined,
+                                theme,
+                                isFullWidth: true,
+                              ),
+                              const SizedBox(height: 8),
+                              _buildDescriptionBox(labelDescription, descFormatted, theme),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(dialogContext),
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 10,
+                              ),
+                            ),
+                            child: Text(
+                              cancelText,
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pop(dialogContext);
+                              _submit();
+                            },
+                            icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                            label: Text(confirmText),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: theme.colorScheme.primary,
+                              foregroundColor: theme.colorScheme.onPrimary,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  message,
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                    fontSize: 13,
-                    height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  summaryHeader,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: theme.colorScheme.primary,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSummaryBox(
-                        labelSector,
-                        sectorFormatted,
-                        Icons.category_outlined,
-                        theme,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildSummaryBox(
-                        labelRegion,
-                        regionFormatted,
-                        Icons.location_on_outlined,
-                        theme,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSummaryBox(
-                        labelRevenue,
-                        revenueFormatted,
-                        Icons.monetization_on_outlined,
-                        theme,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildSummaryBox(
-                        labelEmployees,
-                        employeesFormatted,
-                        Icons.people_outline,
-                        theme,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                _buildSummaryBox(
-                  labelYear,
-                  yearFormatted,
-                  Icons.calendar_today_outlined,
-                  theme,
-                  isFullWidth: true,
-                ),
-                const SizedBox(height: 8),
-                _buildDescriptionBox(labelDescription, descFormatted, theme),
-              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-              ),
-              child: Text(
-                cancelText,
-                style: TextStyle(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-                _submit();
-              },
-              icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
-              label: Text(confirmText),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
         );
       },
     );

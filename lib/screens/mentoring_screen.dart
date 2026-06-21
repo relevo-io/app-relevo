@@ -79,7 +79,7 @@ class _MentoringScreenState extends ConsumerState<MentoringScreen>
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(
                           24.0,
-                          MediaQuery.of(context).padding.top + 20.0,
+                          MediaQuery.of(context).padding.top + 92.0,
                           24.0,
                           24.0,
                         ),

@@ -5,6 +5,7 @@ import '../data/providers/alert_provider.dart';
 import '../l10n/app_localizations.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
+import '../utils/snackbar_utils.dart';
 
 class ManageAlertsScreen extends ConsumerStatefulWidget {
   const ManageAlertsScreen({super.key});
@@ -59,7 +60,7 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.fromLTRB(
           24.0,
-          MediaQuery.of(context).padding.top + 20.0,
+          MediaQuery.of(context).padding.top + 92.0,
           24.0,
           24.0,
         ),
@@ -130,21 +131,17 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
                             .read(alertsStateProvider.notifier)
                             .createAlert(_selectedRange);
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.alertsCreateSuccess),
-                              behavior: SnackBarBehavior.floating,
-                            ),
+                          showRelevoSnackBar(
+                            context,
+                            message: l10n.alertsCreateSuccess,
                           );
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                              backgroundColor: theme.colorScheme.error,
-                              behavior: SnackBarBehavior.floating,
-                            ),
+                          showRelevoSnackBar(
+                            context,
+                            message: e.toString(),
+                            isError: true,
                           );
                         }
                       }
@@ -246,21 +243,17 @@ class _ManageAlertsScreenState extends ConsumerState<ManageAlertsScreen> {
                                     .read(alertsStateProvider.notifier)
                                     .deleteAlert(alert.id);
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(l10n.alertsDeleteSuccess),
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
+                                  showRelevoSnackBar(
+                                    context,
+                                    message: l10n.alertsDeleteSuccess,
                                   );
                                 }
                               } catch (e) {
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: theme.colorScheme.error,
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
+                                  showRelevoSnackBar(
+                                    context,
+                                    message: e.toString(),
+                                    isError: true,
                                   );
                                 }
                               }

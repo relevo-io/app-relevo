@@ -54,7 +54,7 @@ class FavoritesScreen extends ConsumerWidget {
           loading: () => Padding(
             padding: EdgeInsets.fromLTRB(
               16.0,
-              MediaQuery.of(context).padding.top + 20.0,
+              MediaQuery.of(context).padding.top + 92.0,
               16.0,
               16.0,
             ),
@@ -64,7 +64,7 @@ class FavoritesScreen extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                 24.0,
-                MediaQuery.of(context).padding.top + 20.0,
+                MediaQuery.of(context).padding.top + 92.0,
                 24.0,
                 24.0,
               ),
@@ -84,7 +84,7 @@ class FavoritesScreen extends ConsumerWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(
                     32.0,
-                    MediaQuery.of(context).padding.top + 20.0,
+                    MediaQuery.of(context).padding.top + 92.0,
                     32.0,
                     32.0,
                   ),
@@ -120,7 +120,7 @@ class FavoritesScreen extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.fromLTRB(
                 16.0,
-                MediaQuery.of(context).padding.top + 20.0,
+                MediaQuery.of(context).padding.top + 92.0,
                 16.0,
                 16.0,
               ),

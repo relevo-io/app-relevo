@@ -878,6 +878,14 @@ class _MessageBubble extends StatelessWidget {
                       bottomLeft: Radius.circular(isMe ? 16 : 4),
                       bottomRight: Radius.circular(isMe ? 4 : 16),
                     ),
+                    border: isMe
+                        ? null
+                        : Border.all(
+                            color: theme.colorScheme.outline.withValues(
+                              alpha: theme.brightness == Brightness.dark ? 0.45 : 0.65,
+                            ),
+                            width: 1.2,
+                          ),
                   ),
                   child: _buildMessageContent(context),
                 ),

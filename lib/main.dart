@@ -66,10 +66,15 @@ class MainApp extends ConsumerWidget {
       theme: RelevoTheme.lightTheme,
       darkTheme: RelevoTheme.darkTheme,
       builder: (context, child) {
-        return AnimatedTheme(
-          data: Theme.of(context),
-          duration: const Duration(milliseconds: 300),
-          child: child!,
+        return GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: AnimatedTheme(
+            data: Theme.of(context),
+            duration: const Duration(milliseconds: 300),
+            child: child!,
+          ),
         );
       },
       home: const MainScreen(),

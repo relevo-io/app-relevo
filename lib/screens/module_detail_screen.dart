@@ -6,6 +6,7 @@ import '../data/providers/mentoring_provider.dart';
 import '../data/services/mentoring_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/mentoring_localizations.dart';
+import '../utils/snackbar_utils.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
 
@@ -35,21 +36,18 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
       await ref.read(mentoringProgressStateProvider.notifier).completeModule(widget.module.id);
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.mentoringCompletedAlert),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-          ),
+        showRelevoSnackBar(
+          context,
+          message: l10n.mentoringCompletedAlert,
         );
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        showRelevoSnackBar(
+          context,
+          message: e.toString(),
+          isError: true,
         );
       }
     } finally {
@@ -76,7 +74,12 @@ class _ModuleDetailScreenState extends ConsumerState<ModuleDetailScreen> {
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+              padding: EdgeInsets.fromLTRB(
+                24.0,
+                MediaQuery.of(context).padding.top + 92.0,
+                24.0,
+                24.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

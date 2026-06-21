@@ -4,15 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../data/providers/notification_provider.dart';
 import '../data/providers/navigation_providers.dart';
-import '../data/services/solicitud_service.dart';
 import '../data/services/offer_service.dart';
 import '../l10n/app_localizations.dart';
 import 'notification_preferences_screen.dart';
 import 'chat_room_screen.dart';
-import 'solicitud_details_screen.dart';
 import 'offer_details_screen.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
+import '../utils/snackbar_utils.dart';
 
 class NotificationsInboxScreen extends ConsumerWidget {
   const NotificationsInboxScreen({super.key});
@@ -22,7 +21,6 @@ class NotificationsInboxScreen extends ConsumerWidget {
     WidgetRef ref,
     notification,
   ) async {
-    final theme = Theme.of(context);
 
     // Marcar como leído en local inmediatamente al pulsar
     if (!notification.isRead) {
@@ -96,12 +94,10 @@ class NotificationsInboxScreen extends ConsumerWidget {
     } catch (e) {
       if (context.mounted) {
         Navigator.pop(context); // Cerrar loader en caso de error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: theme.colorScheme.error,
-            behavior: SnackBarBehavior.floating,
-          ),
+        showRelevoSnackBar(
+          context,
+          message: e.toString(),
+          isError: true,
         );
       }
     }
@@ -132,12 +128,10 @@ class NotificationsInboxScreen extends ConsumerWidget {
                     .markAllAsRead();
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(e.toString()),
-                      backgroundColor: theme.colorScheme.error,
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  showRelevoSnackBar(
+                    context,
+                    message: e.toString(),
+                    isError: true,
                   );
                 }
               }
@@ -176,12 +170,10 @@ class NotificationsInboxScreen extends ConsumerWidget {
                       .clearAllNotifications();
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(e.toString()),
-                        backgroundColor: theme.colorScheme.error,
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    showRelevoSnackBar(
+                      context,
+                      message: e.toString(),
+                      isError: true,
                     );
                   }
                 }
@@ -335,12 +327,10 @@ class NotificationsInboxScreen extends ConsumerWidget {
                                     .deleteNotification(notification.id);
                               } catch (e) {
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: theme.colorScheme.error,
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
+                                  showRelevoSnackBar(
+                                    context,
+                                    message: e.toString(),
+                                    isError: true,
                                   );
                                 }
                               }
@@ -359,16 +349,20 @@ class NotificationsInboxScreen extends ConsumerWidget {
                                       ? theme.colorScheme.primary.withValues(
                                           alpha: 0.08,
                                         )
-                                      : theme.colorScheme.surface,
+                                      : (theme.brightness == Brightness.dark
+                                          ? const Color(0xFF16223F)
+                                          : const Color(0xFFEFF2F5)),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: isUnread
                                         ? theme.colorScheme.primary.withValues(
                                             alpha: 0.3,
                                           )
-                                        : theme.colorScheme.outline.withValues(
-                                            alpha: 0.08,
-                                          ),
+                                        : (theme.brightness == Brightness.dark
+                                            ? const Color(0xFF1E2D5A)
+                                            : theme.colorScheme.outline.withValues(
+                                                alpha: 0.15,
+                                              )),
                                     width: isUnread ? 1.5 : 1.0,
                                   ),
                                 ),

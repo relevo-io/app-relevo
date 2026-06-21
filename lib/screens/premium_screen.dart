@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import '../data/services/payment_service.dart';
 import '../l10n/app_localizations.dart';
 import 'payment_checkout_screen.dart';
 import '../theme/relevo_theme.dart';
+import '../utils/snackbar_utils.dart';
 
 import '../widgets/glassmorphic_app_bar.dart';
 
@@ -26,66 +28,110 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
 
     showDialog(
       context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.3),
       barrierDismissible: !_isLoading,
-      builder: (dialogCtx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        backgroundColor: theme.colorScheme.surfaceContainer,
-        title: Row(
-          children: [
-            Icon(
-              Icons.workspace_premium,
-              color: theme.colorScheme.primary,
-              size: 28,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                l10n.premiumPaymentDialogTitle,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
+      builder: (dialogCtx) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              decoration: BoxDecoration(
+                color: theme.brightness == Brightness.dark
+                    ? Colors.black.withValues(alpha: 0.4)
+                    : Colors.white.withValues(alpha: 0.55),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: (theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withValues(alpha: 0.12),
+                  width: 1.5,
                 ),
               ),
-            ),
-          ],
-        ),
-        content: Text(
-          l10n.premiumPaymentDialogMessage,
-          style: TextStyle(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-            fontSize: 14,
-            height: 1.4,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogCtx),
-            child: Text(
-              l10n.premiumPaymentDialogCancel,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.workspace_premium,
+                          color: theme.colorScheme.primary,
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          l10n.premiumPaymentDialogTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.premiumPaymentDialogMessage,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogCtx),
+                        child: Text(
+                          l10n.premiumPaymentDialogCancel,
+                          style: TextStyle(
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(dialogCtx);
+                          _activatePlan();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          l10n.premiumPaymentDialogConfirm,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(dialogCtx);
-              _activatePlan();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: theme.colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Text(
-              l10n.premiumPaymentDialogConfirm,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -125,36 +171,34 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
         await ref.read(authProvider.notifier).refreshProfile();
         if (!mounted) return;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.premiumSuccessMessage),
-            backgroundColor: const Color(0xFF00B286),
-          ),
+        showRelevoSnackBar(
+          context,
+          message: l10n.premiumSuccessMessage,
         );
         return;
       }
 
       if (status.status == PaymentStatus.canceled) {
-        ScaffoldMessenger.of(
+        showRelevoSnackBar(
           context,
-        ).showSnackBar(SnackBar(content: Text(l10n.paymentCheckoutCanceled)));
+          message: l10n.paymentCheckoutCanceled,
+          isError: true,
+        );
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.paymentCheckoutStatusError),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
+      showRelevoSnackBar(
+        context,
+        message: l10n.paymentCheckoutStatusError,
+        isError: true,
       );
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${l10n.premiumErrorMessage} (${e.toString()})'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        showRelevoSnackBar(
+          context,
+          message: '${l10n.premiumErrorMessage} (${e.toString()})',
+          isError: true,
         );
       }
     } finally {
@@ -217,7 +261,7 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
                 Container(
                   padding: EdgeInsets.fromLTRB(
                     24,
-                    MediaQuery.of(context).padding.top + 20.0,
+                    MediaQuery.of(context).padding.top + 92.0,
                     24,
                     40,
                   ),
